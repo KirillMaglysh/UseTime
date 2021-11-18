@@ -1,19 +1,34 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
+import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.TrackedApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -44,6 +59,66 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        final PackageManager pm = this.getPackageManager();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        List<ApplicationInfo> infoList = packages
+                .stream()
+                .filter(applicationInfo -> (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
+                .collect(Collectors.toList());
+
+        Calendar beginCal = Calendar.getInstance();
+        beginCal.set(Calendar.DATE, 1);
+        beginCal.set(Calendar.MONTH, 0);
+        beginCal.set(Calendar.YEAR, 2021);
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(Calendar.DATE, 1);
+        endCal.set(Calendar.MONTH, 0);
+        endCal.set(Calendar.YEAR, 2022);
+        final UsageStatsManager usageStatsManager = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
+        final List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, beginCal.getTimeInMillis(), endCal.getTimeInMillis());
+        System.out.println(queryUsageStats.size());
+/*
+        Category socialNet = new Category();
+        socialNet.setName("socialNet");
+
+        int i;
+        try {
+            i = DbHelperFactory.getHelper().getCategoryDAO().create(socialNet);
+        } catch (SQLException e) {
+            Log.e(TAG, "ошибка сохранения категории");
+        }
+*/
+
+/*
+        List<Category> allCategories;
+        try {
+            allCategories = DbHelperFactory.getHelper().getCategoryDAO().getAllCategories();
+        } catch (SQLException e) {
+            Log.e(TAG, "ошибка получения списка категорий");
+        }
+*/
+/*
+        Category socialNet = null;
+        try {
+            socialNet = DbHelperFactory.getHelper().getCategoryDAO().getCategoryByName("socialNet");
+        } catch (SQLException e) {
+            Log.e(TAG, "ошибка получения категории");
+        }
+*/
+
+/*
+        TrackedApp trackedApp = new TrackedApp();
+        trackedApp.setCategory(socialNet);
+        trackedApp.setName("VK.com");
+        trackedApp.setSystemId("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789");
+        try {
+            DbHelperFactory.getHelper().getTrackedAppDAO().create(trackedApp);
+        } catch (SQLException e) {
+            Log.e(TAG, "ошибка сохранения приложения");
+        }
+*/
     }
 
     @Override

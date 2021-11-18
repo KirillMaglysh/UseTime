@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+>
+
+    <LinearLayout
+            android:id="@+id/cats_things"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+    >
+        <!--TODO заменить на список предметов-->
+        <TextView
+                android:id="@+id/left_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="1"
+        />
+    </LinearLayout>
+
+    <ImageView
+            android:id="@+id/cat_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/laughtingoutloud_64x64"
+            android:scaleType="fitCenter"
+            android:layout_weight="6"
+            android:contentDescription="@string/cat_image_content_description"
+            android:layout_marginBottom="@dimen/cat_image_margin"
+            android:layout_marginTop="@dimen/cat_image_margin"
+    />
+
+    <LinearLayout
+            android:id="@+id/cats_health"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+    >
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="2"
+        />
+
+    </LinearLayout>
+
+</LinearLayout>

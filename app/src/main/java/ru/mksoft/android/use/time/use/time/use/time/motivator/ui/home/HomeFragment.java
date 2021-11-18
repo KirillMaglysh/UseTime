@@ -12,6 +12,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentHomeBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ShortSummaryBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.TrackedApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -26,7 +32,11 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textHome;
+//        final TextView textView1 = binding.text1;
+//        textView1.setText("25 hours");
+        final TextView leftText = binding.catStateLayout.leftText;
+        leftText.setText("75");
+
 /*
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -35,6 +45,16 @@ public class HomeFragment extends Fragment {
             }
         });
 */
+
+        List<TrackedApp> allApps = null;
+        try {
+            allApps = DbHelperFactory.getHelper().getTrackedAppDAO().getAllApps();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ShortSummaryBinding shortSummary1 = binding.shortSummary1;
+        shortSummary1.currentPurposeCard.description.setText(allApps.get(0).getName());
         return root;
     }
 

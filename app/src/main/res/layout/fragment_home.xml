@@ -7,65 +7,34 @@
         android:orientation="vertical"
         tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
+    <include
             android:id="@+id/cat_state_layout"
+            layout="@layout/cat_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_weight="1"
+    />
+
+    <!-- TODO Заменить на текущую статистику за день-->
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3"
     >
 
-        <LinearLayout
-                android:id="@+id/cats_things"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1"
-        >
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="1"
-            />
-        </LinearLayout>
 
-        <ImageView
-                android:id="@+id/cat_image"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/laughtingoutloud_64x64"
-                android:scaleType="fitCenter"
-                android:layout_weight="6"
-                android:contentDescription="@string/cat_image_content_description"
-                android:layout_marginBottom="@dimen/cat_image_margin"
-                android:layout_marginTop="@dimen/cat_image_margin"
+        <include
+                android:id="@+id/short_summary_1"
+                layout="@layout/short_summary"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
         />
 
-        <LinearLayout
-                android:id="@+id/cats_health"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1"
-        >
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="2"
-            />
-
-        </LinearLayout>
-
+        <include
+                layout="@layout/short_summary"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+        />
     </LinearLayout>
-    <TextView
-            android:id="@+id/text_home"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-    />
 </LinearLayout>

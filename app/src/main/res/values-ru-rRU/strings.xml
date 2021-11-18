@@ -4,4 +4,5 @@
     <string name="menu_home">Главная</string>
     <string name="menu_gallery">Галерея</string>
     <string name="menu_slideshow">Показ</string>
+    <string name="menu_applications">Приложения</string>
 </resources>
