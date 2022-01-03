@@ -4,11 +4,12 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -37,13 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -58,12 +54,39 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         final PackageManager pm = this.getPackageManager();
+        List<PackageInfo> packs = pm.getInstalledPackages(0);
+
+        List<String> labels = new ArrayList<>();
+        for (int i = 0; i < packs.size(); i++) {
+            PackageInfo p = packs.get(i);
+            String description = (String) p.applicationInfo.loadDescription(pm);
+            String label = p.applicationInfo.loadLabel(pm).toString();
+            labels.add(label);
+            String packageName = p.packageName;
+            String versionName = p.versionName;
+            Drawable drawable = p.applicationInfo.loadIcon(pm);
+
+            Log.d("PDISK", "                      " + label + "=" + p.applicationInfo.);
+//            if (!drawable.toString().contains("OplusAdaptiveIconDrawable")) {
+//                Log.d("PICON", "                      " + label + "=" + drawable);
+//            }
+        }
+
+        for (String label : labels) {
+            Log.d("LBL", label);
+        }
+
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         List<ApplicationInfo> infoList = new ArrayList<>(packages);
         for (ApplicationInfo applicationInfo : infoList) {
-            if (applicationInfo.category != ApplicationInfo.CATEGORY_UNDEFINED && !applicationInfo.toString().contains("com.android")) {
-                Log.d("QQQ", applicationInfo.toString());
-            }
+            Drawable drawable = applicationInfo.loadIcon(pm);
+//            if (!drawable.toString().contains("Oplus")) {
+//                Log.d("AICON", "                      " + applicationInfo.loadLabel(pm));
+//            }
+//            if (!applicationInfo.toString().contains("com.android")) {
+//                Log.d("QQQ", applicationInfo.toString());
+//
+//            }
         }
 
         Calendar beginCal = Calendar.getInstance();
