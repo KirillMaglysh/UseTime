@@ -8,13 +8,6 @@
             tools:ignore="QueryAllPackagesPermission"
     />
 
-    <!--    <permission android:name="android.permission.QUERY_ALL_PACKAGES"/>-->
-    <!--    <queries>-->
-    <!--        <package android:name="com.example.store"/>-->
-    <!--        <package android:name="com.example.services"/>-->
-    <!--        -->
-    <!--    </queries>-->
-
     <application
             android:allowBackup="true"
             android:name=".UseTimeMotivatorApp"
