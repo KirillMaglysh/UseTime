@@ -6,9 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentHomeBinding;
@@ -31,6 +29,7 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        binding.catStateLayout.button.setOnClickListener(view -> binding.catStateLayout.catImage.setImageResource(R.drawable.angry_64x64));
 
 //        final TextView textView1 = binding.text1;
 //        textView1.setText("25 hours");
@@ -54,7 +53,7 @@ public class HomeFragment extends Fragment {
         }
 
         ShortSummaryBinding shortSummary1 = binding.shortSummary1;
-        shortSummary1.currentPurposeCard.description.setText(allApps.get(0).getName());
+//        shortSummary1.currentPurposeCard.description.setText(allApps.get(0).getName());
         return root;
     }
 

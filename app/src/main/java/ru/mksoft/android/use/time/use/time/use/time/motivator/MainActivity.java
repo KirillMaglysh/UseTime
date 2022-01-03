@@ -18,14 +18,10 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.TrackedApp;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -48,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -62,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         final PackageManager pm = this.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        List<ApplicationInfo> infoList = packages
-                .stream()
-                .filter(applicationInfo -> (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
-                .collect(Collectors.toList());
+        List<ApplicationInfo> infoList = new ArrayList<>(packages);
+        for (ApplicationInfo applicationInfo : infoList) {
+            if (applicationInfo.category != ApplicationInfo.CATEGORY_UNDEFINED && !applicationInfo.toString().contains("com.android")) {
+                Log.d("QQQ", applicationInfo.toString());
+            }
+        }
 
         Calendar beginCal = Calendar.getInstance();
         beginCal.set(Calendar.DATE, 1);
