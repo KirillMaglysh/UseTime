@@ -8,13 +8,13 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="nav_applications">
+                  <entry key="nav_applist">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="259" />
+                            <option name="y" value="363" />
                           </Point>
                         </option>
                       </LayoutPositions>

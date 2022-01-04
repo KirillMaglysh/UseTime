@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         ArrayList<ApplicationInfo> appList = new ArrayList<>();
-
         for (ApplicationInfo info : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
             try {
                 if (pm.getLaunchIntentForPackage(info.packageName) != null) {
