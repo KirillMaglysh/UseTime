@@ -54,40 +54,58 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         final PackageManager pm = this.getPackageManager();
-        List<PackageInfo> packs = pm.getInstalledPackages(0);
-
-        List<String> labels = new ArrayList<>();
-        for (int i = 0; i < packs.size(); i++) {
-            PackageInfo p = packs.get(i);
-            String description = (String) p.applicationInfo.loadDescription(pm);
-            String label = p.applicationInfo.loadLabel(pm).toString();
-            labels.add(label);
-            String packageName = p.packageName;
-            String versionName = p.versionName;
-            Drawable drawable = p.applicationInfo.loadIcon(pm);
-
-            Log.d("PDISK", "                      " + label + "=" + p.applicationInfo.);
-//            if (!drawable.toString().contains("OplusAdaptiveIconDrawable")) {
-//                Log.d("PICON", "                      " + label + "=" + drawable);
-//            }
-        }
-
-        for (String label : labels) {
-            Log.d("LBL", label);
-        }
-
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        List<ApplicationInfo> infoList = new ArrayList<>(packages);
-        for (ApplicationInfo applicationInfo : infoList) {
-            Drawable drawable = applicationInfo.loadIcon(pm);
-//            if (!drawable.toString().contains("Oplus")) {
-//                Log.d("AICON", "                      " + applicationInfo.loadLabel(pm));
-//            }
-//            if (!applicationInfo.toString().contains("com.android")) {
-//                Log.d("QQQ", applicationInfo.toString());
+//        List<PackageInfo> packs = pm.getInstalledPackages(0);
 //
-//            }
+//        List<String> labels = new ArrayList<>();
+//        for (int i = 0; i < packs.size(); i++) {
+//            PackageInfo p = packs.get(i);
+//            String description = (String) p.applicationInfo.loadDescription(pm);
+//            String label = p.applicationInfo.loadLabel(pm).toString();
+//            labels.add(label);
+//            String packageName = p.packageName;
+//            String versionName = p.versionName;
+//            Drawable drawable = p.applicationInfo.loadIcon(pm);
+//
+//            Log.d("PDISK", "                      " + label + "=" + p.applicationInfo.);
+////            if (!drawable.toString().contains("OplusAdaptiveIconDrawable")) {
+////                Log.d("PICON", "                      " + label + "=" + drawable);
+////            }
+//        }
+//
+//        for (String label : labels) {
+//            Log.d("LBL", label);
+//        }
+
+
+
+        ArrayList<ApplicationInfo> appList = new ArrayList<>();
+
+        for (ApplicationInfo info : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
+            try {
+                if (pm.getLaunchIntentForPackage(info.packageName) != null) {
+                    appList.add(info);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        for (ApplicationInfo applicationInfo : appList) {
+            Log.d("QwQwQ", "                 " + applicationInfo.loadLabel(pm));
+        }
+
+//        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+//        List<ApplicationInfo> infoList = new ArrayList<>(packages);
+//        for (ApplicationInfo applicationInfo : infoList) {
+//            Drawable drawable = applicationInfo.loadIcon(pm);
+////            if (!drawable.toString().contains("Oplus")) {
+////                Log.d("AICON", "                      " + applicationInfo.loadLabel(pm));
+////            }
+////            if (!applicationInfo.toString().contains("com.android")) {
+////                Log.d("QQQ", applicationInfo.toString());
+////
+////            }
+//        }
 
         Calendar beginCal = Calendar.getInstance();
         beginCal.set(Calendar.DATE, 1);
