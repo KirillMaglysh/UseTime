@@ -14,4 +14,6 @@
     <string name="cat_image_content_description" translatable="false">Cat Image</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="menu_app_list">Applications</string>
+    <string name="app_label">app_label</string>
+    <string name="app_icon_description">App Icon</string>
 </resources>

@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
+        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/app_card.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_app_list.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_gallery.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_home.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/menu/activity_main_drawer.xml" value="0.1" />
       </map>
     </option>

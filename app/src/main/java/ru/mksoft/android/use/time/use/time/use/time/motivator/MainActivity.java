@@ -4,11 +4,8 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,9 +13,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.CustomRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,20 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ArrayList<ApplicationInfo> appList = new ArrayList<>();
-        for (ApplicationInfo info : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
-            try {
-                if (pm.getLaunchIntentForPackage(info.packageName) != null) {
-                    appList.add(info);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (ApplicationInfo applicationInfo : appList) {
-            Log.d("QwQwQ", "                 " + applicationInfo.loadLabel(pm));
-        }
 
 //        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 //        List<ApplicationInfo> infoList = new ArrayList<>(packages);
