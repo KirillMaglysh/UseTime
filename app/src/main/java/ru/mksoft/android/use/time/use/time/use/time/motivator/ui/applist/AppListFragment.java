@@ -45,15 +45,15 @@ public class AppListFragment extends Fragment {
             }
         }
 
-        List<String> appLabels = new ArrayList<>(appList.size());
+        List<AppCardInfo> appCards = new ArrayList<>(appList.size());
         for (ApplicationInfo applicationInfo : appList) {
-            appLabels.add((String) applicationInfo.loadLabel(pm));
+            appCards.add(new AppCardInfo((String) applicationInfo.loadLabel(pm), applicationInfo.loadIcon(pm), "ABCABA"));
         }
 
 
         RecyclerView recyclerView = binding.appListRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new CustomRecyclerAdapter(appLabels));
+        recyclerView.setAdapter(new CustomRecyclerAdapter(appCards));
 
         return binding.getRoot();
     }
