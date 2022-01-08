@@ -1,6 +1,5 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.TrackedApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UntrackedApp;
 
 import java.util.List;
 
@@ -22,10 +23,12 @@ import java.util.List;
 
 //TODO() передавать список приложений с иконками и так чтобы можно было добавлять и убирать из базы отслеживаемые приложения
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder> {
-    private List<AppCardInfo> appCards;
+    List<TrackedApp> trackedApps;
+    List<UntrackedApp> untrackedApps;
 
-    public CustomRecyclerAdapter(List<AppCardInfo> appCards) {
-        this.appCards = appCards;
+    public CustomRecyclerAdapter(List<TrackedApp> trackedApps, List<UntrackedApp> untrackedApps) {
+        this.trackedApps = trackedApps;
+        this.untrackedApps = untrackedApps;
     }
 
     @NotNull
@@ -36,16 +39,14 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
-        holder.appLabel.setText(appCards.get(position).label);
-        holder.appIcon.setImageDrawable(
-
-                appCards.get(position).icon);
-        holder.appCategory.setText(appCards.get(position).category);
+        holder.appLabel.setText(untrackedApps.get(position).getName());
+        holder.appIcon.setImageDrawable(appCards.get(position).icon);
+        holder.appCategory.setText(untrackedApps.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return appCards.size();
+        return untrackedApps.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

@@ -8,6 +8,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.TrackedApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UntrackedApp;
 
 import java.sql.SQLException;
 
@@ -25,6 +26,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     private CategoryDAO categoryDAO = null;
     private TrackedAppDAO trackedAppDAO = null;
+    private UntrackedAppDAO untrackedAppDAO = null;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,5 +62,13 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         }
 
         return trackedAppDAO;
+    }
+
+    public UntrackedAppDAO getUntrackedAppDAO() throws SQLException {
+        if (untrackedAppDAO == null) {
+            untrackedAppDAO = new UntrackedAppDAO(getConnectionSource(), UntrackedApp.class);
+        }
+
+        return untrackedAppDAO;
     }
 }

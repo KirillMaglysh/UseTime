@@ -9,13 +9,13 @@ import lombok.Setter;
  * Place here class purpose.
  *
  * @author Kirill
- * @since 18.11.2021
+ * @since 07.01.2022
  */
 
 @Getter
 @Setter
 @DatabaseTable(tableName = "TRACKED_APP")
-public class TrackedApp {
+public class UntrackedApp {
     @DatabaseField(generatedId = true)
     private Long id;
 
@@ -24,7 +24,4 @@ public class TrackedApp {
 
     @DatabaseField(columnName = "APP_NAME", width = 32, index = true, canBeNull = false)
     private String name;
-
-    @DatabaseField(columnName = "CATEGORY", foreign = true, index = true, canBeNull = false)
-    private Category category;
 }

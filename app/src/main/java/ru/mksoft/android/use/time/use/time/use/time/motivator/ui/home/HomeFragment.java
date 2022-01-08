@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
 
         List<TrackedApp> allApps = null;
         try {
-            allApps = DbHelperFactory.getHelper().getTrackedAppDAO().getAllApps();
+            allApps = DbHelperFactory.getHelper().getTrackedAppDAO().getAllTrackedApps();
         } catch (SQLException e) {
             e.printStackTrace();
         }
