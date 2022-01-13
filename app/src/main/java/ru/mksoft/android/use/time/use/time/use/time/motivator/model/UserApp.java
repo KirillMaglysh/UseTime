@@ -14,17 +14,22 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@DatabaseTable(tableName = "TRACKED_APP")
-public class TrackedApp {
+@DatabaseTable(tableName = "USER_APP")
+public class UserApp {
+    public static final String FIELD_IS_TRACKED = "IS_TRACKED";
+
     @DatabaseField(generatedId = true)
     private Long id;
 
     @DatabaseField(columnName = "SYS_ID", width = 512, canBeNull = false)
     private Integer systemId;
 
-    @DatabaseField(columnName = "APP_NAME", width = 32, index = true, canBeNull = false)
-    private String name;
+    @DatabaseField(columnName = "PACKAGE_NAME", width = 32, index = true, canBeNull = false)
+    private String packageName;
 
     @DatabaseField(columnName = "CATEGORY", foreign = true, index = true, canBeNull = false)
     private Category category;
+
+    @DatabaseField(columnName = "IS_TRACKED", index = true, canBeNull = false)
+    private Boolean isTracked = false;
 }

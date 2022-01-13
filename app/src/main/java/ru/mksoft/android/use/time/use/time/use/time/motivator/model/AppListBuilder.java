@@ -16,7 +16,7 @@ import java.util.TreeMap;
  * @since 07.01.2022
  */
 public class AppListBuilder {
-    private PackageManager packageManager;
+    private final PackageManager packageManager;
 
     public AppListBuilder(PackageManager packageManager) {
         this.packageManager = packageManager;
@@ -26,18 +26,18 @@ public class AppListBuilder {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<UntrackedApp> allUntrackedApps = queryUntrackedApps();
-                List<TrackedApp> allTrackedApps = queryTrackedApps();
+                List<UserApp> untrackedApps = queryUntrackedApps();
+                List<UserApp> trackedApps = queryTrackedApps();
 
-                TreeMap<Integer, AppParams> sortedTracked = createTrackedAppsMap(allTrackedApps);
-                TreeMap<Integer, AppParams> sortedUntracked = createUntrackedAppsMap(allUntrackedApps);
-                addNewUntrackedApps(sortedTracked, sortedUntracked);
+                TreeMap<Integer, AppParams> sortedTracked = createAppsMap(trackedApps);
+                TreeMap<Integer, AppParams> sortedUntracked = createAppsMap(untrackedApps);
+                readCurrentAppList(sortedTracked, sortedUntracked);
 
-                deleteNotFoundTrackedApps(allTrackedApps, sortedTracked);
-                deleteNotFoundUntrackedApps(allUntrackedApps, sortedUntracked);
+                deleteNotFoundApps(trackedApps, sortedTracked);
+                deleteNotFoundApps(untrackedApps, sortedUntracked);
             }
 
-            private void addNewUntrackedApps(TreeMap<Integer, AppParams> sortedTracked, TreeMap<Integer, AppParams> sortedUntracked) {
+            private void readCurrentAppList(TreeMap<Integer, AppParams> sortedTracked, TreeMap<Integer, AppParams> sortedUntracked) {
                 List<ApplicationInfo> notSortedAppList = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
                 for (ApplicationInfo info : notSortedAppList) {
                     try {
@@ -46,11 +46,7 @@ public class AppListBuilder {
                         } else if (sortedUntracked.containsKey(info.uid)) {
                             sortedUntracked.get(info.uid).wasFound = true;
                         } else if (packageManager.getLaunchIntentForPackage(info.packageName) != null) {
-                            UntrackedApp newApp = new UntrackedApp();
-                            newApp.setSystemId(info.uid);
-                            newApp.setName(String.valueOf(info.loadLabel(packageManager)));
-
-                            DbHelperFactory.getHelper().getUntrackedAppDAO().create(newApp);
+                            addNewUntrackedAppIntoDB(info);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -58,55 +54,42 @@ public class AppListBuilder {
                 }
             }
 
-            private TreeMap<Integer, AppParams> createTrackedAppsMap(List<TrackedApp> allTrackedApps) {
+            private void addNewUntrackedAppIntoDB(ApplicationInfo info) throws SQLException {
+                UserApp newApp = new UserApp();
+                newApp.setSystemId(info.uid);
+                newApp.setPackageName(String.valueOf(info.packageName));
+                newApp.setCategory(DbHelperFactory.getHelper().getCategoryDAO().getDefaultCategory());
+
+                DbHelperFactory.getHelper().getUserAppDAO().create(newApp);
+            }
+
+            private TreeMap<Integer, AppParams> createAppsMap(List<UserApp> userApps) {
                 TreeMap<Integer, AppParams> sortedTracked = new TreeMap<>();
-                for (int i = 0; i < allTrackedApps.size(); i++) {
-                    sortedTracked.put(allTrackedApps.get(i).getSystemId(), new AppParams(i));
+                for (int i = 0; i < userApps.size(); i++) {
+                    sortedTracked.put(userApps.get(i).getSystemId(), new AppParams(i));
                 }
 
                 return sortedTracked;
             }
 
-            private TreeMap<Integer, AppParams> createUntrackedAppsMap(List<UntrackedApp> allUntrackedApps) {
-                TreeMap<Integer, AppParams> sortedUntracked = new TreeMap<>();
-                for (int i = 0; i < allUntrackedApps.size(); i++) {
-                    sortedUntracked.put(allUntrackedApps.get(i).getSystemId(), new AppParams(i));
-                }
-
-                return sortedUntracked;
-            }
-
-
-            private void deleteNotFoundTrackedApps(List<TrackedApp> allTrackedApps, TreeMap<Integer, AppParams> sortedTracked) {
-                sortedTracked.forEach((num, appParams) -> {
+            private void deleteNotFoundApps(List<UserApp> userApps, TreeMap<Integer, AppParams> sortedApps) {
+                sortedApps.forEach((num, appParams) -> {
                     if (!appParams.wasFound) {
                         try {
-                            DbHelperFactory.getHelper().getTrackedAppDAO().delete(allTrackedApps.get(appParams.originalPos));
+                            DbHelperFactory.getHelper().getUserAppDAO().delete(userApps.get(appParams.originalPos));
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                     }
                 });
             }
-
-            private void deleteNotFoundUntrackedApps(List<UntrackedApp> allUntrackedApps, TreeMap<Integer, AppParams> sortedUntracked) {
-                sortedUntracked.forEach((integer, appParams) -> {
-                    if (!appParams.wasFound) {
-                        try {
-                            DbHelperFactory.getHelper().getUntrackedAppDAO().delete(allUntrackedApps.get(appParams.originalPos));
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
+        }).start();
     }
 
-    public List<UntrackedApp> queryUntrackedApps() {
-        List<UntrackedApp> untrackedApps = new ArrayList<>();
+    public List<UserApp> queryUntrackedApps() {
+        List<UserApp> untrackedApps = new ArrayList<>();
         try {
-            untrackedApps = DbHelperFactory.getHelper().getUntrackedAppDAO().getAllUntrackedApps();
+            untrackedApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUntrackedApps();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,15 +97,15 @@ public class AppListBuilder {
         return untrackedApps;
     }
 
-    public List<TrackedApp> queryTrackedApps() {
-        List<TrackedApp> trackedApps = new ArrayList<>();
+    public List<UserApp> queryTrackedApps() {
+        List<UserApp> userApps = new ArrayList<>();
         try {
-            trackedApps = DbHelperFactory.getHelper().getTrackedAppDAO().getAllTrackedApps();
+            userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return trackedApps;
+        return userApps;
     }
 
     enum AppListState {

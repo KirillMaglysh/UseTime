@@ -14,8 +14,8 @@ public class UseTimeMotivatorApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        new AppListBuilder(getPackageManager()).buildAppList();
         DbHelperFactory.setHelper(getApplicationContext());
+        new AppListBuilder(getPackageManager()).buildAppList();
     }
 
     @Override

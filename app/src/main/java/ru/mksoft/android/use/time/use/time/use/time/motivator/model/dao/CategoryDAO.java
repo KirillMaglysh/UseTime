@@ -28,6 +28,18 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         QueryBuilder<Category, Long> queryBuilder = queryBuilder();
         queryBuilder.where().eq(Category.FIELD_CATEGORY_NAME, name);
         PreparedQuery<Category> preparedQuery = queryBuilder.prepare();
+
         return queryForFirst(preparedQuery);
+    }
+
+    public Category getDefaultCategory() throws SQLException {
+        Category category = getCategoryByName(Category.DEFAULT_CATEGORY_NAME);
+        if (category == null) {
+            category = new Category();
+            category.setName(Category.DEFAULT_CATEGORY_NAME);
+            create(category);
+        }
+
+        return category;
     }
 }
