@@ -27,6 +27,25 @@
             android:id="@+id/nav_applist"
             android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListFragment"
             android:label="@string/menu_app_list"
-            tools:layout="@layout/fragment_app_list"/>
+            tools:layout="@layout/fragment_app_list">
+        <action android:id="@+id/action_nav_applist_to_nav_track_new_app_dialog"
+                app:destination="@id/nav_track_new_app_dialog"
+        />
+    </fragment>
 
+    <dialog
+            android:id="@+id/nav_track_new_app_dialog"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.TrackNewAppDialog"
+            tools:layout="@layout/fragment_track_new_app_dialog">
+
+        <argument
+                android:name="appLabel"
+                app:argType="string"
+        />
+
+        <argument
+                android:name="positionInAdapter"
+                app:argType="integer"
+        />
+    </dialog>
 </navigation>

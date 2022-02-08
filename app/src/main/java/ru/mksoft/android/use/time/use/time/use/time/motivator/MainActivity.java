@@ -1,10 +1,5 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,16 +8,17 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.CustomRecyclerAdapter;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();

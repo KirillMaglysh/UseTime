@@ -14,7 +14,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Fragme
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
 
 public class AppListFragment extends Fragment {
-
     private AppListViewModel applistViewModel;
     private FragmentAppListBinding binding;
     private AppListBuilder appListBuilder;
@@ -31,8 +30,8 @@ public class AppListFragment extends Fragment {
 
         RecyclerView recyclerView = binding.appListRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new CustomRecyclerAdapter(packageManager, appListBuilder.queryTrackedApps(), appListBuilder.queryUntrackedApps()));
-
+        recyclerView.setAdapter(new AppListRecyclerAdapter(getContext(),
+                appListBuilder.queryTrackedApps(), appListBuilder.queryUntrackedApps()));
 
         return binding.getRoot();
     }

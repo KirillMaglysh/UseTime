@@ -11,14 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentHomeBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ShortSummaryBinding;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class HomeFragment extends Fragment {
-
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
 
@@ -31,7 +25,7 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         binding.catStateLayout.button.setOnClickListener(view -> binding.catStateLayout.catImage.setImageResource(R.drawable.angry_64x64));
 
-        final TextView leftText = binding.catStateLayout.leftText;
+        TextView leftText = binding.catStateLayout.leftText;
         leftText.setText("75");
 
         ShortSummaryBinding shortSummary1 = binding.shortSummary1;
