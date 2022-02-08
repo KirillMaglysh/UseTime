@@ -1,6 +1,7 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
 import android.app.Application;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 /**
@@ -14,6 +15,7 @@ public class UseTimeMotivatorApp extends Application {
     public void onCreate() {
         super.onCreate();
         DbHelperFactory.setHelper(getApplicationContext());
+        new AppListBuilder(getPackageManager()).buildAppList();
     }
 
     @Override

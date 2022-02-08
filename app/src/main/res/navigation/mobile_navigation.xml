@@ -24,9 +24,9 @@
             tools:layout="@layout/fragment_slideshow"/>
 
     <fragment
-            android:id="@+id/nav_applications"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applications.ApplicationFragment"
-            android:label="@string/menu_applications"
-            tools:layout="@layout/fragment_applications"/>
+            android:id="@+id/nav_applist"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListFragment"
+            android:label="@string/menu_app_list"
+            tools:layout="@layout/fragment_app_list"/>
 
 </navigation>

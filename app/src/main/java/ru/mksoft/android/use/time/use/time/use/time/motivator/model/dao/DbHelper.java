@@ -7,7 +7,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.TrackedApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 
 import java.sql.SQLException;
 
@@ -24,7 +24,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private CategoryDAO categoryDAO = null;
-    private TrackedAppDAO trackedAppDAO = null;
+    private UserAppDAO userAppDAO = null;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +34,8 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Category.class);
-            TableUtils.createTable(connectionSource, TrackedApp.class);
+            TableUtils.createTable(connectionSource, UserApp.class);
+
         } catch (SQLException e) {
             Log.e(TAG, "error creating DB " + DATABASE_NAME);
             throw new RuntimeException(e);
@@ -54,11 +55,11 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return categoryDAO;
     }
 
-    public TrackedAppDAO getTrackedAppDAO() throws SQLException {
-        if (trackedAppDAO == null) {
-            trackedAppDAO = new TrackedAppDAO(getConnectionSource(), TrackedApp.class);
+    public UserAppDAO getUserAppDAO() throws SQLException {
+        if (userAppDAO == null) {
+            userAppDAO = new UserAppDAO(getConnectionSource(), UserApp.class);
         }
 
-        return trackedAppDAO;
+        return userAppDAO;
     }
 }
