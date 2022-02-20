@@ -34,23 +34,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_label"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
             />
 
             <TextView
                     android:id="@+id/app_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
             />
 
         </LinearLayout>
+
         <Button
                 android:id="@+id/app_add_delete_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
         />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,5 +1,6 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.home;
 
+import android.app.usage.UsageStatsManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

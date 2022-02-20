@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:id="@+id/category_card_label"
+                android:text="category_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="16sp"
+        />
+
+        <include
+                android:id="@+id/rule_for_category"
+                layout="@layout/rule_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+        />
+
+        <Button
+                android:id="@+id/category_edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="EDIT"
+                android:layout_marginEnd="10dp"
+        />
+
+        <Button
+                android:id="@+id/category_delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="DEL"
+                android:layout_marginEnd="16dp"
+        />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

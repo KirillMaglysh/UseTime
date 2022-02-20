@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".ui.planning.rulelist.EditRuleFragment"
+              android:orientation="vertical"
+>
+
+    <EditText
+            android:id="@+id/edit_rule_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="text"
+            android:text="RULE_LABEL"
+    />
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+    >
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ПН"
+            />
+
+            <EditText
+                    android:id="@+id/monday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/monday_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ВТ"
+            />
+
+            <EditText
+                    android:id="@+id/tuesday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/tuesday_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="СР"
+            />
+
+            <EditText
+                    android:id="@+id/wednesday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/wednesday_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ЧТ"
+            />
+
+            <EditText
+                    android:id="@+id/thursday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/thursday_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ПТ"
+            />
+
+            <EditText
+                    android:id="@+id/friday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/friday_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="СБ"
+            />
+
+            <EditText
+                    android:id="@+id/saturday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/saturday_minutes"
+                    android:layout_width="wrap_content"
+                    android:inputType="number"
+                    android:layout_height="wrap_content"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ВС"
+            />
+
+            <EditText
+                    android:id="@+id/sunday_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+
+            <EditText
+                    android:id="@+id/sunday_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="00"
+            />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <Button
+                android:id="@+id/confirm_rule_edition_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Confirm"
+        />
+
+        <Button
+                android:id="@+id/cancel_rule_edition_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+        />
+    </LinearLayout>
+</LinearLayout>

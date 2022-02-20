@@ -7,6 +7,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 
 import java.sql.SQLException;
@@ -24,6 +25,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private CategoryDAO categoryDAO = null;
+    private RuleDAO ruleDAO = null;
     private UserAppDAO userAppDAO = null;
 
     public DbHelper(Context context) {
@@ -35,7 +37,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Category.class);
             TableUtils.createTable(connectionSource, UserApp.class);
-
+            TableUtils.createTable(connectionSource, Rule.class);
         } catch (SQLException e) {
             Log.e(TAG, "error creating DB " + DATABASE_NAME);
             throw new RuntimeException(e);
@@ -61,5 +63,13 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         }
 
         return userAppDAO;
+    }
+
+    public RuleDAO getRuleDAO() throws SQLException {
+        if (ruleDAO == null) {
+            ruleDAO = new RuleDAO(getConnectionSource(), Rule.class);
+        }
+
+        return ruleDAO;
     }
 }

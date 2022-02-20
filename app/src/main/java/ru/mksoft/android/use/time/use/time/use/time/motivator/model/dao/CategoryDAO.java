@@ -32,6 +32,11 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         return queryForFirst(preparedQuery);
     }
 
+    @Override
+    public Category queryForId(Long id) throws SQLException {
+        return super.queryForId(id);
+    }
+
     public Category getDefaultCategory() throws SQLException {
         Category category = getCategoryByName(Category.DEFAULT_CATEGORY_NAME);
         if (category == null) {

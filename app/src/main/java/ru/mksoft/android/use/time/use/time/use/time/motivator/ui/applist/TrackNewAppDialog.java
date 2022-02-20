@@ -18,6 +18,8 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 
 import java.sql.SQLException;
 
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListRecyclerAdapter.*;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TrackNewAppDialog#} factory method to
@@ -25,8 +27,6 @@ import java.sql.SQLException;
  */
 public class TrackNewAppDialog extends BottomSheetDialogFragment {
     private FragmentTrackNewAppDialogBinding binding;
-    private AppCategoryChosenListener listener;
-
 
     public TrackNewAppDialog() {
         setCancelable(false);
@@ -48,7 +48,6 @@ public class TrackNewAppDialog extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TrackNewAppDialogArgs fragmentArgs = TrackNewAppDialogArgs.fromBundle(getArguments());
-        listener = Storage.getInstance().getAppListRecyclerAdapter();
 
         binding.dialogAppName.setText(fragmentArgs.getAppLabel());
 
@@ -80,7 +79,10 @@ public class TrackNewAppDialog extends BottomSheetDialogFragment {
 
     private void add(Category category, Integer positionInAdapter) {
         if (category != null) {
-            publish(category, positionInAdapter);
+            Bundle result = new Bundle();
+            result.putLong(CHOSEN_CATEGORY_ID_RESULT_KEY, category.getId());
+            result.putInt(APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY, positionInAdapter);
+            requireActivity().getSupportFragmentManager().setFragmentResult(TRACK_NEW_APP_DIALOG_RESULT_KEY, result);
             dismiss();
         } else {
             Toast.makeText(this.getContext(), "Chose category", Toast.LENGTH_LONG).show();
@@ -89,13 +91,5 @@ public class TrackNewAppDialog extends BottomSheetDialogFragment {
 
     private void cancel(View view) {
         dismiss();
-    }
-
-    public void publish(Category category, int positionInAdapter) {
-        listener.processChosenCategory(category, positionInAdapter);
-    }
-
-    public interface AppCategoryChosenListener {
-        void processChosenCategory(Category category, Integer positionInAdapter);
     }
 }

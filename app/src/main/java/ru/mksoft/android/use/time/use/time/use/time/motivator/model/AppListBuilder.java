@@ -1,5 +1,9 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
@@ -47,7 +51,13 @@ public class AppListBuilder {
                             sortedUntracked.get(info.uid).wasFound = true;
                         } else if (packageManager.getLaunchIntentForPackage(info.packageName) != null) {
                             addNewUntrackedAppIntoDB(info);
+                            Intent intent = packageManager.getLaunchIntentForPackage(info.packageName);
+
+
+//                            UsageStatsManager usm = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
                         }
+
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

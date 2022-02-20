@@ -12,16 +12,15 @@
             tools:layout="@layout/fragment_home"/>
 
     <fragment
-            android:id="@+id/nav_gallery"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.gallery.GalleryFragment"
-            android:label="@string/menu_gallery"
-            tools:layout="@layout/fragment_gallery"/>
-
-    <fragment
-            android:id="@+id/nav_slideshow"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.slideshow.SlideshowFragment"
-            android:label="@string/menu_slideshow"
-            tools:layout="@layout/fragment_slideshow"/>
+            android:id="@+id/nav_rule_list"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListFragment"
+            android:label="@string/menu_rulelist"
+            tools:layout="@layout/fragment_rule_list">
+        <action
+                android:id="@+id/action_nav_rule_list_to_nav_edit_rule"
+                app:destination="@id/nav_edit_rule"
+        />
+    </fragment>
 
     <fragment
             android:id="@+id/nav_applist"
@@ -46,6 +45,28 @@
         <argument
                 android:name="positionInAdapter"
                 app:argType="integer"
+        />
+    </dialog>
+
+    <dialog
+            android:id="@+id/nav_edit_rule"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditRuleFragment"
+            android:label="@string/menu_edit_rule"
+            tools:layout="@layout/fragment_rule_list">
+
+        <argument
+                android:name="rule_holder_position"
+                app:argType="integer"
+        />
+
+        <argument
+                android:name="rule_id"
+                app:argType="string"
+        />
+
+        <argument
+                android:name="create_or_add_rule"
+                app:argType="string"
         />
     </dialog>
 </navigation>
