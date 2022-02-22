@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.RuleFormat;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListRecyclerAdapter.*;
 
@@ -74,7 +76,8 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
         try {
             DbHelperFactory.getHelper().getRuleDAO().createOrUpdate(rule);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Toast.makeText(this.getContext(), "The name is already exist", Toast.LENGTH_LONG).show();
+            return;
         }
 
         Bundle result = new Bundle();

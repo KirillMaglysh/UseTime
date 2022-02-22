@@ -13,7 +13,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 public class UseTimeMotivatorApp extends Application {
     @Override
     public void onCreate() {
-        deleteDatabase("use_time_motivator.db");
+//        deleteDatabase("use_time_motivator.db");
         super.onCreate();
         DbHelperFactory.setHelper(getApplicationContext());
         new AppListBuilder(getPackageManager()).buildAppList();

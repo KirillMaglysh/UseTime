@@ -15,6 +15,7 @@ import lombok.Setter;
 public class Rule {
     @SuppressWarnings("JavaDoc")
     public static final String FIELD_RULE_NAME = "RULE_NAME";
+//    public static final String DEFAULT_RULE_NAME = "GHDF-HGFH-TUYT-ASDF";
 
     @DatabaseField(generatedId = true)
     @Getter

@@ -89,12 +89,14 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
 
     private void add(Category category, Rule rule, String resultType, Integer positionInAdapter) {
         if (rule != null) {
-            category.setName(binding.categoryLabel.getText().toString());
+            String name = binding.dialogCategoryLabel.getText().toString();
+            category.setName(name);
             category.setRuleId(rule.getId());
             try {
                 DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Toast.makeText(this.getContext(), "The name is already exist", Toast.LENGTH_LONG).show();
+                return;
             }
 
             Bundle result = new Bundle();

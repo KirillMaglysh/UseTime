@@ -4,11 +4,9 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,13 +19,11 @@ import com.google.android.material.navigation.NavigationView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
 
 import java.text.SimpleDateFormat;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -67,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         UsageEvents uEvents = usm.queryEvents(startTime, endTime);
         List<UsageStats> queryUsageStats = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
 
+/*
         while (uEvents.hasNextEvent()) {
             UsageEvents.Event e = new UsageEvents.Event();
             uEvents.getNextEvent(e);
@@ -77,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         System.out.println("aaaaa");
+*/
 
 //        if (UStats.getUsageStatsList(this).isEmpty()) {
 //            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
