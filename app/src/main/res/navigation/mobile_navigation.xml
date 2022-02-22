@@ -23,6 +23,17 @@
     </fragment>
 
     <fragment
+            android:id="@+id/nav_category_list"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.CategoryListFragment"
+            android:label="@string/menu_categorylist"
+            tools:layout="@layout/fragment_category_list">
+        <action
+                android:id="@+id/action_nav_category_list_to_nav_edit_category"
+                app:destination="@id/nav_edit_category"
+        />
+    </fragment>
+
+    <fragment
             android:id="@+id/nav_applist"
             android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListFragment"
             android:label="@string/menu_app_list"
@@ -48,10 +59,33 @@
         />
     </dialog>
 
+
+    <dialog
+            android:id="@+id/nav_edit_category"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.EditCategoryFragment"
+            android:label="@string/menu_edit_category"
+            tools:layout="@layout/fragment_category_list">
+
+        <argument
+                android:name="category_holder_position"
+                app:argType="integer"
+        />
+
+        <argument
+                android:name="category_id"
+                app:argType="string"
+        />
+
+        <argument
+                android:name="create_or_add_category"
+                app:argType="string"
+        />
+    </dialog>
+
     <dialog
             android:id="@+id/nav_edit_rule"
             android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditRuleFragment"
-            android:label="@string/menu_edit_rule"
+            android:label="@string/menu_edit_category"
             tools:layout="@layout/fragment_rule_list">
 
         <argument

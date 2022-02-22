@@ -69,7 +69,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
     }
 
     private void add(Rule rule, String resultType, Integer positionInAdapter) {
-        rule.setName(binding.editRuleLabel.toString());
+        rule.setName(binding.editRuleLabel.getText().toString());
         rule.setDays(RuleFormat.parseRuleInput(binding));
         try {
             DbHelperFactory.getHelper().getRuleDAO().createOrUpdate(rule);

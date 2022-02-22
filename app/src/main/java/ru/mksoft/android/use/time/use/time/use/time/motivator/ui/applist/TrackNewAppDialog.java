@@ -53,15 +53,15 @@ public class TrackNewAppDialog extends BottomSheetDialogFragment {
 
         RecyclerView recyclerView = binding.categoryListInDialog;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        CategoryListRecyclerAdapter categoryListAdapter = null;
+        TrackAppCategoryListRecyclerAdapter categoryListAdapter = null;
         try {
-            categoryListAdapter = new CategoryListRecyclerAdapter(DbHelperFactory.getHelper().getCategoryDAO().getAllCategories());
+            categoryListAdapter = new TrackAppCategoryListRecyclerAdapter(DbHelperFactory.getHelper().getCategoryDAO().getAllCategories());
             recyclerView.setAdapter(categoryListAdapter);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        final CategoryListRecyclerAdapter adapter = categoryListAdapter;
+        final TrackAppCategoryListRecyclerAdapter adapter = categoryListAdapter;
         binding.cancelDialogButton.setOnClickListener(this::cancel);
         binding.addDialogButton.setOnClickListener(v -> {
             if (adapter != null) {

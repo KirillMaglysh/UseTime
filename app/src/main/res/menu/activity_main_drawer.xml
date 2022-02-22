@@ -17,19 +17,12 @@
                 android:id="@+id/nav_rule_list"
                 android:icon="@drawable/happy_64x64"
                 android:title="@string/menu_rule_list">
-            <!--
-                        <menu>
-                            <group android:checkableBehavior="single">
-                                <item
-                                        android:id="@+id/nav_applista"
-                                        android:icon="@drawable/happy_64x64"
-                                        android:title="@string/menu_app_list">
-                                </item>
-
-                            </group>
-                        </menu>
-            -->
         </item>
 
+        <item
+                android:id="@+id/nav_category_list"
+                android:icon="@drawable/happy_64x64"
+                android:title="@string/menu_categorylist">
+        </item>
     </group>
 </menu>

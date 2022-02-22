@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:inputType="text"
-            android:text="RULE_LABEL"
+            android:text="rule_label"
     />
 
     <LinearLayout

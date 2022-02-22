@@ -1,63 +1,114 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import org.jetbrains.annotations.NotNull;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentEditCategoryBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+
+import java.sql.SQLException;
+
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.CategoryListRecyclerAdapter.*;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditCategoryFragment#newInstance} factory method to
+ * Use the {@link EditCategoryFragment#} factory method to
  * create an instance of this fragment.
  */
-public class EditCategoryFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class EditCategoryFragment extends BottomSheetDialogFragment {
+    private FragmentEditCategoryBinding binding;
 
     public EditCategoryFragment() {
-        // Required empty public constructor
+        setCancelable(false);
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditCategoryFragment.
+     * @return A new instance of fragment TrackNewAppDialog.
      */
-    // TODO: Rename and change types and number of parameters
-    public static EditCategoryFragment newInstance(String param1, String param2) {
-        EditCategoryFragment fragment = new EditCategoryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        EditCategoryFragmentArgs fragmentArgs = EditCategoryFragmentArgs.fromBundle(getArguments());
+        Category category = null;
+        try {
+            category = EDIT_CATEGORY_DIALOG_RESULT_KEY.equals(fragmentArgs.getCreateOrAddCategory()) ?
+                    DbHelperFactory.getHelper().getCategoryDAO().queryForId(Long.valueOf(fragmentArgs.getCategoryId())) :
+                    new Category();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        RecyclerView recyclerView = binding.ruleListInCategoryDialog;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        RuleListInCategoryRecyclerAdapter ruleListAdapter = null;
+        try {
+            ruleListAdapter = new RuleListInCategoryRecyclerAdapter(DbHelperFactory.getHelper().getRuleDAO().getAllRules());
+            recyclerView.setAdapter(ruleListAdapter);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        final Category finalCategory = category;
+        final RuleListInCategoryRecyclerAdapter adapter = ruleListAdapter;
+        binding.confirmCategoryDialogButton.setOnClickListener(v -> {
+            if (adapter != null) {
+                add(finalCategory, adapter.getChosenRule(), fragmentArgs.getCreateOrAddCategory(), fragmentArgs.getCategoryHolderPosition());
+            }
+        });
+
+
+        binding.cancelCategoryDialogButton.setOnClickListener(this::cancel);
+    }
+
+    @Override
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_category, container, false);
+        binding = FragmentEditCategoryBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    private void add(Category category, Rule rule, String resultType, Integer positionInAdapter) {
+        if (rule != null) {
+            category.setName(binding.categoryLabel.getText().toString());
+            category.setRuleId(rule.getId());
+            try {
+                DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            Bundle result = new Bundle();
+            result.putLong(CATEGORY_ID_RESULT_KEY, category.getId());
+            result.putInt(CATEGORY_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY, positionInAdapter);
+
+            requireActivity().getSupportFragmentManager().setFragmentResult(resultType, result);
+            dismiss();
+        } else {
+            Toast.makeText(this.getContext(), "Chose rule", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void cancel(View view) {
+        dismiss();
     }
 }

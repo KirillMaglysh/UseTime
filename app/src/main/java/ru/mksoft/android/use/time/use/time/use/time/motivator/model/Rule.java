@@ -25,25 +25,25 @@ public class Rule {
     @Setter
     private String name;
 
-    @DatabaseField(columnName = "MONDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "MONDAY_MINUTES", canBeNull = false)
     private Integer mondayMinutes;
 
-    @DatabaseField(columnName = "TUESDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "TUESDAY_MINUTES", canBeNull = false)
     private Integer tuesdayMinutes;
 
-    @DatabaseField(columnName = "WEDNESDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "WEDNESDAY_MINUTES", canBeNull = false)
     private Integer wednesdayMinutes;
 
-    @DatabaseField(columnName = "THURSDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "THURSDAY_MINUTES", canBeNull = false)
     private Integer thursdayMinutes;
 
-    @DatabaseField(columnName = "FRIDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "FRIDAY_MINUTES", canBeNull = false)
     private Integer fridayMinutes;
 
-    @DatabaseField(columnName = "SATURDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "SATURDAY_MINUTES", canBeNull = false)
     private Integer saturdayMinutes;
 
-    @DatabaseField(columnName = "SUNDAY_MINUTES", width = 512, canBeNull = false)
+    @DatabaseField(columnName = "SUNDAY_MINUTES", canBeNull = false)
     private Integer sundayMinutes;
 
     public Integer[] getDays() {

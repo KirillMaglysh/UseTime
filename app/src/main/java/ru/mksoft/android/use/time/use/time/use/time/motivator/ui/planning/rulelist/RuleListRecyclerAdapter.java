@@ -87,14 +87,16 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
-        ((RuleCardViewHolder) holder).hours.setText(hourMinuteFormat.getHourString());
-        ((RuleCardViewHolder) holder).minutes.setText(hourMinuteFormat.getMinuteString());
+        RuleCardViewHolder ruleCardViewHolder = (RuleCardViewHolder) holder;
+        ruleCardViewHolder.hours.setText(hourMinuteFormat.getHourString());
+        ruleCardViewHolder.minutes.setText(hourMinuteFormat.getMinuteString());
+        ruleCardViewHolder.ruleLabel.setText(rules.get(position).getName());
 
-        ((RuleCardViewHolder) holder).editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        ruleCardViewHolder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                 .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(position,
                         rules.get(position).getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
 
-        ((RuleCardViewHolder) holder).deleteButton.setOnClickListener(view -> {
+        ruleCardViewHolder.deleteButton.setOnClickListener(view -> {
             Rule removingRule = rules.get(position);
             rules.remove(position);
             notifyItemRemoved(position);
@@ -126,7 +128,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public RuleCardViewHolder(View itemView) {
             super(itemView);
-            ruleLabel = itemView.findViewById(R.id.rule_card_label);
+            ruleLabel = itemView.findViewById(R.id.rule_body_label);
             minutes = itemView.findViewById(R.id.minutes_row);
             hours = itemView.findViewById(R.id.hours_row);
             editButton = itemView.findViewById(R.id.rule_edit_button);

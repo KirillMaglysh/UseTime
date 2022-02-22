@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/activity_main.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/app_card.xml" value="0.23333333333333334" />
+        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/app_list_type.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/cat_layout.xml" value="0.1" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/category_card.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/category_in_dialog_label.xml" value="0.21822916666666667" />
@@ -17,15 +18,16 @@
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_app_list.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_applications.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_edit_category.xml" value="0.16799999999999998" />
-        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_edit_rule.xml" value="0.264" />
+        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_edit_rule.xml" value="0.1" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_gallery.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_goal_list_.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_home.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_pattern_list.xml" value="0.2" />
-        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_rule_list.xml" value="0.19128329297820823" />
+        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_rule_list.xml" value="0.264" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/fragment_track_new_app_dialog.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/goal_list_fragment.xml" value="0.1" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/nav_header_main.xml" value="0.23333333333333334" />
+        <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/rule_body.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/rule_card.xml" value="0.2" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/rule_in_category_card.xml" value="0.2" />
         <entry key="..\:/Users/Kirill/Projects/Java/Letovo/9grade/PersonalProject/app/src/main/res/layout/rule_in_category_dialog.xml" value="0.20416666666666666" />

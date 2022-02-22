@@ -18,12 +18,12 @@ import java.util.List;
  * @author Kirill
  * @since 06.02.2022
  */
-public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Category> categories;
     private CheckBox chosenCategory = null;
     private int chosenCategoryPosition = -1;
 
-    public CategoryListRecyclerAdapter(List<Category> categories) {
+    public TrackAppCategoryListRecyclerAdapter(List<Category> categories) {
         this.categories = categories;
     }
 
