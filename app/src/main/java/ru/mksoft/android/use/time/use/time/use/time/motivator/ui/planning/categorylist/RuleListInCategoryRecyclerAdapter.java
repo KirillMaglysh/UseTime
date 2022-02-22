@@ -20,7 +20,7 @@ import java.util.List;
  * @author Kirill
  * @since 21.02.2022
  */
-public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<RuleListInCategoryRecyclerAdapter.RuleViewHolder> {
     private List<Rule> rules;
     private CheckBox chosenRule = null;
     private int chosenRulePosition = -1;
@@ -32,26 +32,25 @@ public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<Recy
     @NonNull
     @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RuleViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         return new RuleListInCategoryRecyclerAdapter.RuleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rule_in_category_dialog, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-        RuleListInCategoryRecyclerAdapter.RuleViewHolder ruleViewHolder = (RuleListInCategoryRecyclerAdapter.RuleViewHolder) holder;
+    public void onBindViewHolder(@NonNull @NotNull RuleViewHolder holder, int position) {
         RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
 
-        ruleViewHolder.ruleLabel.setText(rules.get(position).getName());
-        ruleViewHolder.hours.setText(hourMinuteFormat.getHourString());
-        ruleViewHolder.minutes.setText(hourMinuteFormat.getMinuteString());
+        holder.ruleLabel.setText(rules.get(position).getName());
+        holder.hours.setText(hourMinuteFormat.getHourString());
+        holder.minutes.setText(hourMinuteFormat.getMinuteString());
 
         int pos = position;
-        ruleViewHolder.ruleInListCheckbox.setOnClickListener(view -> {
+        holder.ruleInListCheckbox.setOnClickListener(view -> {
             if (chosenRule != null) {
                 chosenRule.setChecked(false);
             }
 
-            chosenRule = ruleViewHolder.ruleInListCheckbox;
+            chosenRule = holder.ruleInListCheckbox;
             chosenRulePosition = pos;
         });
     }
@@ -83,5 +82,4 @@ public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<Recy
             ruleInListCheckbox = itemView.findViewById(R.id.is_rule_chosen_for_category_checkbox);
         }
     }
-
 }

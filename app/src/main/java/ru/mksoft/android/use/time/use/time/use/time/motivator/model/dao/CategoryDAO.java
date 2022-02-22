@@ -42,9 +42,16 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         if (category == null) {
             category = new Category();
             category.setName(Category.DEFAULT_CATEGORY_NAME);
+//            category.setRuleId(0L);
             create(category);
         }
 
         return category;
+    }
+
+    public List<Category> getAllUserCategories() throws SQLException {
+        List<Category> categories = this.queryForAll();
+        categories.remove(0);
+        return categories;
     }
 }

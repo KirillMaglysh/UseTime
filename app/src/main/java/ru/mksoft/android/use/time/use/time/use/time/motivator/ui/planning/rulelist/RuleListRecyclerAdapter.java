@@ -29,7 +29,7 @@ import java.util.List;
  * @since 05.01.2022
  */
 
-public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecyclerAdapter.RuleCardViewHolder> {
     public static final String EDIT_RULE_DIALOG_RESULT_KEY = "edit_rule_dialog_result";
     public static final String CREATED_RULE_DIALOG_RESULT_KEY = "created_rule_dialog_result";
     public static final String RULE_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "rule_holder_position_in_adapter_result";
@@ -80,12 +80,12 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RuleCardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         return new RuleCardViewHolder(LayoutInflater.from(context).inflate(R.layout.rule_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull RuleCardViewHolder holder, int position) {
         RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
         RuleCardViewHolder ruleCardViewHolder = (RuleCardViewHolder) holder;
         ruleCardViewHolder.hours.setText(hourMinuteFormat.getHourString());

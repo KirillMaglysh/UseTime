@@ -29,7 +29,7 @@ import java.util.List;
  * @author Kirill
  * @since 20.02.2022
  */
-public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryListRecyclerAdapter.CategoryCardViewHolder> {
     public static final String EDIT_CATEGORY_DIALOG_RESULT_KEY = "edit_category_dialog_result";
     public static final String CREATED_CATEGORY_DIALOG_RESULT_KEY = "created_category_dialog_result";
     public static final String CATEGORY_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "category_holder_position_in_adapter_result";
@@ -80,32 +80,32 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public CategoryCardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         return new CategoryListRecyclerAdapter.CategoryCardViewHolder(LayoutInflater.from(context).inflate(R.layout.category_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-        CategoryCardViewHolder cardViewHolder = (CategoryCardViewHolder) holder;
+    public void onBindViewHolder(@NonNull @NotNull CategoryCardViewHolder holder, int position) {
         Rule rule = null;
         try {
+            List<Rule> allRules = DbHelperFactory.getHelper().getRuleDAO().getAllRules();
             rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRuleId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rule);
-        cardViewHolder.hours.setText(hourMinuteFormat.getHourString());
-        cardViewHolder.minutes.setText(hourMinuteFormat.getMinuteString());
-        cardViewHolder.categoryLabel.setText(categories.get(position).getName());
+        holder.hours.setText(hourMinuteFormat.getHourString());
+        holder.minutes.setText(hourMinuteFormat.getMinuteString());
+        holder.categoryLabel.setText(categories.get(position).getName());
 
-        cardViewHolder.ruleLabel.setText(rule.getName());
+        holder.ruleLabel.setText(rule.getName());
 
-        cardViewHolder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                 .navigate(CategoryListFragmentDirections.actionNavCategoryListToNavEditCategory(position,
                         categories.get(position).getId().toString(), EDIT_CATEGORY_DIALOG_RESULT_KEY)));
 
-        cardViewHolder.deleteButton.setOnClickListener(view -> {
+        holder.deleteButton.setOnClickListener(view -> {
             Category removingCategory = categories.get(position);
             categories.remove(position);
             notifyItemRemoved(position);

@@ -23,7 +23,7 @@ public class Category {
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(columnName = "RULE_ID", canBeNull = true)
+    @DatabaseField(columnName = "RULE_ID", canBeNull = false)
     private Long ruleId;
 
     @DatabaseField(columnName = FIELD_CATEGORY_NAME, unique = true, width = 32, index = true, canBeNull = false)

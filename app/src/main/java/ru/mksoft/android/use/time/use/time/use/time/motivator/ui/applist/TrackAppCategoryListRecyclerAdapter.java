@@ -18,7 +18,7 @@ import java.util.List;
  * @author Kirill
  * @since 06.02.2022
  */
-public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<TrackAppCategoryListRecyclerAdapter.CategoryViewHolder> {
     private List<Category> categories;
     private CheckBox chosenCategory = null;
     private int chosenCategoryPosition = -1;
@@ -30,22 +30,21 @@ public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<Re
     @NonNull
     @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public CategoryViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.category_in_dialog_label, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-        CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
-        categoryViewHolder.categoryInListCheckbox.setText(categories.get(position).getName());
+    public void onBindViewHolder(@NonNull @NotNull CategoryViewHolder holder, int position) {
+        holder.categoryInListCheckbox.setText(categories.get(position).getName());
 
         int pos = position;
-        categoryViewHolder.categoryInListCheckbox.setOnClickListener(view -> {
+        holder.categoryInListCheckbox.setOnClickListener(view -> {
             if (chosenCategory != null) {
                 chosenCategory.setChecked(false);
             }
 
-            chosenCategory = categoryViewHolder.categoryInListCheckbox;
+            chosenCategory = holder.categoryInListCheckbox;
             chosenCategoryPosition = pos;
         });
     }
