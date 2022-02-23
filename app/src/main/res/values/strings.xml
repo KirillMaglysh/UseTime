@@ -16,15 +16,20 @@
     <string name="menu_app_list">Applications</string>
     <string name="app_label">app_label</string>
     <string name="app_icon_description">App Icon</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_pattern_list">Patterns</string>
     <string name="new_rule">NEW RULE</string>
     <string name="menu_rule_list">Rules</string>
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
     <string name="menu_rulelist">"Rules "</string>
-    <string name="menu_edit_category">Edit Rule</string>
+    <string name="menu_edit_rule">Edit rule</string>
+    <string name="menu_edit_category">Edit category</string>
     <string name="new_category">NEW CATEGORY</string>
+<<<<<<< HEAD
     <string name="menu_categorylist">CATEGORIES</string>
     <string name="statistics_label">Statistics</string>
+=======
+    <string name="menu_category_list">Categories</string>
+    <string name="card_button_edit">Edit</string>
+    <string name="card_button_remove">Remove</string>
+>>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
 </resources>

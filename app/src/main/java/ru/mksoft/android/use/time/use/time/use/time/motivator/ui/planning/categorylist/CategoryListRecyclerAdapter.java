@@ -17,7 +17,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentCategoryListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.RuleFormat;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 import java.sql.SQLException;
@@ -86,20 +85,14 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull CategoryCardViewHolder holder, int position) {
-        Rule rule = null;
+        holder.categoryTitle.setText(categories.get(position).getName());
+
         try {
-            List<Rule> allRules = DbHelperFactory.getHelper().getRuleDAO().getAllRules();
-            rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRuleId());
+            Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRuleId());
+            holder.ruleLabel.setText(rule.getName());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rule);
-        holder.hours.setText(hourMinuteFormat.getHourString());
-        holder.minutes.setText(hourMinuteFormat.getMinuteString());
-        holder.categoryLabel.setText(categories.get(position).getName());
-
-        holder.ruleLabel.setText(rule.getName());
 
         holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                 .navigate(CategoryListFragmentDirections.actionNavCategoryListToNavEditCategory(position,
@@ -129,21 +122,17 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
     }
 
     class CategoryCardViewHolder extends RecyclerView.ViewHolder {
-        private final TextView categoryLabel;
+        private final TextView categoryTitle;
         private final TextView ruleLabel;
-        private final TextView minutes;
-        private final TextView hours;
         private final Button editButton;
         private final Button deleteButton;
 
         public CategoryCardViewHolder(View itemView) {
             super(itemView);
-            categoryLabel = itemView.findViewById(R.id.category_card_label);
-            ruleLabel = itemView.findViewById(R.id.rule_body_label);
-            minutes = itemView.findViewById(R.id.minutes_row);
-            hours = itemView.findViewById(R.id.hours_row);
-            editButton = itemView.findViewById(R.id.category_edit_button);
-            deleteButton = itemView.findViewById(R.id.category_delete_button);
+            categoryTitle = itemView.findViewById(R.id.category_card_title);
+            ruleLabel = itemView.findViewById(R.id.category_card_rule_name);
+            editButton = itemView.findViewById(R.id.category_card_edit_button);
+            deleteButton = itemView.findViewById(R.id.category_card_delete_button);
         }
     }
 }
