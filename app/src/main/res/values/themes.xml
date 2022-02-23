@@ -19,4 +19,32 @@
     </style>
     <style name="Theme.UseTimeMotivator.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="Theme.UseTimeMotivator.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="Theme.CardText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Theme.CardTitle" parent="Theme.CardText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/card_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Theme.CardDesc" parent="Theme.CardText">
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">@dimen/card_desc_text_size</item>
+        <item name="android:layout_marginLeft">@dimen/card_desc_margin_left</item>
+    </style>
+    <style name="Theme.CardButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">@dimen/card_button_size</item>
+        <item name="minWidth">@dimen/card_button_size</item>
+        <item name="android:layout_height">@dimen/card_button_size</item>
+        <item name="minHeight">@dimen/card_button_size</item>
+        <item name="android:layout_margin">@dimen/card_button_margin</item>
+        <item name="android:padding">@dimen/card_button_padding</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetLeft">@dimen/card_button_inset</item>
+        <item name="android:insetRight">@dimen/card_button_inset</item>
+        <item name="android:insetTop">@dimen/card_button_inset</item>
+        <item name="android:insetBottom">@dimen/card_button_inset</item>
+    </style>
 </resources>

@@ -8,9 +8,13 @@
     <string name="app_label">название приложения</string>
     <string name="app_icon_description">App Icon</string>
     <string name="menu_pattern_list">Patterns</string>
-    <string name="new_rule">NEW RULE</string>
+    <string name="new_rule">Новое правило</string>
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
     <string name="menu_rulelist">"Rules "</string>
     <string name="menu_edit_category">Edit Rule</string>
-    <string name="new_category">NEW CATEGORY</string>
+    <string name="new_category">Новая категория</string>
+    <string name="menu_category_list">Категории</string>
+    <string name="menu_rule_list">Правила</string>
+    <string name="editButton">Изменить</string>
+    <string name="deleteButton">Удалить</string>
 </resources>

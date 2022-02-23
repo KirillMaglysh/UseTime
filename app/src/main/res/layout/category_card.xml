@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="70dp">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <TextView
-                android:id="@+id/category_card_label"
-                android:text="category_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <include
-                android:id="@+id/rule_for_category"
-                layout="@layout/rule_body"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-        />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-        <Button
-                android:id="@+id/category_edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EDIT"
-                android:layout_marginEnd="10dp"
-        />
+            <TextView
+                android:id="@+id/category_card_title"
+                style="@style/Theme.CardTitle" />
+
+            <TextView
+                android:id="@+id/category_card_rule_name"
+                style="@style/Theme.CardDesc" />
+        </LinearLayout>
 
         <Button
-                android:id="@+id/category_delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DEL"
-                android:layout_marginEnd="16dp"
-        />
+            android:id="@+id/category_card_edit_button"
+            style="@style/Theme.CardButton"
+            android:layout_weight="0"
+            app:icon="@drawable/ic_menu_edit"
+            android:contentDescription="@string/menu_edit_category" />
+
+        <Button
+            android:id="@+id/category_card_delete_button"
+            style="@style/Theme.CardButton"
+            android:layout_weight="0"
+            app:icon="@drawable/ic_menu_trash"
+            android:contentDescription="@string/menu_edit_category" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

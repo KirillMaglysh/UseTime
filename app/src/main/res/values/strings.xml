@@ -16,8 +16,6 @@
     <string name="menu_app_list">Applications</string>
     <string name="app_label">app_label</string>
     <string name="app_icon_description">App Icon</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_pattern_list">Patterns</string>
     <string name="new_rule">NEW RULE</string>
     <string name="menu_rule_list">Rules</string>
@@ -25,5 +23,7 @@
     <string name="menu_rulelist">"Rules "</string>
     <string name="menu_edit_category">Edit Rule</string>
     <string name="new_category">NEW CATEGORY</string>
-    <string name="menu_categorylist">CATEGORIES</string>
+    <string name="menu_category_list">Categories</string>
+    <string name="editButton">Edit</string>
+    <string name="deleteButton">Delete</string>
 </resources>

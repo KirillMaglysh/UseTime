@@ -25,7 +25,7 @@
     <fragment
             android:id="@+id/nav_category_list"
             android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.CategoryListFragment"
-            android:label="@string/menu_categorylist"
+            android:label="@string/menu_category_list"
             tools:layout="@layout/fragment_category_list">
         <action
                 android:id="@+id/action_nav_category_list_to_nav_edit_category"
