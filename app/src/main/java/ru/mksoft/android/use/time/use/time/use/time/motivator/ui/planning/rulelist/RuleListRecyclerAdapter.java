@@ -71,7 +71,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
             try {
                 rules.add(DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
-                notifyItemInserted(rules.size() - 1);
+                notifyItemInserted(rules.size());
             } catch (SQLException e) {
                 e.printStackTrace();
             }

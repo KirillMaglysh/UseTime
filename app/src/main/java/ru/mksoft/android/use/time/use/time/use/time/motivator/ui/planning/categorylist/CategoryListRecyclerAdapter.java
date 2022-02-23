@@ -71,7 +71,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
 
             try {
                 categories.add(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
-                notifyItemInserted(categories.size() - 1);
+                notifyItemInserted(categories.size());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
