@@ -26,4 +26,5 @@
     <string name="menu_edit_category">Edit Rule</string>
     <string name="new_category">NEW CATEGORY</string>
     <string name="menu_categorylist">CATEGORIES</string>
+    <string name="statistics_label">Statistics</string>
 </resources>

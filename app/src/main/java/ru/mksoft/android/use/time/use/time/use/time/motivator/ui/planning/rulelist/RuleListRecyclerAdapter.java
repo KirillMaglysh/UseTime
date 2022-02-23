@@ -87,16 +87,15 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
     @Override
     public void onBindViewHolder(@NonNull @NotNull RuleCardViewHolder holder, int position) {
         RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
-        RuleCardViewHolder ruleCardViewHolder = (RuleCardViewHolder) holder;
-        ruleCardViewHolder.hours.setText(hourMinuteFormat.getHourString());
-        ruleCardViewHolder.minutes.setText(hourMinuteFormat.getMinuteString());
-        ruleCardViewHolder.ruleLabel.setText(rules.get(position).getName());
+        holder.hours.setText(hourMinuteFormat.getHourString());
+        holder.minutes.setText(hourMinuteFormat.getMinuteString());
+        holder.ruleLabel.setText(rules.get(position).getName());
 
-        ruleCardViewHolder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                 .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(position,
                         rules.get(position).getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
 
-        ruleCardViewHolder.deleteButton.setOnClickListener(view -> {
+        holder.deleteButton.setOnClickListener(view -> {
             Rule removingRule = rules.get(position);
             rules.remove(position);
             notifyItemRemoved(position);

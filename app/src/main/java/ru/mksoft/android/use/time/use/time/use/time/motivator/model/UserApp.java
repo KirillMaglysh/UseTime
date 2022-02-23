@@ -27,7 +27,12 @@ public class UserApp {
     @DatabaseField(columnName = "PACKAGE_NAME", width = 32, index = true, canBeNull = false)
     private String packageName;
 
-    @DatabaseField(columnName = "CATEGORY", foreign = true, index = true, canBeNull = false)
+    @DatabaseField(columnName = "CATEGORY",
+            foreign = true,
+            foreignAutoRefresh = true,
+            foreignAutoCreate = true,
+            index = true,
+            canBeNull = false)
     private Category category;
 
     @DatabaseField(columnName = "IS_TRACKED", index = true, canBeNull = false)
