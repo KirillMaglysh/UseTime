@@ -47,4 +47,14 @@
         <item name="android:insetTop">@dimen/card_button_inset</item>
         <item name="android:insetBottom">@dimen/card_button_inset</item>
     </style>
+    <style name="Theme.CardButtonEdit" parent="Theme.CardButton">
+        <item name="icon">@drawable/ic_menu_edit</item>
+        <item name="contentDescription">@string/card_button_edit</item>
+        <item name="android:layout_weight">0</item>
+    </style>
+    <style name="Theme.CardButtonRemove" parent="Theme.CardButton">
+        <item name="icon">@drawable/ic_menu_trash</item>
+        <item name="contentDescription">@string/card_button_remove</item>
+        <item name="android:layout_weight">0</item>
+    </style>
 </resources>

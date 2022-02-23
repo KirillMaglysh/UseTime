@@ -21,9 +21,10 @@
     <string name="menu_rule_list">Rules</string>
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
     <string name="menu_rulelist">"Rules "</string>
-    <string name="menu_edit_category">Edit Rule</string>
+    <string name="menu_edit_rule">Edit rule</string>
+    <string name="menu_edit_category">Edit category</string>
     <string name="new_category">NEW CATEGORY</string>
     <string name="menu_category_list">Categories</string>
-    <string name="editButton">Edit</string>
-    <string name="deleteButton">Delete</string>
+    <string name="card_button_edit">Edit</string>
+    <string name="card_button_remove">Remove</string>
 </resources>

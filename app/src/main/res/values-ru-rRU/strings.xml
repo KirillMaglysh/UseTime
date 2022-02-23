@@ -11,10 +11,11 @@
     <string name="new_rule">Новое правило</string>
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
     <string name="menu_rulelist">"Rules "</string>
-    <string name="menu_edit_category">Edit Rule</string>
+    <string name="menu_edit_category">Редактировать категорию</string>
     <string name="new_category">Новая категория</string>
     <string name="menu_category_list">Категории</string>
     <string name="menu_rule_list">Правила</string>
-    <string name="editButton">Изменить</string>
-    <string name="deleteButton">Удалить</string>
+    <string name="card_button_edit">Изменить</string>
+    <string name="card_button_remove">Удалить</string>
+    <string name="menu_edit_rule">Редактировать правило</string>
 </resources>

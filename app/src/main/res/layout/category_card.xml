@@ -27,16 +27,10 @@
 
         <Button
             android:id="@+id/category_card_edit_button"
-            style="@style/Theme.CardButton"
-            android:layout_weight="0"
-            app:icon="@drawable/ic_menu_edit"
-            android:contentDescription="@string/menu_edit_category" />
+            style="@style/Theme.CardButtonEdit" />
 
         <Button
             android:id="@+id/category_card_delete_button"
-            style="@style/Theme.CardButton"
-            android:layout_weight="0"
-            app:icon="@drawable/ic_menu_trash"
-            android:contentDescription="@string/menu_edit_category" />
+            style="@style/Theme.CardButtonRemove" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
