@@ -10,7 +10,7 @@
     <string name="menu_pattern_list">Patterns</string>
     <string name="new_rule">Новое правило</string>
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
-    <string name="menu_rulelist">"Rules "</string>
+    <string name="menu_rulelist">"Правила"</string>
     <string name="menu_edit_category">Редактировать категорию</string>
     <string name="new_category">Новая категория</string>
     <string name="menu_category_list">Категории</string>
@@ -18,4 +18,11 @@
     <string name="card_button_edit">Изменить</string>
     <string name="card_button_remove">Удалить</string>
     <string name="menu_edit_rule">Редактировать правило</string>
+    <string name="monday_cut">Пнд</string>
+    <string name="tuesday_cut">Втр</string>
+    <string name="wednesday_cut">Срд</string>
+    <string name="thursday_cut">Чтв</string>
+    <string name="friday_cut">Птн</string>
+    <string name="saturday_cut">Сбт</string>
+    <string name="sunday_cut">Вск</string>
 </resources>

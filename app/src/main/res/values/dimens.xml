@@ -11,7 +11,8 @@
     <dimen name="card_view_padding">10dp</dimen>
     <dimen name="card_title_text_size">16dp</dimen>
     <dimen name="card_desc_text_size">12dp</dimen>
-    <dimen name="card_desc_margin_left">10dp</dimen>
+    <dimen name="card_desc_margin_start">10dp</dimen>
+    <dimen name="card_desc_day_margin">4dp</dimen>
     <dimen name="card_button_size">48dp</dimen>
     <dimen name="card_button_padding">9dp</dimen>
     <dimen name="card_button_margin">5dp</dimen>

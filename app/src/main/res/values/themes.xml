@@ -25,7 +25,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">70dp</item>
     </style>
-    <style name="Theme.CardText" parent="Widget.MaterialComponents.TextView">
+    <style name="Theme.CardText" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -37,7 +37,11 @@
     <style name="Theme.CardDesc" parent="Theme.CardText">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:textSize">@dimen/card_desc_text_size</item>
-        <item name="android:layout_marginLeft">@dimen/card_desc_margin_left</item>
+        <item name="android:layout_marginStart">@dimen/card_desc_margin_start</item>
+    </style>
+    <style name="Theme.CardDescDay" parent="Theme.CardDesc">
+        <item name="android:layout_marginStart">@dimen/card_desc_day_margin</item>
+        <item name="android:layout_gravity">center</item>
     </style>
     <style name="Theme.CardButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">@dimen/card_button_size</item>
