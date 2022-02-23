@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentRuleListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.RuleFormat;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 import java.sql.SQLException;
@@ -86,18 +85,22 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RuleCardViewHolder holder, int position) {
-        RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
-        RuleCardViewHolder ruleCardViewHolder = (RuleCardViewHolder) holder;
-        ruleCardViewHolder.hours.setText(hourMinuteFormat.getHourString());
-        ruleCardViewHolder.minutes.setText(hourMinuteFormat.getMinuteString());
-        ruleCardViewHolder.ruleLabel.setText(rules.get(position).getName());
+        Rule rule = rules.get(position);
+        holder.ruleLabel.setText(rule.getName());
+        holder.mondayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.MONDAY));
+        holder.tuesdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.TUESDAY));
+        holder.wednesdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.WEDNESDAY));
+        holder.thursdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.THURSDAY));
+        holder.fridayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.FRIDAY));
+        holder.saturdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.SATURDAY));
+        holder.sundayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.SUNDAY));
 
-        ruleCardViewHolder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                 .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(position,
-                        rules.get(position).getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
+                        rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
 
-        ruleCardViewHolder.deleteButton.setOnClickListener(view -> {
-            Rule removingRule = rules.get(position);
+        holder.deleteButton.setOnClickListener(view -> {
+            Rule removingRule = rule;
             rules.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, getItemCount());
@@ -121,16 +124,26 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
     class RuleCardViewHolder extends RecyclerView.ViewHolder {
         private final TextView ruleLabel;
-        private final TextView minutes;
-        private final TextView hours;
+        private final TextView mondayTimeLimit;
+        private final TextView tuesdayTimeLimit;
+        private final TextView wednesdayTimeLimit;
+        private final TextView thursdayTimeLimit;
+        private final TextView fridayTimeLimit;
+        private final TextView saturdayTimeLimit;
+        private final TextView sundayTimeLimit;
         private final Button editButton;
         private final Button deleteButton;
 
         public RuleCardViewHolder(View itemView) {
             super(itemView);
-            ruleLabel = itemView.findViewById(R.id.rule_body_label);
-            minutes = itemView.findViewById(R.id.minutes_row);
-            hours = itemView.findViewById(R.id.hours_row);
+            ruleLabel = itemView.findViewById(R.id.rule_card_title);
+            mondayTimeLimit = itemView.findViewById(R.id.monday_time_limit);
+            tuesdayTimeLimit = itemView.findViewById(R.id.tuesday_time_limit);
+            wednesdayTimeLimit = itemView.findViewById(R.id.wednesday_time_limit);
+            thursdayTimeLimit = itemView.findViewById(R.id.thursday_time_limit);
+            fridayTimeLimit = itemView.findViewById(R.id.friday_time_limit);
+            saturdayTimeLimit = itemView.findViewById(R.id.saturday_time_limit);
+            sundayTimeLimit = itemView.findViewById(R.id.sunday_time_limit);
             editButton = itemView.findViewById(R.id.rule_edit_button);
             deleteButton = itemView.findViewById(R.id.rule_delete_button);
         }

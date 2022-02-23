@@ -27,4 +27,11 @@
     <string name="menu_category_list">Categories</string>
     <string name="card_button_edit">Edit</string>
     <string name="card_button_remove">Remove</string>
+    <string name="monday_cut">Mon</string>
+    <string name="tuesday_cut">Tue</string>
+    <string name="wednesday_cut">Wed</string>
+    <string name="thursday_cut">Thu</string>
+    <string name="friday_cut">Fri</string>
+    <string name="saturday_cut">Sat</string>
+    <string name="sunday_cut">Sun</string>
 </resources>
