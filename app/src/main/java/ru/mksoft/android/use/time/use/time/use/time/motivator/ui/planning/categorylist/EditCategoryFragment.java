@@ -1,6 +1,7 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.jetbrains.annotations.NotNull;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentEditCategoryBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
@@ -58,11 +60,17 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
             e.printStackTrace();
         }
 
+        Long selectedRuleId = null;
+        if (category != null && category.getId() != null) {
+            binding.dialogCategoryLabel.setText(category.getName());
+            selectedRuleId = category.getRuleId();
+        }
+
         RecyclerView recyclerView = binding.ruleListInCategoryDialog;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         RuleListInCategoryRecyclerAdapter ruleListAdapter = null;
         try {
-            ruleListAdapter = new RuleListInCategoryRecyclerAdapter(DbHelperFactory.getHelper().getRuleDAO().getAllRules());
+            ruleListAdapter = new RuleListInCategoryRecyclerAdapter(DbHelperFactory.getHelper().getRuleDAO().getAllRules(), selectedRuleId);
             recyclerView.setAdapter(ruleListAdapter);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,26 +96,32 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
     }
 
     private void add(Category category, Rule rule, String resultType, Integer positionInAdapter) {
-        if (rule != null) {
-            String name = binding.dialogCategoryLabel.getText().toString();
-            category.setName(name);
-            category.setRuleId(rule.getId());
-            try {
-                DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
-            } catch (SQLException e) {
-                Toast.makeText(this.getContext(), "The name is already exist", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            Bundle result = new Bundle();
-            result.putLong(CATEGORY_ID_RESULT_KEY, category.getId());
-            result.putInt(CATEGORY_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY, positionInAdapter);
-
-            requireActivity().getSupportFragmentManager().setFragmentResult(resultType, result);
-            dismiss();
-        } else {
-            Toast.makeText(this.getContext(), "Chose rule", Toast.LENGTH_LONG).show();
+        if (rule == null) {
+            Toast.makeText(this.getContext(), R.string.choose_rule_warning, Toast.LENGTH_LONG).show();
+            return;
         }
+
+        String name = binding.dialogCategoryLabel.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(this.getContext(), R.string.name_empty_warning, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        category.setName(name);
+        category.setRuleId(rule.getId());
+        try {
+            DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
+        } catch (SQLException e) {
+            Toast.makeText(this.getContext(), R.string.name_exists_warning, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Bundle result = new Bundle();
+        result.putLong(CATEGORY_ID_RESULT_KEY, category.getId());
+        result.putInt(CATEGORY_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY, positionInAdapter);
+
+        requireActivity().getSupportFragmentManager().setFragmentResult(resultType, result);
+        dismiss();
     }
 
     private void cancel(View view) {

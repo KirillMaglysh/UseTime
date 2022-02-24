@@ -4,13 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.RuleFormat;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 
 import java.util.List;
 
@@ -20,39 +19,51 @@ import java.util.List;
  * @author Kirill
  * @since 21.02.2022
  */
-public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<RuleListInCategoryRecyclerAdapter.RuleViewHolder> {
-    private List<Rule> rules;
+public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<RuleListInCategoryRecyclerAdapter.EditCategoryRuleViewHolder> {
+    private final List<Rule> rules;
+    private final Long selectedRuleId;
     private CheckBox chosenRule = null;
     private int chosenRulePosition = -1;
 
-    public RuleListInCategoryRecyclerAdapter(List<Rule> rules) {
+    public RuleListInCategoryRecyclerAdapter(List<Rule> rules, Long selectedRuleId) {
         this.rules = rules;
+        this.selectedRuleId = selectedRuleId;
     }
 
     @NonNull
     @NotNull
     @Override
-    public RuleViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return new RuleListInCategoryRecyclerAdapter.RuleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rule_in_category_dialog, parent, false));
+    public EditCategoryRuleViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        return new EditCategoryRuleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rule_in_category_dialog, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RuleViewHolder holder, int position) {
-        RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
+    public void onBindViewHolder(@NonNull @NotNull EditCategoryRuleViewHolder holder, int position) {
+        int adapterPosition = holder.getAdapterPosition();
+        Rule rule = rules.get(adapterPosition);
+        holder.fillRuleData(rule);
 
-        holder.ruleLabel.setText(rules.get(position).getName());
-        holder.hours.setText(hourMinuteFormat.getHourString());
-        holder.minutes.setText(hourMinuteFormat.getMinuteString());
-
-        int pos = position;
-        holder.ruleInListCheckbox.setOnClickListener(view -> {
-            if (chosenRule != null) {
-                chosenRule.setChecked(false);
-            }
-
+        if (selectedRuleId != null && selectedRuleId.compareTo(rule.getId()) == 0) {
+            holder.ruleInListCheckbox.setChecked(true);
             chosenRule = holder.ruleInListCheckbox;
-            chosenRulePosition = pos;
-        });
+            chosenRulePosition = adapterPosition;
+        }
+
+        holder.ruleInListCheckbox.setOnClickListener(view -> onRuleCheckboxClicked((CheckBox) view, holder, holder.getLayoutPosition()));
+    }
+
+    private void onRuleCheckboxClicked(CheckBox checkBox, EditCategoryRuleViewHolder holder, int position) {
+        if (chosenRule != null) {
+            chosenRule.setChecked(false);
+        }
+
+        if (!checkBox.isChecked()) {
+            chosenRule = null;
+            chosenRulePosition = -1;
+        } else {
+            chosenRule = holder.ruleInListCheckbox;
+            chosenRulePosition = position;
+        }
     }
 
     @Override
@@ -61,24 +72,18 @@ public class RuleListInCategoryRecyclerAdapter extends RecyclerView.Adapter<Rule
     }
 
     public Rule getChosenRule() {
-        if (chosenRulePosition != -1) {
-            return rules.get(chosenRulePosition);
-        } else {
+        if (chosenRulePosition < 0) {
             return null;
+        } else {
+            return rules.get(chosenRulePosition);
         }
     }
 
-    class RuleViewHolder extends RecyclerView.ViewHolder {
+    static final class EditCategoryRuleViewHolder extends RuleViewHolder {
         private final CheckBox ruleInListCheckbox;
-        private final TextView ruleLabel;
-        private final TextView minutes;
-        private final TextView hours;
 
-        public RuleViewHolder(View itemView) {
+        public EditCategoryRuleViewHolder(View itemView) {
             super(itemView);
-            ruleLabel = itemView.findViewById(R.id.rule_body_label);
-            minutes = itemView.findViewById(R.id.minutes_row);
-            hours = itemView.findViewById(R.id.hours_row);
             ruleInListCheckbox = itemView.findViewById(R.id.is_rule_chosen_for_category_checkbox);
         }
     }

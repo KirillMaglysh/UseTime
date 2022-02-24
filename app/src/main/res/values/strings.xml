@@ -34,4 +34,13 @@
     <string name="friday_cut">Fri</string>
     <string name="saturday_cut">Sat</string>
     <string name="sunday_cut">Sun</string>
+    <string name="edit_category_name_label">Category name</string>
+    <string name="edit_category_name_hint">Enter the category name</string>
+    <string name="edit_category_rule_label">Time limit rule</string>
+    <string name="edit_category_save_button">Save</string>
+    <string name="edit_category_cancel_button">Cancel</string>
+    <string name="edit_rule_time_limit_label">Time limit by day of the week</string>
+    <string name="choose_rule_warning">Choose a rule</string>
+    <string name="name_empty_warning">Name cannot be empty</string>
+    <string name="name_exists_warning">The name is already exist</string>
 </resources>

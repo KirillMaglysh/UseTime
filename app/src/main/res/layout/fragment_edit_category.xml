@@ -1,65 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".ui.planning.categorylist.EditCategoryFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.MatchParent"
+    android:orientation="vertical"
+    android:padding="@dimen/fragment_padding"
+    tools:context=".ui.planning.categorylist.EditCategoryFragment">
+
+    <TextView
+        style="@style/Theme.EditDialogLabel"
+        android:text="@string/edit_category_name_label" />
 
     <EditText
-            android:id="@+id/dialog_category_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:text="CATEGORY_NAME"
-            android:textAppearance="?android:attr/textAppearanceLarge">
-    </EditText>
+        android:id="@+id/dialog_category_label"
+        style="@style/Theme.EditDialogField.Text.Bold"
+        android:hint="@string/edit_category_name_hint"
+        android:importantForAutofill="no" />
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <TextView
-                android:id="@+id/rule_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:text="RULE:"
-                android:textAppearance="?android:attr/textAppearanceLarge">
-        </TextView>
+    <TextView
+        style="@style/Theme.EditDialogLabel"
+        android:text="@string/edit_category_rule_label" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rule_list_in_category_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/rule_in_category_dialog"
+        tools:itemCount="6" />
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rule_list_in_category_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                tools:listitem="@layout/rule_in_category_dialog"
-                tools:itemCount="4"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <LinearLayout style="@style/Theme.EditDialogButtonSet">
 
         <Button
-                android:id="@+id/confirm_category_dialog_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="ADD">
-        </Button>
+            android:id="@+id/cancel_category_dialog_button"
+            style="@style/Theme.EditDialogButton"
+            android:text="@string/edit_category_cancel_button" />
 
         <Button
-                android:id="@+id/cancel_category_dialog_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="CANCEL">
-        </Button>
+            android:id="@+id/confirm_category_dialog_button"
+            style="@style/Theme.EditDialogButton"
+            android:text="@string/edit_category_save_button" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,61 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/rule_body"
->
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:id="@+id/rule_body">
 
     <TextView
-            android:id="@+id/rule_body_label"
-            android:text="rule_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-    />
+        android:id="@+id/rule_card_title"
+        style="@style/Theme.CardTitle" />
 
-    <!--
-            <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                <ScrollView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-    -->
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rule_shedule_in_card"
-            android:layout_marginStart="20dp"
-            android:orientation="vertical"
-            android:layout_marginEnd="16dp"
-    >
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/card_desc_margin_start"
+        android:columnCount="7"
+        android:columnOrderPreserved="false">
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:textSize="12dp"
-                android:text="  ПН ВТ СР ЧТ ПН СБ ВС"
-        />
+            style="@style/Theme.CardDescDay"
+            android:text="@string/monday_cut" />
 
         <TextView
-                android:id="@+id/hours_row"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:textSize="12dp"
-                android:text="Ч 00 00 00 00 00 00 00"
-        />
+            style="@style/Theme.CardDescDay"
+            android:text="@string/tuesday_cut" />
 
         <TextView
-                android:id="@+id/minutes_row"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:textSize="12dp"
-                android:text="М 00 00 00 00 00 00 00"
-        />
-    </LinearLayout>
+            style="@style/Theme.CardDescDay"
+            android:text="@string/wednesday_cut" />
+
+        <TextView
+            style="@style/Theme.CardDescDay"
+            android:text="@string/thursday_cut" />
+
+        <TextView
+            style="@style/Theme.CardDescDay"
+            android:text="@string/friday_cut" />
+
+        <TextView
+            style="@style/Theme.CardDescDay"
+            android:text="@string/saturday_cut" />
+
+        <TextView
+            style="@style/Theme.CardDescDay"
+            android:text="@string/sunday_cut" />
+
+        <TextView
+            android:id="@+id/monday_time_limit"
+            style="@style/Theme.CardDescDay" />
+
+        <TextView
+            android:id="@+id/tuesday_time_limit"
+            style="@style/Theme.CardDescDay" />
+
+        <TextView
+            android:id="@+id/wednesday_time_limit"
+            style="@style/Theme.CardDescDay" />
+
+        <TextView
+            android:id="@+id/thursday_time_limit"
+            style="@style/Theme.CardDescDay" />
+
+        <TextView
+            android:id="@+id/friday_time_limit"
+            style="@style/Theme.CardDescDay" />
+
+        <TextView
+            android:id="@+id/saturday_time_limit"
+            style="@style/Theme.CardDescDay" />
+
+        <TextView
+            android:id="@+id/sunday_time_limit"
+            style="@style/Theme.CardDescDay" />
+    </GridLayout>
 </LinearLayout>
