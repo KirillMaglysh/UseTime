@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Theme.MatchParent"
-    android:orientation="vertical"
-    android:padding="@dimen/fragment_padding"
+    style="@style/Theme.EditDialog"
     tools:context=".ui.planning.categorylist.EditCategoryFragment">
 
     <TextView

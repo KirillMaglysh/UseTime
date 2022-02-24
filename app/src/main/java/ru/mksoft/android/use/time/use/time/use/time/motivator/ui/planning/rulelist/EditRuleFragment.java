@@ -54,13 +54,23 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
                     DbHelperFactory.getHelper().getRuleDAO().queryForId(Long.valueOf(fragmentArgs.getRuleId())) :
                     new Rule();
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 
-        binding.cancelRuleEditionButton.setOnClickListener(this::cancel);
-        final Rule finalRule = rule;
+        fillRuleData(rule);
 
+        final Rule finalRule = rule;
+        binding.cancelRuleEditionButton.setOnClickListener(this::cancel);
         binding.confirmRuleEditionButton.setOnClickListener(v -> add(finalRule, fragmentArgs.getCreateOrAddRule(), fragmentArgs.getRuleHolderPosition()));
+    }
+
+    private void fillRuleData(Rule rule) {
+        if (rule == null) {
+            return;
+        }
+
+        binding.editRuleLabel.setText(rule.getName());
     }
 
     @Override
