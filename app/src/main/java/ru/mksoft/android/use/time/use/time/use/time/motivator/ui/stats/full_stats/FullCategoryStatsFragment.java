@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;

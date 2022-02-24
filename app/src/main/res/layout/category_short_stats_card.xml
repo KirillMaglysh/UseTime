@@ -19,10 +19,10 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
+                android:id="@+id/hour_val_in_short_category_stats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15"
-                android:id="@+id/hour_val_in_short_category_stats"
                 app:layout_constraintEnd_toStartOf="@+id/hour_label_in_short_category_stats"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

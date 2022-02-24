@@ -6,6 +6,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
@@ -27,6 +28,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     private CategoryDAO categoryDAO = null;
     private RuleDAO ruleDAO = null;
     private UserAppDAO userAppDAO = null;
+    private AppUseStatsDao appUseStatsDao = null;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -71,5 +73,13 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         }
 
         return ruleDAO;
+    }
+
+    public AppUseStatsDao getAppUseStatsDao() throws SQLException {
+        if (appUseStatsDao == null) {
+            appUseStatsDao = new AppUseStatsDao(getConnectionSource(), AppUseStats.class);
+        }
+
+        return appUseStatsDao;
     }
 }

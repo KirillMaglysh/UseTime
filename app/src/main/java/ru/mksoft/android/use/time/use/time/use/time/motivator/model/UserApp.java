@@ -17,6 +17,7 @@ import lombok.Setter;
 @DatabaseTable(tableName = "USER_APP")
 public class UserApp {
     public static final String FIELD_IS_TRACKED = "IS_TRACKED";
+    public static final String FIELD_CATEGORY = "CATEGORY";
 
     @DatabaseField(generatedId = true)
     private Long id;

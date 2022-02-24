@@ -31,5 +31,6 @@
     <string name="menu_category_list">Categories</string>
     <string name="card_button_edit">Edit</string>
     <string name="card_button_remove">Remove</string>
->>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
+    <string name="menu_stats">Statistics</string>
+    >>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
 </resources>

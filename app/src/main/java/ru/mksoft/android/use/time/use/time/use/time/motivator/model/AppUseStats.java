@@ -17,6 +17,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AppUseStats {
+    public static final String FIELD_USER_APP = "USER_APP";
+    public static final String FIELD_DATE = "DATE";
+
     @DatabaseField(generatedId = true)
     private Long id;
 

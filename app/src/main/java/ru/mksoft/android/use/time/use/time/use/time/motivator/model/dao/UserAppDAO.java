@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 
 import java.sql.SQLException;
@@ -40,4 +41,11 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
         return query(preparedQuery);
     }
 
+    public List<UserApp> getUserAppsForCategory(Category category) throws SQLException {
+        QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
+        queryBuilder.where().eq(UserApp.FIELD_CATEGORY, category);
+        PreparedQuery<UserApp> preparedQuery = queryBuilder.prepare();
+
+        return query(preparedQuery);
+    }
 }

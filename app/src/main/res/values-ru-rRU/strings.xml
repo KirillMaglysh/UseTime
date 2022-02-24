@@ -23,5 +23,6 @@
     <string name="card_button_edit">Изменить</string>
     <string name="card_button_remove">Удалить</string>
     <string name="menu_edit_rule">Редактировать правило</string>
->>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
+    <string name="menu_stats">Statistics</string>
+    >>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
 </resources>

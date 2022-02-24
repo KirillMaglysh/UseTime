@@ -1,6 +1,5 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats;
 
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import lombok.Getter;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentShortStatsListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -27,11 +31,9 @@ public class ShortStatsListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentShortStatsListBinding.inflate(inflater, container, false);
 
-        PackageManager packageManager = getContext().getPackageManager();
-
         RecyclerView recyclerView = binding.appListRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new ShortStatsListRecyclerAdapter(this, binding, appListBuilder.queryTrackedApps()));
+        recyclerView.setAdapter(new ShortStatsListRecyclerAdapter(this.getContext(), buildCategoryList()));
 
         return binding.getRoot();
     }
@@ -42,9 +44,25 @@ public class ShortStatsListFragment extends Fragment {
         binding = null;
     }
 
+    private List<CategoryInShortSummary> buildCategoryList() {
+        List<CategoryInShortSummary> shortSummaries = null;
+        try {
+            List<Category> categories = DbHelperFactory.getHelper().getCategoryDAO().getAllCategories();
+            shortSummaries = new ArrayList<>(categories.size());
+            for (Category category : categories) {
+                shortSummaries.add(new CategoryInShortSummary(category, DbHelperFactory.getHelper().getAppUseStatsDao().getCategoryTodaySumStats(category)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return shortSummaries;
+    }
+
+    @Getter
     public class CategoryInShortSummary {
         private Category category;
-        String[] time;
+        private String[] time;
 
         public CategoryInShortSummary(Category category, long timeInMilliseconds) {
             this.category = category;
