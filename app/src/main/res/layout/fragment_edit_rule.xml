@@ -18,202 +18,106 @@
         style="@style/Theme.EditDialogLabel"
         android:text="@string/edit_rule_time_limit_label" />
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-    >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:columnOrderPreserved="false">
+
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/monday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ПН"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/monday_cut" />
 
-            <EditText
-                    android:id="@+id/monday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/monday_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/monday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/tuesday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ВТ"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/tuesday_cut" />
 
-            <EditText
-                    android:id="@+id/tuesday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/tuesday_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/tuesday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/wednesday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="СР"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/wednesday_cut" />
 
-            <EditText
-                    android:id="@+id/wednesday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/wednesday_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/wednesday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/thursday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ЧТ"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/thursday_cut" />
 
-            <EditText
-                    android:id="@+id/thursday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/thursday_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/thursday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/friday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ПТ"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/friday_cut" />
 
-            <EditText
-                    android:id="@+id/friday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/friday_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/friday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/saturday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="СБ"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/saturday_cut" />
 
-            <EditText
-                    android:id="@+id/saturday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/saturday_minutes"
-                    android:layout_width="wrap_content"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/saturday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        >
+            android:id="@+id/sunday_time_cell"
+            style="@style/Theme.EditTimeLimitDialog.DayCell"
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="1">
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ВС"
-            />
+                style="@style/Theme.EditTimeLimitDialog.DayText.Desc"
+                android:text="@string/sunday_cut" />
 
-            <EditText
-                    android:id="@+id/sunday_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
-
-            <EditText
-                    android:id="@+id/sunday_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="00"
-            />
+            <TextView
+                android:id="@+id/sunday_time_limit"
+                style="@style/Theme.EditTimeLimitDialog.DayText.Field" />
         </LinearLayout>
-
-    </LinearLayout>
+    </GridLayout>
 
     <LinearLayout style="@style/Theme.EditDialogButtonSet">
 

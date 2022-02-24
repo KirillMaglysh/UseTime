@@ -36,4 +36,13 @@
     <string name="edit_rule_name_label">Название правила</string>
     <string name="edit_rule_name_hint">Введите название правила</string>
     <string name="edit_rule_time_limit_label">Ограничение времени по дням недели</string>
+    <string name="edit_time_limit_no_name_rule">Безымянное правило</string>
+    <string name="edit_time_limit_label_text">Лимит времени %s</string>
+    <string name="edit_time_limit_label_monday">по понедельникам</string>
+    <string name="edit_time_limit_label_tuesday">по вторникам</string>
+    <string name="edit_time_limit_label_wednesday">по средам</string>
+    <string name="edit_time_limit_label_thursday">по четвергам</string>
+    <string name="edit_time_limit_label_friday">по пятницам</string>
+    <string name="edit_time_limit_label_saturday">по субботам</string>
+    <string name="edit_time_limit_label_sunday">по воскресеньям</string>
 </resources>

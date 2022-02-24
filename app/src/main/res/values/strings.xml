@@ -45,4 +45,13 @@
     <string name="edit_rule_name_label">Rule name</string>
     <string name="edit_rule_name_hint">Enter the rule name</string>
     <string name="edit_rule_time_limit_label">Time limit by day of the week</string>
+    <string name="edit_time_limit_no_name_rule">Noname rule</string>
+    <string name="edit_time_limit_label_text">%s time limit</string>
+    <string name="edit_time_limit_label_monday">Monday</string>
+    <string name="edit_time_limit_label_tuesday">Tuesday</string>
+    <string name="edit_time_limit_label_wednesday">Wednesday</string>
+    <string name="edit_time_limit_label_thursday">Thursday</string>
+    <string name="edit_time_limit_label_friday">Friday</string>
+    <string name="edit_time_limit_label_saturday">Saturday</string>
+    <string name="edit_time_limit_label_sunday">Sunday</string>
 </resources>
