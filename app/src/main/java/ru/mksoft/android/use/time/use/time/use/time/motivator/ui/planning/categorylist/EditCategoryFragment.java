@@ -57,6 +57,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
                     DbHelperFactory.getHelper().getCategoryDAO().queryForId(Long.valueOf(fragmentArgs.getCategoryId())) :
                     new Category();
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -73,6 +74,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
             ruleListAdapter = new RuleListInCategoryRecyclerAdapter(DbHelperFactory.getHelper().getRuleDAO().getAllRules(), selectedRuleId);
             recyclerView.setAdapter(ruleListAdapter);
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -97,13 +99,13 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
 
     private void add(Category category, Rule rule, String resultType, Integer positionInAdapter) {
         if (rule == null) {
-            Toast.makeText(this.getContext(), R.string.choose_rule_warning, Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getContext(), R.string.edit_category_choose_rule_warning, Toast.LENGTH_LONG).show();
             return;
         }
 
         String name = binding.dialogCategoryLabel.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this.getContext(), R.string.name_empty_warning, Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getContext(), R.string.edit_category_name_empty_warning, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -112,7 +114,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
         try {
             DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
         } catch (SQLException e) {
-            Toast.makeText(this.getContext(), R.string.name_exists_warning, Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getContext(), R.string.edit_category_name_exists_warning, Toast.LENGTH_LONG).show();
             return;
         }
 

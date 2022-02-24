@@ -34,6 +34,7 @@ public class CategoryListFragment extends Fragment {
             adapter = new CategoryListRecyclerAdapter(this, binding, DbHelperFactory.getHelper().getCategoryDAO().getAllUserCategories());
             recyclerView.setAdapter(adapter);
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 

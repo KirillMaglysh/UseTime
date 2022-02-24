@@ -59,6 +59,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 categories.set(position, DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
                 notifyItemChanged(position);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -72,6 +73,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 categories.add(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
                 notifyItemInserted(categories.size());
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -91,6 +93,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
             Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRuleId());
             holder.ruleLabel.setText(rule.getName());
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -107,6 +110,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
             try {
                 DbHelperFactory.getHelper().getCategoryDAO().delete(removingCategory);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });

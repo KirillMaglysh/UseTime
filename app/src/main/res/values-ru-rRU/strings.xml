@@ -30,8 +30,10 @@
     <string name="edit_category_rule_label">Правило лимита времени</string>
     <string name="edit_category_save_button">Сохранить</string>
     <string name="edit_category_cancel_button">Отменить</string>
+    <string name="edit_category_choose_rule_warning">Выберите правило</string>
+    <string name="edit_category_name_empty_warning">Название не может быть пустым</string>
+    <string name="edit_category_name_exists_warning">Название уже существует</string>
+    <string name="edit_rule_name_label">Название правила</string>
+    <string name="edit_rule_name_hint">Введите название правила</string>
     <string name="edit_rule_time_limit_label">Ограничение времени по дням недели</string>
-    <string name="choose_rule_warning">Выберите правило</string>
-    <string name="name_empty_warning">Название не может быть пустым</string>
-    <string name="name_exists_warning">Название уже существует</string>
 </resources>

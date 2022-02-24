@@ -59,6 +59,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                 rules.set(position, DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
                 notifyItemChanged(position);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -72,6 +73,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                 rules.add(DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
                 notifyItemInserted(rules.size());
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -101,6 +103,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
             try {
                 DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
