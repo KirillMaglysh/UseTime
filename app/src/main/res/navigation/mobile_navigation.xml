@@ -92,5 +92,30 @@
         <argument
             android:name="create_or_add_rule"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_edit_rule_to_fragment_edit_time_limit"
+            app:destination="@id/fragment_edit_time_limit" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/fragment_edit_time_limit"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditTimeLimitFragment"
+        android:label="EditTimeLimitFragment"
+        tools:layout="@layout/fragment_edit_time_limit">
+        <argument
+            android:name="day_name"
+            app:argType="string" />
+        <argument
+            android:name="rule_name"
+            app:argType="string" />
+        <argument
+            android:name="rule_day"
+            app:argType="string" />
+        <argument
+            android:name="rule_hours"
+            app:argType="integer" />
+        <argument
+            android:name="rule_minutes"
+            app:argType="integer" />
     </dialog>
 </navigation>

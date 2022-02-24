@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Place here class purpose.
@@ -16,8 +17,9 @@ import java.util.Locale;
 @DatabaseTable(tableName = "RULES")
 public class Rule {
     @SuppressWarnings("JavaDoc")
+    public static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
     public static final String FIELD_RULE_NAME = "RULE_NAME";
-//    public static final String DEFAULT_RULE_NAME = "GHDF-HGFH-TUYT-ASDF";
+    //    public static final String DEFAULT_RULE_NAME = "GHDF-HGFH-TUYT-ASDF";
     private static final String DEFAULT_LIMIT_TIME_STRING = "00:00";
 
     @DatabaseField(generatedId = true)
@@ -54,14 +56,41 @@ public class Rule {
         return new Integer[]{mondayMinutes, tuesdayMinutes, wednesdayMinutes, thursdayMinutes, fridayMinutes, saturdayMinutes, sundayMinutes};
     }
 
-    public void setDays(int[] days) {
-        mondayMinutes = days[0];
-        tuesdayMinutes = days[1];
-        wednesdayMinutes = days[2];
-        thursdayMinutes = days[3];
-        fridayMinutes = days[4];
-        saturdayMinutes = days[5];
-        sundayMinutes = days[6];
+    /**
+     * Задаёт лимиты времени
+     *
+     * @param timeLimits лимиты времени по дням недели
+     */
+    public void setDays(Map<DayOfWeek, Integer> timeLimits) {
+        mondayMinutes = timeLimits.get(DayOfWeek.MONDAY);
+        tuesdayMinutes = timeLimits.get(DayOfWeek.TUESDAY);
+        wednesdayMinutes = timeLimits.get(DayOfWeek.WEDNESDAY);
+        thursdayMinutes = timeLimits.get(DayOfWeek.THURSDAY);
+        fridayMinutes = timeLimits.get(DayOfWeek.FRIDAY);
+        saturdayMinutes = timeLimits.get(DayOfWeek.SATURDAY);
+        sundayMinutes = timeLimits.get(DayOfWeek.SUNDAY);
+    }
+
+    /**
+     * Возвращает количество часов лимита времени за определённый день недели.
+     *
+     * @param dayOfWeek день недели
+     * @return количество часов лимита
+     */
+    public int getHours(DayOfWeek dayOfWeek) {
+        Integer time = getTime(dayOfWeek);
+        return time == null ? 0 : time / 60;
+    }
+
+    /**
+     * Возвращает количество минут лимита времени за определённый день недели.
+     *
+     * @param dayOfWeek день недели
+     * @return количество минут лимита
+     */
+    public int getMinutes(DayOfWeek dayOfWeek) {
+        Integer time = getTime(dayOfWeek);
+        return time == null ? 0 : time % 60;
     }
 
     /**
@@ -75,32 +104,28 @@ public class Rule {
             return DEFAULT_LIMIT_TIME_STRING;
         }
 
-        Integer time = 0;
+        return getFormattedMinutesTime(getTime(dayOfWeek));
+    }
+
+    private Integer getTime(DayOfWeek dayOfWeek) {
         switch (dayOfWeek) {
             case MONDAY:
-                time = mondayMinutes;
-                break;
+                return mondayMinutes;
             case TUESDAY:
-                time = tuesdayMinutes;
-                break;
+                return tuesdayMinutes;
             case WEDNESDAY:
-                time = wednesdayMinutes;
-                break;
+                return wednesdayMinutes;
             case THURSDAY:
-                time = thursdayMinutes;
-                break;
+                return thursdayMinutes;
             case FRIDAY:
-                time = fridayMinutes;
-                break;
+                return fridayMinutes;
             case SATURDAY:
-                time = saturdayMinutes;
-                break;
+                return saturdayMinutes;
             case SUNDAY:
-                time = sundayMinutes;
-                break;
+                return sundayMinutes;
+            default:
+                return null;
         }
-
-        return getFormattedMinutesTime(time);
     }
 
     /**
@@ -114,7 +139,7 @@ public class Rule {
             return DEFAULT_LIMIT_TIME_STRING;
         }
 
-        return String.format(Locale.ENGLISH, "%02d:%02d", time / 60, time % 60);
+        return String.format(Locale.ENGLISH, DAY_TIME_LIMIT_FORMAT, time / 60, time % 60);
     }
 
     @Override

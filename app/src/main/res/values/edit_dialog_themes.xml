@@ -45,4 +45,37 @@
         <item name="android:textColor">@color/design_default_color_primary</item>
         <item name="android:textSize">@dimen/edit_dialog_field_text_size</item>
     </style>
+
+    <style name="Theme.EditTimeLimitDialog" parent="" />
+
+    <style name="Theme.EditTimeLimitDialog.DayText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="Theme.EditTimeLimitDialog.DayText.Desc">
+        <item name="android:textSize">@dimen/edit_dialog_label_text_size</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="Theme.EditTimeLimitDialog.DayText.Field">
+        <item name="android:textSize">@dimen/edit_dialog_field_text_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.EditTimeLimitDialog.DayCell">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+    </style>
+
 </resources>
