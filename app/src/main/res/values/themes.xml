@@ -85,7 +85,7 @@
     <style name="Theme.ListRecyclerView" parent="">
         <item name="android:layout_width">@dimen/zero_dimen</item>
         <item name="android:layout_height">@dimen/zero_dimen</item>
-        <item name="android:padding">@dimen/list_view_padding</item>
+        <item name="android:padding">@dimen/fragment_padding</item>
     </style>
 
     <style name="Theme.ListSingleButton" parent="Widget.MaterialComponents.Button">
