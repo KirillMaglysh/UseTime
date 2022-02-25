@@ -1,7 +1,7 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.types.SqlDateType;
+import com.j256.ormlite.field.types.TimeStampType;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,7 @@ public class AppUseStats {
     private UserApp userApp;
 
     @DatabaseField(columnName = "DATE", uniqueIndexName = "unique_app_date_idx", canBeNull = false)
-    private SqlDateType date;
+    private TimeStampType date;
 
     @DatabaseField(columnName = "USAGE_TIME", canBeNull = false)
     private Long usageTime;

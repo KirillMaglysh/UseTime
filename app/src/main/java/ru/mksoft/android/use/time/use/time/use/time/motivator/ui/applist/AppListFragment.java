@@ -20,7 +20,7 @@ public class AppListFragment extends Fragment {
         binding = FragmentAppListBinding.inflate(inflater, container, false);
 
         PackageManager packageManager = getContext().getPackageManager();
-        AppListBuilder appListBuilder = new AppListBuilder(packageManager);
+        AppListBuilder appListBuilder = new AppListBuilder(packageManager, getContext());
 
         RecyclerView recyclerView = binding.appListRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

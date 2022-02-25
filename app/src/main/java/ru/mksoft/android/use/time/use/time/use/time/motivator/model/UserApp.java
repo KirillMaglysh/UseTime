@@ -1,6 +1,7 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.types.SqlDateType;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,4 +39,7 @@ public class UserApp {
 
     @DatabaseField(columnName = "IS_TRACKED", index = true, canBeNull = false)
     private Boolean isTracked = false;
+
+    @DatabaseField(columnName = "LAST_UPDATE", index = true, canBeNull = false)
+    private SqlDateType lastUpdate;
 }

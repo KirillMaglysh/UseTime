@@ -1,9 +1,7 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
@@ -21,9 +19,11 @@ import java.util.TreeMap;
  */
 public class AppListBuilder {
     private final PackageManager packageManager;
+    private final Context context;
 
-    public AppListBuilder(PackageManager packageManager) {
+    public AppListBuilder(PackageManager packageManager, Context context) {
         this.packageManager = packageManager;
+        this.context = context;
     }
 
     public void buildAppList() {
@@ -39,6 +39,7 @@ public class AppListBuilder {
 
                 deleteNotFoundApps(trackedApps, sortedTracked);
                 deleteNotFoundApps(untrackedApps, sortedUntracked);
+                new StatsProcessor(context).updateUseStats();
             }
 
             private void readCurrentAppList(TreeMap<Integer, AppParams> sortedTracked, TreeMap<Integer, AppParams> sortedUntracked) {

@@ -24,7 +24,7 @@ public class UseTimeMotivatorApp extends Application {
             e.printStackTrace();
         }
 
-        new AppListBuilder(getPackageManager()).buildAppList();
+        new AppListBuilder(getPackageManager(), getApplicationContext()).buildAppList();
     }
 
     @Override

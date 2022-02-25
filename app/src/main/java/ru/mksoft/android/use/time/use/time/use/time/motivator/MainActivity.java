@@ -1,14 +1,8 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
-import android.app.usage.UsageEvents;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -18,14 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new StatsProcessor().updateUseStats();
         super.onCreate(savedInstanceState);
 //        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
 //        startActivity(intent);
@@ -48,33 +34,6 @@ public class MainActivity extends AppCompatActivity {
 //        String packageName = appList.get(2).packageName;
 
 //            Context packageContext = createPackageContext(packageName, 0);
-        UsageStatsManager usm = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-
-        Calendar calendar = Calendar.getInstance();
-        long endTime = calendar.getTimeInMillis();
-
-        LocalDateTime localDateTime = LocalDate.now().atStartOfDay();
-        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-//        long startTime = instant.toEpochMilli();
-        calendar.add(Calendar.YEAR, -1);
-        long startTime = calendar.getTimeInMillis();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        Log.d(TAG, "Range start:" + dateFormat.format(startTime));
-        Log.d(TAG, "Range end:" + dateFormat.format(endTime));
-
-        UsageEvents uEvents = usm.queryEvents(startTime, endTime);
-        List<UsageStats> queryUsageStats = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
-        long startCalc = System.nanoTime();
-        long sum = 0;
-        for (int i = 0; i < queryUsageStats.size(); i++) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                sum += queryUsageStats.get(i).getTotalTimeVisible();
-            }
-        }
-
-        long endCalc = System.nanoTime();
-        Log.d("STATSTIME", String.valueOf(endCalc - startCalc));
 /*
         while (uEvents.hasNextEvent()) {
             UsageEvents.Event e = new UsageEvents.Event();
