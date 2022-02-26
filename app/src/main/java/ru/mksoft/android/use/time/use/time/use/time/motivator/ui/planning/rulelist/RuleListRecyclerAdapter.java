@@ -21,6 +21,8 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleVi
 import java.sql.SQLException;
 import java.util.List;
 
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper.PREDEFINED_ID;
+
 /**
  * Place here class purpose.
  *
@@ -87,26 +89,38 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RuleCardViewHolder holder, int position) {
-        Rule rule = rules.get(position);
+        Rule rule = rules.get(holder.getAdapterPosition());
         holder.fillRuleData(rule);
 
-        holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        if (PREDEFINED_ID == rule.getId()) {
+            holder.editButton.setVisibility(View.INVISIBLE);
+            holder.deleteButton.setVisibility(View.INVISIBLE);
+        } else {
+            holder.editButton.setOnClickListener(view -> editRule(holder));
+            holder.deleteButton.setOnClickListener(view -> deleteRule(holder.getAdapterPosition()));
+        }
+    }
+
+    private void editRule(RuleCardViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        Rule rule = rules.get(position);
+        Navigation.findNavController(holder.itemView)
                 .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(position,
-                        rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
+                        rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY));
+    }
 
-        holder.deleteButton.setOnClickListener(view -> {
-            Rule removingRule = rule;
-            rules.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, getItemCount());
+    private void deleteRule(int position) {
+        Rule removingRule = rules.get(position);
+        rules.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
 
-            try {
-                DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
-            } catch (SQLException e) {
-                //todo Обработать ошибки корректно
-                e.printStackTrace();
-            }
-        });
+        try {
+            DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
+        } catch (SQLException e) {
+            //todo Обработать ошибки корректно
+            e.printStackTrace();
+        }
     }
 
     @Override

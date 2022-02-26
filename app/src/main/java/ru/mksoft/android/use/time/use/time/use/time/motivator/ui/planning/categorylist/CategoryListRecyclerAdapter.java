@@ -21,6 +21,8 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 import java.sql.SQLException;
 import java.util.List;
 
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper.PREDEFINED_ID;
+
 /**
  * Place here class purpose.
  *
@@ -86,33 +88,45 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
 
     @Override
     public void onBindViewHolder(@NonNull CategoryCardViewHolder holder, int position) {
-        holder.categoryTitle.setText(categories.get(position).getName());
+        Category category = categories.get(holder.getAdapterPosition());
+        holder.categoryTitle.setText(category.getName());
 
         try {
-            Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRule().getId());
+            Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(category.getRule().getId());
             holder.ruleLabel.setText(rule.getName());
         } catch (SQLException e) {
             //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 
-        holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        if (PREDEFINED_ID == category.getId()) {
+            holder.editButton.setVisibility(View.INVISIBLE);
+            holder.deleteButton.setVisibility(View.INVISIBLE);
+        } else {
+            holder.editButton.setOnClickListener(view -> editCategory(holder));
+            holder.deleteButton.setOnClickListener(view -> deleteCategory(holder.getAdapterPosition()));
+        }
+    }
+
+    private void editCategory(CategoryCardViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        Navigation.findNavController(holder.itemView)
                 .navigate(CategoryListFragmentDirections.actionNavCategoryListToNavEditCategory(position,
-                        categories.get(position).getId().toString(), EDIT_CATEGORY_DIALOG_RESULT_KEY)));
+                        categories.get(position).getId().toString(), EDIT_CATEGORY_DIALOG_RESULT_KEY));
+    }
 
-        holder.deleteButton.setOnClickListener(view -> {
-            Category removingCategory = categories.get(position);
-            categories.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, getItemCount());
+    private void deleteCategory(int position) {
+        Category removingCategory = categories.get(position);
+        categories.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
 
-            try {
-                DbHelperFactory.getHelper().getCategoryDAO().delete(removingCategory);
-            } catch (SQLException e) {
-                //todo Обработать ошибки корректно
-                e.printStackTrace();
-            }
-        });
+        try {
+            DbHelperFactory.getHelper().getCategoryDAO().delete(removingCategory);
+        } catch (SQLException e) {
+            //todo Обработать ошибки корректно
+            e.printStackTrace();
+        }
     }
 
     @Override

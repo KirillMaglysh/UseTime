@@ -12,6 +12,8 @@
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
     <string name="menu_rulelist">"Правила"</string>
     <string name="menu_edit_category">Редактировать категорию</string>
+    <string name="no_category_name">Без категории</string>
+    <string name="no_limit_rile_name">Без ограничений</string>
     <string name="new_category">Новая категория</string>
     <string name="menu_category_list">Категории</string>
     <string name="menu_rule_list">Правила</string>

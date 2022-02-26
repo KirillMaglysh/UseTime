@@ -62,6 +62,13 @@ public class Rule {
     }
 
     /**
+     * Конструктор
+     */
+    public Rule() {
+        setDailySameLimits(NO_LIMIT_TIME);
+    }
+
+    /**
      * Задаёт лимиты времени
      *
      * @param timeLimits лимиты времени по дням недели
