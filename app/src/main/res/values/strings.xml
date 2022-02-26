@@ -44,6 +44,7 @@
     <string name="edit_category_choose_rule_warning">Choose a rule</string>
     <string name="edit_category_name_empty_warning">Name cannot be empty</string>
     <string name="edit_category_name_exists_warning">The name is already exist</string>
+    <string name="edit_category_unable_delete_used">You cannot delete a category that is used in a application</string>
     <string name="edit_rule_name_label">Rule name</string>
     <string name="edit_rule_name_hint">Enter the rule name</string>
     <string name="edit_rule_time_limit_label">Time limit by day of the week</string>
