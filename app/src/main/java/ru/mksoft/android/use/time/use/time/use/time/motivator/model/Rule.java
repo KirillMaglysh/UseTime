@@ -1,11 +1,13 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
+import androidx.annotation.NonNull;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.InvalidDayOfWeekException;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.InvalidTimeLimitException;
 
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -17,13 +19,16 @@ import java.util.Map;
 @DatabaseTable(tableName = "RULES")
 public class Rule {
     @SuppressWarnings("JavaDoc")
-    public static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
     public static final String FIELD_RULE_NAME = "RULE_NAME";
     //    public static final String DEFAULT_RULE_NAME = "GHDF-HGFH-TUYT-ASDF";
-    private static final String DEFAULT_LIMIT_TIME_STRING = "00:00";
+    /**
+     * Неограниченное время (максимальное количество минут в сутках).
+     */
+    public static final int NO_LIMIT_TIME = 23 * 60 + 59;
 
     @DatabaseField(generatedId = true)
     @Getter
+    @Setter
     private Long id;
 
     @DatabaseField(columnName = FIELD_RULE_NAME, unique = true, width = 32, index = true, canBeNull = false)
@@ -61,14 +66,29 @@ public class Rule {
      *
      * @param timeLimits лимиты времени по дням недели
      */
-    public void setDays(Map<DayOfWeek, Integer> timeLimits) {
-        mondayMinutes = timeLimits.get(DayOfWeek.MONDAY);
-        tuesdayMinutes = timeLimits.get(DayOfWeek.TUESDAY);
-        wednesdayMinutes = timeLimits.get(DayOfWeek.WEDNESDAY);
-        thursdayMinutes = timeLimits.get(DayOfWeek.THURSDAY);
-        fridayMinutes = timeLimits.get(DayOfWeek.FRIDAY);
-        saturdayMinutes = timeLimits.get(DayOfWeek.SATURDAY);
-        sundayMinutes = timeLimits.get(DayOfWeek.SUNDAY);
+    public void setDayLimits(Map<DayOfWeek, Integer> timeLimits) {
+        mondayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.MONDAY);
+        tuesdayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.TUESDAY);
+        wednesdayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.WEDNESDAY);
+        thursdayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.THURSDAY);
+        fridayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.FRIDAY);
+        saturdayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.SATURDAY);
+        sundayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.SUNDAY);
+    }
+
+    /**
+     * Задаёт одинаковые лимиты времени для каждого дня
+     *
+     * @param timeLimit лимиты времени для всех дней недели
+     */
+    public void setDailySameLimits(@NonNull Integer timeLimit) {
+        mondayMinutes = validateTimeLimitInMinutes(timeLimit);
+        tuesdayMinutes = validateTimeLimitInMinutes(timeLimit);
+        wednesdayMinutes = validateTimeLimitInMinutes(timeLimit);
+        thursdayMinutes = validateTimeLimitInMinutes(timeLimit);
+        fridayMinutes = validateTimeLimitInMinutes(timeLimit);
+        saturdayMinutes = validateTimeLimitInMinutes(timeLimit);
+        sundayMinutes = validateTimeLimitInMinutes(timeLimit);
     }
 
     /**
@@ -77,9 +97,8 @@ public class Rule {
      * @param dayOfWeek день недели
      * @return количество часов лимита
      */
-    public int getHours(DayOfWeek dayOfWeek) {
-        Integer time = getTime(dayOfWeek);
-        return time == null ? 0 : time / 60;
+    public int getHoursLimitTime(@NonNull DayOfWeek dayOfWeek) {
+        return getTime(dayOfWeek) / 60;
     }
 
     /**
@@ -88,26 +107,18 @@ public class Rule {
      * @param dayOfWeek день недели
      * @return количество минут лимита
      */
-    public int getMinutes(DayOfWeek dayOfWeek) {
-        Integer time = getTime(dayOfWeek);
-        return time == null ? 0 : time % 60;
+    public int getMinutesLimitTime(@NonNull DayOfWeek dayOfWeek) {
+        return getTime(dayOfWeek) % 60;
     }
 
     /**
      * Возвращает лимит времени за определённый день недели.
      *
      * @param dayOfWeek день недели
-     * @return строка вида "HH:mm"
+     * @return лимит времени
      */
-    public String getHoursMinutesLimitTime(DayOfWeek dayOfWeek) {
-        if (dayOfWeek == null) {
-            return DEFAULT_LIMIT_TIME_STRING;
-        }
-
-        return getFormattedMinutesTime(getTime(dayOfWeek));
-    }
-
-    private Integer getTime(DayOfWeek dayOfWeek) {
+    @NonNull
+    public Integer getTime(@NonNull DayOfWeek dayOfWeek) {
         switch (dayOfWeek) {
             case MONDAY:
                 return mondayMinutes;
@@ -124,24 +135,11 @@ public class Rule {
             case SUNDAY:
                 return sundayMinutes;
             default:
-                return null;
+                throw new InvalidDayOfWeekException();
         }
     }
 
-    /**
-     * Форматирует время.
-     *
-     * @param time время в минутах
-     * @return строка вида "HH:mm"
-     */
-    public static String getFormattedMinutesTime(Integer time) {
-        if (time == null) {
-            return DEFAULT_LIMIT_TIME_STRING;
-        }
-
-        return String.format(Locale.ENGLISH, DAY_TIME_LIMIT_FORMAT, time / 60, time % 60);
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "Rule{" +
@@ -155,6 +153,18 @@ public class Rule {
                 ", saturdayMinutes=" + saturdayMinutes +
                 ", sundayMinutes=" + sundayMinutes +
                 '}';
+    }
+
+    private static Integer validateTimeLimitInMinutes(Map<DayOfWeek, Integer> timeLimits, DayOfWeek dayOfWeek) {
+        return validateTimeLimitInMinutes(timeLimits.get(dayOfWeek));
+    }
+
+    private static Integer validateTimeLimitInMinutes(Integer minutes) {
+        if (minutes == null || minutes.compareTo(0) < 0 || minutes.compareTo(NO_LIMIT_TIME) > 0) {
+            throw new InvalidTimeLimitException(minutes);
+        }
+
+        return minutes;
     }
 
     /**
@@ -196,6 +206,12 @@ public class Rule {
             this.dayNumber = dayNumber;
         }
 
+        /**
+         * Возвращает номер дня недели.
+         * Неделя начинается с понедельника. Номер 0 !!!!!
+         *
+         * @return номер дня недели
+         */
         public int dayNumber() {
             return dayNumber;
         }
