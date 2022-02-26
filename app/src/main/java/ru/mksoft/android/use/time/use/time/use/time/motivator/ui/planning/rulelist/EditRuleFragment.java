@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentEditRuleBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
@@ -22,13 +21,12 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 
 import java.sql.SQLException;
 import java.util.EnumMap;
-import java.util.Locale;
 import java.util.Map;
 
-import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule.DAY_TIME_LIMIT_FORMAT;
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule.DayOfWeek.*;
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditTimeLimitFragment.*;
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListRecyclerAdapter.*;
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +66,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         EditRuleFragmentArgs fragmentArgs = EditRuleFragmentArgs.fromBundle(getArguments());
         Rule rule = null;
@@ -88,13 +86,13 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
 
     private void fillRuleData(Rule rule) {
         binding.editRuleLabel.setText(rule.getName());
-        binding.mondayTimeLimit.setText(rule.getHoursMinutesLimitTime(MONDAY));
-        binding.tuesdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.TUESDAY));
-        binding.wednesdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.WEDNESDAY));
-        binding.thursdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.THURSDAY));
-        binding.fridayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.FRIDAY));
-        binding.saturdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.SATURDAY));
-        binding.sundayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.SUNDAY));
+        binding.mondayTimeLimit.setText(getFormattedLimitTime(rule, MONDAY));
+        binding.tuesdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.TUESDAY));
+        binding.wednesdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.WEDNESDAY));
+        binding.thursdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.THURSDAY));
+        binding.fridayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.FRIDAY));
+        binding.saturdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.SATURDAY));
+        binding.sundayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.SUNDAY));
     }
 
     private void assignListeners(EditRuleFragmentArgs fragmentArgs, Rule finalRule) {
@@ -123,7 +121,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
             ruleName = getString(R.string.edit_time_limit_no_name_rule);
         }
 
-        navController.navigate(EditRuleFragmentDirections.actionNavEditRuleToFragmentEditTimeLimit(dayOfWeek.name(), ruleName, ruleDay, rule.getHours(dayOfWeek), rule.getMinutes(dayOfWeek)));
+        navController.navigate(EditRuleFragmentDirections.actionNavEditRuleToFragmentEditTimeLimit(dayOfWeek.name(), ruleName, ruleDay, rule.getHoursLimitTime(dayOfWeek), rule.getMinutesLimitTime(dayOfWeek)));
     }
 
     private void processTimeLimitResult(String requestKey, Bundle result) {
@@ -132,7 +130,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
         }
 
         TextView dayField = findDayField(Rule.DayOfWeek.valueOf(result.getString(DAY_NAME_KEY)));
-        dayField.setText(String.format(Locale.ENGLISH, DAY_TIME_LIMIT_FORMAT, result.getInt(RULE_HOURS_KEY), result.getInt(RULE_MINUTES_KEY)));
+        dayField.setText(getFormattedHoursMinutesTime(result.getInt(RULE_HOURS_KEY), result.getInt(RULE_MINUTES_KEY)));
     }
 
     private TextView findDayField(Rule.DayOfWeek dayOfWeek) {
@@ -157,7 +155,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentEditRuleBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -175,7 +173,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
         }
 
         rule.setName(ruleName);
-        rule.setDays(parseRuleTimeLimit());
+        rule.setDayLimits(parseRuleTimeLimit());
         try {
             DbHelperFactory.getHelper().getRuleDAO().createOrUpdate(rule);
         } catch (SQLException e) {
@@ -193,20 +191,13 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
 
     private Map<Rule.DayOfWeek, Integer> parseRuleTimeLimit() {
         Map<Rule.DayOfWeek, Integer> timeLimits = new EnumMap<>(Rule.DayOfWeek.class);
-        timeLimits.put(MONDAY, parseInputData(binding.mondayTimeLimit));
-        timeLimits.put(TUESDAY, parseInputData(binding.tuesdayTimeLimit));
-        timeLimits.put(WEDNESDAY, parseInputData(binding.wednesdayTimeLimit));
-        timeLimits.put(THURSDAY, parseInputData(binding.thursdayTimeLimit));
-        timeLimits.put(FRIDAY, parseInputData(binding.fridayTimeLimit));
-        timeLimits.put(SATURDAY, parseInputData(binding.saturdayTimeLimit));
-        timeLimits.put(SUNDAY, parseInputData(binding.sundayTimeLimit));
+        timeLimits.put(MONDAY, parseTimeFieldValue(binding.mondayTimeLimit));
+        timeLimits.put(TUESDAY, parseTimeFieldValue(binding.tuesdayTimeLimit));
+        timeLimits.put(WEDNESDAY, parseTimeFieldValue(binding.wednesdayTimeLimit));
+        timeLimits.put(THURSDAY, parseTimeFieldValue(binding.thursdayTimeLimit));
+        timeLimits.put(FRIDAY, parseTimeFieldValue(binding.fridayTimeLimit));
+        timeLimits.put(SATURDAY, parseTimeFieldValue(binding.saturdayTimeLimit));
+        timeLimits.put(SUNDAY, parseTimeFieldValue(binding.sundayTimeLimit));
         return timeLimits;
-    }
-
-    private static Integer parseInputData(TextView timeLimitField) {
-        CharSequence timeLimitFieldText = timeLimitField.getText();
-        int hours = Integer.parseInt(String.valueOf(timeLimitFieldText.subSequence(0, 2)));
-        int minutes = Integer.parseInt(String.valueOf(timeLimitFieldText.subSequence(3, 5)));
-        return hours * 60 + minutes;
     }
 }

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentEditCategoryBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
@@ -48,7 +47,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         EditCategoryFragmentArgs fragmentArgs = EditCategoryFragmentArgs.fromBundle(getArguments());
         Category category = null;
@@ -64,7 +63,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
         Long selectedRuleId = null;
         if (category != null && category.getId() != null) {
             binding.dialogCategoryLabel.setText(category.getName());
-            selectedRuleId = category.getRuleId();
+            selectedRuleId = category.getRule().getId();
         }
 
         RecyclerView recyclerView = binding.ruleListInCategoryDialog;
@@ -91,7 +90,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentEditCategoryBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -110,7 +109,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
         }
 
         category.setName(name);
-        category.setRuleId(rule.getId());
+        category.setRule(rule);
         try {
             DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
         } catch (SQLException e) {

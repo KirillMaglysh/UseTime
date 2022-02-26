@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils.getFormattedLimitTime;
+
 /**
  * Place purpose here.
  *
@@ -49,13 +51,13 @@ public class RuleViewHolder extends RecyclerView.ViewHolder {
      */
     public void fillRuleData(Rule rule) {
         ruleLabel.setText(rule.getName());
-        mondayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.MONDAY));
-        tuesdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.TUESDAY));
-        wednesdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.WEDNESDAY));
-        thursdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.THURSDAY));
-        fridayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.FRIDAY));
-        saturdayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.SATURDAY));
-        sundayTimeLimit.setText(rule.getHoursMinutesLimitTime(Rule.DayOfWeek.SUNDAY));
+        mondayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.MONDAY));
+        tuesdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.TUESDAY));
+        wednesdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.WEDNESDAY));
+        thursdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.THURSDAY));
+        fridayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.FRIDAY));
+        saturdayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.SATURDAY));
+        sundayTimeLimit.setText(getFormattedLimitTime(rule, Rule.DayOfWeek.SUNDAY));
     }
 }
 
