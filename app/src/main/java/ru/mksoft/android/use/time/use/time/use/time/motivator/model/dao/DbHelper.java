@@ -20,20 +20,23 @@ import java.sql.SQLException;
  * @since 18.11.2021
  */
 public class DbHelper extends OrmLiteSqliteOpenHelper {
-    private static final String TAG = DbHelper.class.getSimpleName();
+    private static final String LOG_TAG = DbHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "use_time_motivator.db";
     private static final int DATABASE_VERSION = 1;
     public static final long PREDEFINED_ID = 1L;
 
-    private Context context;
+    private static String noCategoryName;
+    private static String noLimitRuleName;
+
     private CategoryDAO categoryDAO = null;
     private RuleDAO ruleDAO = null;
     private UserAppDAO userAppDAO = null;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+        noCategoryName = context.getString(R.string.no_category_name);
+        noLimitRuleName = context.getString(R.string.no_limit_rile_name);
     }
 
     @Override
@@ -45,14 +48,14 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
             initializeDataBase();
         } catch (SQLException e) {
-            Log.e(TAG, "error creating DB " + DATABASE_NAME);
+            Log.e(LOG_TAG, "error creating DB " + DATABASE_NAME);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        Log.w(TAG, "upgrade database");
+        Log.w(LOG_TAG, "upgrade database");
     }
 
     public CategoryDAO getCategoryDAO() throws SQLException {
@@ -79,13 +82,13 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return ruleDAO;
     }
 
-    private void initializeDataBase() throws SQLException {
+    private static void initializeDataBase() throws SQLException {
         RuleDAO ruleDAO = DbHelperFactory.getHelper().getRuleDAO();
         Rule noLimitRule = ruleDAO.queryForId(PREDEFINED_ID);
         if (noLimitRule == null) {
             noLimitRule = new Rule();
             noLimitRule.setId(PREDEFINED_ID);
-            noLimitRule.setName(context.getString(R.string.no_limit_rile_name));
+            noLimitRule.setName(noLimitRuleName);
             ruleDAO.createOrUpdate(noLimitRule);
         }
 
@@ -94,7 +97,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         if (noCategory == null) {
             noCategory = new Category();
             noCategory.setId(PREDEFINED_ID);
-            noCategory.setName(context.getString(R.string.no_category_name));
+            noCategory.setName(noCategoryName);
             noCategory.setRule(noLimitRule);
             categoryDAO.createOrUpdate(noCategory);
         }
