@@ -1,11 +1,9 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 import java.sql.SQLException;
@@ -20,6 +18,8 @@ import java.util.TreeMap;
  * @since 07.01.2022
  */
 public class AppListBuilder {
+    private static final String LOG_TAG = AppListBuilder.class.getSimpleName();
+
     private final PackageManager packageManager;
 
     public AppListBuilder(PackageManager packageManager) {
@@ -28,8 +28,17 @@ public class AppListBuilder {
 
     public void buildAppList() {
         new Thread(new Runnable() {
+            private Category defaultCategory;
+
             @Override
             public void run() {
+                try {
+                    defaultCategory = DbHelperFactory.getHelper().getCategoryDAO().getDefaultCategory();
+                } catch (SQLException e) {
+                    Log.e(LOG_TAG, "Error getting default category");
+                    throw new DatabaseException(e);
+                }
+
                 List<UserApp> untrackedApps = queryUntrackedApps();
                 List<UserApp> trackedApps = queryTrackedApps();
 
@@ -68,7 +77,7 @@ public class AppListBuilder {
                 UserApp newApp = new UserApp();
                 newApp.setSystemId(info.uid);
                 newApp.setPackageName(String.valueOf(info.packageName));
-                newApp.setCategory(DbHelperFactory.getHelper().getCategoryDAO().getDefaultCategory());
+                newApp.setCategory(defaultCategory);
 
                 DbHelperFactory.getHelper().getUserAppDAO().create(newApp);
             }

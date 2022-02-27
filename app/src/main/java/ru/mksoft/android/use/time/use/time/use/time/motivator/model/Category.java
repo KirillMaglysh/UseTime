@@ -23,7 +23,7 @@ public class Category {
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(columnName = "RULE_ID", foreign = true, columnDefinition = "integer references RULES(id) on delete restrict", index = true, canBeNull = false)
+    @DatabaseField(columnName = "RULE_ID", foreign = true, foreignAutoRefresh = true, columnDefinition = "integer references RULES(id) on delete restrict", index = true, canBeNull = false)
     private Rule rule;
 
     @DatabaseField(columnName = FIELD_CATEGORY_NAME, unique = true, width = 32, index = true, canBeNull = false)

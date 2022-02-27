@@ -19,7 +19,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentCategoryListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListRecyclerAdapter;
 
@@ -104,14 +103,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
     public void onBindViewHolder(@NonNull CategoryCardViewHolder holder, int position) {
         Category category = categories.get(holder.getAdapterPosition());
         holder.categoryTitle.setText(category.getName());
-
-        try {
-            Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(category.getRule().getId());
-            holder.ruleLabel.setText(rule.getName());
-        } catch (SQLException e) {
-            //todo Обработать ошибки корректно
-            e.printStackTrace();
-        }
+        holder.ruleLabel.setText(category.getRule().getName());
 
         if (PREDEFINED_ID == category.getId()) {
             holder.editButton.setVisibility(View.INVISIBLE);
