@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
@@ -63,6 +64,8 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             int positionInAdapter = result.getInt(APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY);
             int newArrayPosition = positionInAdapter - 1;
             UserApp addingApp = untrackedApps.get(newArrayPosition);
+            ((MainActivity) context).getStatsProcessor().addAppStats(addingApp);
+
             trackedApps.add(addingApp);
             untrackedApps.remove(newArrayPosition);
             notifyItemRemoved(positionInAdapter);

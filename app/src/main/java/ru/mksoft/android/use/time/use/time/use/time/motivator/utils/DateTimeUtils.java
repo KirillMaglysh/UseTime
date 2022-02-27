@@ -6,6 +6,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -79,5 +80,13 @@ public class DateTimeUtils {
      */
     public static Date getDateOfCurrentDayBegin() {
         return Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getDateDayOther(int diff) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(getDateOfCurrentDayBegin());
+        calendar.add(Calendar.DATE, diff);
+
+        return calendar.getTime();
     }
 }

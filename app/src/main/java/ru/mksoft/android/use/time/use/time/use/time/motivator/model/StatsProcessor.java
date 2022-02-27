@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
 import java.time.Instant;
@@ -47,7 +48,7 @@ public class StatsProcessor {
 
         Calendar nextDate = Calendar.getInstance();
         Date today = Date.from(Instant.now());
-        for (Date curDate = appListParseResults.getMinDate(); curDate.before(today); ) {
+        for (Date curDate = appListParseResults.getMinDate(); curDate.before(today) || curDate.equals(today); ) {
             nextDate.setTime(curDate);
             nextDate.add(Calendar.DATE, 1);
 
@@ -58,7 +59,7 @@ public class StatsProcessor {
     }
 
     private void processDateStats(TreeMap<String, UserApp> userAppMap, Calendar nextDate, Date curDate) {
-        List<UsageStats> usageStats = queryUsageStats(nextDate, curDate);
+        List<UsageStats> usageStats = queryUsageStats(curDate, nextDate);
         for (UsageStats usageStat : usageStats) {
             UserApp userApp = userAppMap.get(usageStat.getPackageName());
             if (userApp != null && userAppMap.containsKey(userApp.getPackageName())) {
@@ -82,7 +83,7 @@ public class StatsProcessor {
         }
     }
 
-    private List<UsageStats> queryUsageStats(Calendar nextDate, Date curDate) {
+    private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
         return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
                 .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, curDate.getTime(), nextDate.getTimeInMillis());
     }
@@ -94,6 +95,7 @@ public class StatsProcessor {
         dbUseStats.setUsageTime(usageStat.getTotalTimeVisible());
         dbUseStats.setDate(curDate);
         dbUseStats.setUserApp(userApp);
+
         return dbUseStats;
     }
 
@@ -123,12 +125,31 @@ public class StatsProcessor {
         return new AppListParseResults(userAppMap, minDate);
     }
 
-    private void updateAppStats() {
+    public void addAppStats(UserApp userApp) {
+        Date curDate = DateTimeUtils.getDateOfCurrentDayBegin();
+        Calendar nextDate = Calendar.getInstance();
+        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
+        while (curDate.before(today) || curDate.equals(today)) {
+            nextDate.setTime(curDate);
+            nextDate.add(Calendar.DATE, 1);
 
+            for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
+                if (userApp.getPackageName().equals(usageStat.getPackageName())) {
+                    createAppUseStatsForDate(curDate, usageStat, userApp);
+                    break;
+                }
+            }
+
+            curDate.setTime(nextDate.getTimeInMillis());
+        }
     }
 
-    private void deleteAppStats() {
-
+    public void deleteAppStats(UserApp userApp) {
+        try {
+            DbHelperFactory.getHelper().getAppUseStatsDao().removeAllAppStats(userApp);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Getter
