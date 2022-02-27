@@ -144,7 +144,7 @@ public class StatsProcessor {
         }
     }
 
-    public void deleteAppStats(UserApp userApp) {
+    public void removeAppAllStats(UserApp userApp) {
         try {
             DbHelperFactory.getHelper().getAppUseStatsDao().removeAllAppStats(userApp);
         } catch (SQLException e) {
