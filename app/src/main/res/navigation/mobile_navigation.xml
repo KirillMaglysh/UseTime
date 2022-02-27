@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_nav_applist_to_nav_track_new_app_dialog"
             app:destination="@id/nav_track_new_app_dialog" />
+        <action
+            android:id="@+id/action_nav_applist_to_nav_untrack_app_dialog"
+            app:destination="@id/nav_untrack_app_dialog" />
     </fragment>
 
     <dialog
@@ -55,6 +58,20 @@
             app:argType="integer" />
     </dialog>
 
+    <dialog
+        android:id="@+id/nav_untrack_app_dialog"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.UntrackAppDialog"
+        android:label="fragment_untrack_app_dialog"
+        tools:layout="@layout/fragment_untrack_app_dialog">
+
+        <argument
+            android:name="appLabel"
+            app:argType="string" />
+
+        <argument
+            android:name="positionInAdapter"
+            app:argType="integer" />
+    </dialog>
 
     <dialog
         android:id="@+id/nav_edit_category"
@@ -120,23 +137,23 @@
     </dialog>
 
     <fragment
-            android:id="@+id/nav_short_stats_list"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats.ShortStatsListFragment"
-            android:label="@string/menu_rulelist"
-            tools:layout="@layout/fragment_short_stats_list">
+        android:id="@+id/nav_short_stats_list"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats.ShortStatsListFragment"
+        android:label="@string/menu_rulelist"
+        tools:layout="@layout/fragment_short_stats_list">
         <action
-                android:id="@+id/action_nav_short_stats_list_to_nav_full_stats"
-                app:destination="@id/nav_full_stats"/>
+            android:id="@+id/action_nav_short_stats_list_to_nav_full_stats"
+            app:destination="@id/nav_full_stats" />
     </fragment>
 
     <fragment
-            android:id="@+id/nav_full_stats"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats.FullCategoryStatsFragment"
-            android:label="@string/menu_rulelist"
-            tools:layout="@layout/fragment_full_category_stats">
+        android:id="@+id/nav_full_stats"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats.FullCategoryStatsFragment"
+        android:label="@string/menu_rulelist"
+        tools:layout="@layout/fragment_full_category_stats">
 
         <argument
-                android:name="category_id"
-                app:argType="string"/>
+            android:name="category_id"
+            app:argType="string" />
     </fragment>
 </navigation>
