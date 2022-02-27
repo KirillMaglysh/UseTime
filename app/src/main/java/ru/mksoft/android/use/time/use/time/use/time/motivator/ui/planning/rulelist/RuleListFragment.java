@@ -34,6 +34,7 @@ public class RuleListFragment extends Fragment {
             adapter = new RuleListRecyclerAdapter(this, binding, DbHelperFactory.getHelper().getRuleDAO().getAllRules());
             recyclerView.setAdapter(adapter);
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 

@@ -13,32 +13,49 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Theme.UseTimeMotivator.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.UseTimeMotivator.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="Theme.UseTimeMotivator.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="Theme.UseTimeMotivator.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.UseTimeMotivator.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.MatchParent" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
 
     <style name="Theme.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">70dp</item>
     </style>
-    <style name="Theme.CardText" parent="Widget.MaterialComponents.TextView">
+
+    <style name="Theme.CardText" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="Theme.CardTitle" parent="Theme.CardText">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/card_title_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="Theme.CardDesc" parent="Theme.CardText">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:textSize">@dimen/card_desc_text_size</item>
-        <item name="android:layout_marginLeft">@dimen/card_desc_margin_left</item>
+        <item name="android:layout_marginStart">@dimen/card_desc_margin_start</item>
     </style>
+
+    <style name="Theme.CardDescDay" parent="Theme.CardDesc">
+        <item name="android:layout_marginStart">@dimen/card_desc_day_margin</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="Theme.CardButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">@dimen/card_button_size</item>
         <item name="minWidth">@dimen/card_button_size</item>
@@ -52,14 +69,34 @@
         <item name="android:insetTop">@dimen/card_button_inset</item>
         <item name="android:insetBottom">@dimen/card_button_inset</item>
     </style>
+
     <style name="Theme.CardButtonEdit" parent="Theme.CardButton">
         <item name="icon">@drawable/ic_menu_edit</item>
         <item name="contentDescription">@string/card_button_edit</item>
         <item name="android:layout_weight">0</item>
     </style>
+
     <style name="Theme.CardButtonRemove" parent="Theme.CardButton">
         <item name="icon">@drawable/ic_menu_trash</item>
         <item name="contentDescription">@string/card_button_remove</item>
         <item name="android:layout_weight">0</item>
+    </style>
+
+    <style name="Theme.ListRecyclerView" parent="">
+        <item name="android:layout_width">@dimen/zero_dimen</item>
+        <item name="android:layout_height">@dimen/zero_dimen</item>
+        <item name="android:padding">@dimen/fragment_padding</item>
+    </style>
+
+    <style name="Theme.ListSingleButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">@dimen/zero_dimen</item>
+        <item name="android:layout_height">@dimen/list_button_height</item>
+        <item name="android:layout_marginTop">@dimen/list_button_top_margin</item>
+        <item name="android:layout_marginBottom">@dimen/zero_dimen</item>
+        <item name="android:insetLeft">@dimen/list_button_inset</item>
+        <item name="android:insetRight">@dimen/list_button_inset</item>
+        <item name="android:insetTop">@dimen/list_button_inset</item>
+        <item name="android:insetBottom">@dimen/list_button_inset</item>
+        <item name="cornerRadius">@dimen/zero_dimen</item>
     </style>
 </resources>

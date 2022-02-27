@@ -1,117 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/mobile_navigation"
-            app:startDestination="@+id/nav_home">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
 
     <fragment
-            android:id="@+id/nav_home"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.home.HomeFragment"
-            android:label="@string/menu_home"
-            tools:layout="@layout/fragment_home"/>
+        android:id="@+id/nav_home"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
-            android:id="@+id/nav_rule_list"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListFragment"
-            android:label="@string/menu_rulelist"
-            tools:layout="@layout/fragment_rule_list">
+        android:id="@+id/nav_rule_list"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListFragment"
+        android:label="@string/menu_rulelist"
+        tools:layout="@layout/fragment_rule_list">
         <action
-                android:id="@+id/action_nav_rule_list_to_nav_edit_rule"
-                app:destination="@id/nav_edit_rule"/>
+            android:id="@+id/action_nav_rule_list_to_nav_edit_rule"
+            app:destination="@id/nav_edit_rule" />
     </fragment>
 
     <fragment
-            android:id="@+id/nav_category_list"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.CategoryListFragment"
-            android:label="@string/menu_category_list"
-            tools:layout="@layout/fragment_category_list">
+        android:id="@+id/nav_category_list"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.CategoryListFragment"
+        android:label="@string/menu_category_list"
+        tools:layout="@layout/fragment_category_list">
         <action
-                android:id="@+id/action_nav_category_list_to_nav_edit_category"
-                app:destination="@id/nav_edit_category"/>
+            android:id="@+id/action_nav_category_list_to_nav_edit_category"
+            app:destination="@id/nav_edit_category" />
     </fragment>
 
     <fragment
-            android:id="@+id/nav_applist"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListFragment"
-            android:label="@string/menu_app_list"
-            tools:layout="@layout/fragment_app_list">
+        android:id="@+id/nav_applist"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListFragment"
+        android:label="@string/menu_app_list"
+        tools:layout="@layout/fragment_app_list">
         <action
-                android:id="@+id/action_nav_applist_to_nav_track_new_app_dialog"
-                app:destination="@id/nav_track_new_app_dialog"/>
+            android:id="@+id/action_nav_applist_to_nav_track_new_app_dialog"
+            app:destination="@id/nav_track_new_app_dialog" />
     </fragment>
 
     <dialog
-            android:id="@+id/nav_track_new_app_dialog"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.TrackNewAppDialog"
-            tools:layout="@layout/fragment_track_new_app_dialog">
+        android:id="@+id/nav_track_new_app_dialog"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.TrackNewAppDialog"
+        tools:layout="@layout/fragment_track_new_app_dialog">
 
         <argument
-                android:name="appLabel"
-                app:argType="string"/>
+            android:name="appLabel"
+            app:argType="string" />
 
         <argument
-                android:name="positionInAdapter"
-                app:argType="integer"/>
+            android:name="positionInAdapter"
+            app:argType="integer" />
     </dialog>
 
 
     <dialog
-            android:id="@+id/nav_edit_category"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.EditCategoryFragment"
-            android:label="@string/menu_edit_category"
-            tools:layout="@layout/fragment_category_list">
+        android:id="@+id/nav_edit_category"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.EditCategoryFragment"
+        android:label="@string/menu_edit_category"
+        tools:layout="@layout/fragment_category_list">
 
         <argument
-                android:name="category_holder_position"
-                app:argType="integer"/>
+            android:name="category_holder_position"
+            app:argType="integer" />
 
         <argument
-                android:name="category_id"
-                app:argType="string"/>
+            android:name="category_id"
+            app:argType="string" />
 
         <argument
-                android:name="create_or_add_category"
-                app:argType="string"/>
+            android:name="create_or_add_category"
+            app:argType="string" />
     </dialog>
 
     <dialog
-            android:id="@+id/nav_edit_rule"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditRuleFragment"
-            android:label="@string/menu_edit_rule"
-            tools:layout="@layout/fragment_rule_list">
+        android:id="@+id/nav_edit_rule"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditRuleFragment"
+        android:label="@string/menu_edit_rule"
+        tools:layout="@layout/fragment_rule_list">
 
         <argument
-                android:name="rule_holder_position"
-                app:argType="integer"/>
+            android:name="rule_holder_position"
+            app:argType="integer" />
 
         <argument
-                android:name="rule_id"
-                app:argType="string"/>
+            android:name="rule_id"
+            app:argType="string" />
 
         <argument
-                android:name="create_or_add_rule"
-                app:argType="string"/>
+            android:name="create_or_add_rule"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_nav_edit_rule_to_fragment_edit_time_limit"
+            app:destination="@id/fragment_edit_time_limit" />
     </dialog>
 
-    <fragment
-            android:id="@+id/nav_short_stats_list"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats.ShortStatsListFragment"
-            android:label="@string/menu_rulelist"
-            tools:layout="@layout/fragment_short_stats_list">
-        <action
-                android:id="@+id/action_nav_short_stats_list_to_nav_full_stats"
-                app:destination="@id/nav_full_stats"/>
-    </fragment>
-
-    <fragment
-            android:id="@+id/nav_full_stats"
-            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats.FullCategoryStatsFragment"
-            android:label="@string/menu_rulelist"
-            tools:layout="@layout/fragment_full_category_stats">
-
+    <dialog
+        android:id="@+id/fragment_edit_time_limit"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditTimeLimitFragment"
+        android:label="EditTimeLimitFragment"
+        tools:layout="@layout/fragment_edit_time_limit">
         <argument
-                android:name="category_id"
-                app:argType="string"/>
-    </fragment>
+            android:name="day_name"
+            app:argType="string" />
+        <argument
+            android:name="rule_name"
+            app:argType="string" />
+        <argument
+            android:name="rule_day"
+            app:argType="string" />
+        <argument
+            android:name="rule_hours"
+            app:argType="integer" />
+        <argument
+            android:name="rule_minutes"
+            app:argType="integer" />
+    </dialog>
 </navigation>

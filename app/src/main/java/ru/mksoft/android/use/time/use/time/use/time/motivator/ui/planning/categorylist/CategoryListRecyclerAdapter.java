@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentCategoryListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
@@ -41,8 +40,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
     private final Context context;
     private List<Category> categories;
 
-    public CategoryListRecyclerAdapter(Fragment fragment, FragmentCategoryListBinding binding,
-                                       List<Category> categories) {
+    public CategoryListRecyclerAdapter(Fragment fragment, FragmentCategoryListBinding binding, List<Category> categories) {
         this.categories = categories;
         this.context = fragment.getContext();
         fragmentManager = fragment.requireActivity().getSupportFragmentManager();
@@ -59,6 +57,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 categories.set(position, DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
                 notifyItemChanged(position);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -72,25 +71,28 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 categories.add(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
                 notifyItemInserted(categories.size());
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public CategoryCardViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return new CategoryListRecyclerAdapter.CategoryCardViewHolder(LayoutInflater.from(context).inflate(R.layout.category_card, parent, false));
+    public CategoryCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.category_card, parent, false);
+        return new CategoryListRecyclerAdapter.CategoryCardViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull CategoryCardViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryCardViewHolder holder, int position) {
         holder.categoryTitle.setText(categories.get(position).getName());
 
         try {
-            Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRuleId());
+            Rule rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(categories.get(position).getRule().getId());
             holder.ruleLabel.setText(rule.getName());
         } catch (SQLException e) {
+            //todo Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -107,6 +109,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
             try {
                 DbHelperFactory.getHelper().getCategoryDAO().delete(removingCategory);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });

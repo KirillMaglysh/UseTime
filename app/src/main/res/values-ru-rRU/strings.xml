@@ -10,12 +10,7 @@
     <string name="menu_pattern_list">Patterns</string>
     <string name="new_rule">Новое правило</string>
     <string name="vertical_days_label">ПН \n ВТ \n СР \n ЧТ \n ПТ \n СБ \n ВС</string>
-    <string name="menu_rulelist">"Rules "</string>
-<<<<<<< HEAD
-    <string name="menu_edit_category">Edit Rule</string>
-    <string name="new_category">NEW CATEGORY</string>
-    <string name="statistics_label">Statistics</string>
-=======
+    <string name="menu_rulelist">"Правила"</string>
     <string name="menu_edit_category">Редактировать категорию</string>
     <string name="new_category">Новая категория</string>
     <string name="menu_category_list">Категории</string>
@@ -23,6 +18,31 @@
     <string name="card_button_edit">Изменить</string>
     <string name="card_button_remove">Удалить</string>
     <string name="menu_edit_rule">Редактировать правило</string>
-    <string name="menu_stats">Statistics</string>
-    >>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
+    <string name="monday_cut">Пнд</string>
+    <string name="tuesday_cut">Втр</string>
+    <string name="wednesday_cut">Срд</string>
+    <string name="thursday_cut">Чтв</string>
+    <string name="friday_cut">Птн</string>
+    <string name="saturday_cut">Сбт</string>
+    <string name="sunday_cut">Вск</string>
+    <string name="edit_category_name_label">Название категории</string>
+    <string name="edit_category_name_hint">Введите название категории</string>
+    <string name="edit_category_rule_label">Правило лимита времени</string>
+    <string name="edit_category_save_button">Сохранить</string>
+    <string name="edit_category_cancel_button">Отменить</string>
+    <string name="edit_category_choose_rule_warning">Выберите правило</string>
+    <string name="edit_category_name_empty_warning">Название не может быть пустым</string>
+    <string name="edit_category_name_exists_warning">Название уже существует</string>
+    <string name="edit_rule_name_label">Название правила</string>
+    <string name="edit_rule_name_hint">Введите название правила</string>
+    <string name="edit_rule_time_limit_label">Ограничение времени по дням недели</string>
+    <string name="edit_time_limit_no_name_rule">Безымянное правило</string>
+    <string name="edit_time_limit_label_text">Лимит времени %s</string>
+    <string name="edit_time_limit_label_monday">по понедельникам</string>
+    <string name="edit_time_limit_label_tuesday">по вторникам</string>
+    <string name="edit_time_limit_label_wednesday">по средам</string>
+    <string name="edit_time_limit_label_thursday">по четвергам</string>
+    <string name="edit_time_limit_label_friday">по пятницам</string>
+    <string name="edit_time_limit_label_saturday">по субботам</string>
+    <string name="edit_time_limit_label_sunday">по воскресеньям</string>
 </resources>

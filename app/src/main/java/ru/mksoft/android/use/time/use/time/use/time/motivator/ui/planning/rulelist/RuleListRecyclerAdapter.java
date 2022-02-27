@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentRuleListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.RuleFormat;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -60,6 +59,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                 rules.set(position, DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
                 notifyItemChanged(position);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -73,6 +73,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                 rules.add(DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
                 notifyItemInserted(rules.size());
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -86,17 +87,15 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RuleCardViewHolder holder, int position) {
-        RuleFormat.ShortHourMinuteFormat hourMinuteFormat = new RuleFormat.ShortHourMinuteFormat(rules.get(position));
-        holder.hours.setText(hourMinuteFormat.getHourString());
-        holder.minutes.setText(hourMinuteFormat.getMinuteString());
-        holder.ruleLabel.setText(rules.get(position).getName());
+        Rule rule = rules.get(position);
+        holder.fillRuleData(rule);
 
         holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                 .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(position,
-                        rules.get(position).getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
+                        rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
 
         holder.deleteButton.setOnClickListener(view -> {
-            Rule removingRule = rules.get(position);
+            Rule removingRule = rule;
             rules.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, getItemCount());
@@ -104,6 +103,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
             try {
                 DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -118,18 +118,12 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
         return rules.size();
     }
 
-    class RuleCardViewHolder extends RecyclerView.ViewHolder {
-        private final TextView ruleLabel;
-        private final TextView minutes;
-        private final TextView hours;
+    static final class RuleCardViewHolder extends RuleViewHolder {
         private final Button editButton;
         private final Button deleteButton;
 
         public RuleCardViewHolder(View itemView) {
             super(itemView);
-            ruleLabel = itemView.findViewById(R.id.rule_body_label);
-            minutes = itemView.findViewById(R.id.minutes_row);
-            hours = itemView.findViewById(R.id.hours_row);
             editButton = itemView.findViewById(R.id.rule_edit_button);
             deleteButton = itemView.findViewById(R.id.rule_delete_button);
         }

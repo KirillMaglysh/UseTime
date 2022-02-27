@@ -73,6 +73,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 addingApp.setCategory(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CHOSEN_CATEGORY_ID_RESULT_KEY)));
                 DbHelperFactory.getHelper().getUserAppDAO().update(addingApp);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -102,6 +103,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             try {
                 applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
             } catch (PackageManager.NameNotFoundException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
 
@@ -134,6 +136,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 removingApp.setIsTracked(false);
                 DbHelperFactory.getHelper().getUserAppDAO().update(removingApp);
             } catch (SQLException e) {
+                //todo Обработать ошибки корректно
                 e.printStackTrace();
             }
         });

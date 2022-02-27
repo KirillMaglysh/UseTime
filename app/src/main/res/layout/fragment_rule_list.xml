@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   tools:context=".ui.planning.rulelist.RuleListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.MatchParent"
+    tools:context=".ui.planning.rulelist.RuleListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rule_list_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:padding="6dp"
-
-            tools:listitem="@layout/rule_card"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-    />
-
+        android:id="@+id/rule_list_recycler_view"
+        style="@style/Theme.ListRecyclerView"
+        tools:listitem="@layout/rule_card"
+        app:layout_constraintBottom_toTopOf="@id/new_rule_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-            android:id="@+id/new_rule_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="@string/new_rule"
-    />
+        android:id="@+id/new_rule_button"
+        style="@style/Theme.ListSingleButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/new_rule" />
 </androidx.constraintlayout.widget.ConstraintLayout>

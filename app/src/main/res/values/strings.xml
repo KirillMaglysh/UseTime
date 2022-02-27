@@ -24,13 +24,34 @@
     <string name="menu_edit_rule">Edit rule</string>
     <string name="menu_edit_category">Edit category</string>
     <string name="new_category">NEW CATEGORY</string>
-<<<<<<< HEAD
-    <string name="menu_categorylist">CATEGORIES</string>
-    <string name="statistics_label">Statistics</string>
-=======
     <string name="menu_category_list">Categories</string>
     <string name="card_button_edit">Edit</string>
     <string name="card_button_remove">Remove</string>
-    <string name="menu_stats">Statistics</string>
-    >>>>>>> b578c1470d540b69a18368bb75191da55a2ca0ec
+    <string name="monday_cut">Mon</string>
+    <string name="tuesday_cut">Tue</string>
+    <string name="wednesday_cut">Wed</string>
+    <string name="thursday_cut">Thu</string>
+    <string name="friday_cut">Fri</string>
+    <string name="saturday_cut">Sat</string>
+    <string name="sunday_cut">Sun</string>
+    <string name="edit_category_name_label">Category name</string>
+    <string name="edit_category_name_hint">Enter the category name</string>
+    <string name="edit_category_rule_label">Time limit rule</string>
+    <string name="edit_category_save_button">Save</string>
+    <string name="edit_category_cancel_button">Cancel</string>
+    <string name="edit_category_choose_rule_warning">Choose a rule</string>
+    <string name="edit_category_name_empty_warning">Name cannot be empty</string>
+    <string name="edit_category_name_exists_warning">The name is already exist</string>
+    <string name="edit_rule_name_label">Rule name</string>
+    <string name="edit_rule_name_hint">Enter the rule name</string>
+    <string name="edit_rule_time_limit_label">Time limit by day of the week</string>
+    <string name="edit_time_limit_no_name_rule">Noname rule</string>
+    <string name="edit_time_limit_label_text">%s time limit</string>
+    <string name="edit_time_limit_label_monday">Monday</string>
+    <string name="edit_time_limit_label_tuesday">Tuesday</string>
+    <string name="edit_time_limit_label_wednesday">Wednesday</string>
+    <string name="edit_time_limit_label_thursday">Thursday</string>
+    <string name="edit_time_limit_label_friday">Friday</string>
+    <string name="edit_time_limit_label_saturday">Saturday</string>
+    <string name="edit_time_limit_label_sunday">Sunday</string>
 </resources>
