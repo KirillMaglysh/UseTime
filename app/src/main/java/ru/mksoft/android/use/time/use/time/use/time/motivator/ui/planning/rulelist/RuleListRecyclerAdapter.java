@@ -1,10 +1,13 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,12 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentRuleListBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper.PREDEFINED_ID;
 
 /**
  * Place here class purpose.
@@ -29,6 +35,8 @@ import java.util.List;
  */
 
 public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecyclerAdapter.RuleCardViewHolder> {
+    private static final String LOG_TAG = RuleListRecyclerAdapter.class.getSimpleName();
+
     public static final String EDIT_RULE_DIALOG_RESULT_KEY = "edit_rule_dialog_result";
     public static final String CREATED_RULE_DIALOG_RESULT_KEY = "created_rule_dialog_result";
     public static final String RULE_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "rule_holder_position_in_adapter_result";
@@ -87,26 +95,47 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RuleCardViewHolder holder, int position) {
-        Rule rule = rules.get(position);
+        Rule rule = rules.get(holder.getAdapterPosition());
         holder.fillRuleData(rule);
 
-        holder.editButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+        if (PREDEFINED_ID == rule.getId()) {
+            holder.editButton.setVisibility(View.INVISIBLE);
+            holder.deleteButton.setVisibility(View.INVISIBLE);
+        } else {
+            holder.editButton.setOnClickListener(view -> editRule(holder));
+            holder.deleteButton.setOnClickListener(view -> deleteRule(holder.getAdapterPosition()));
+        }
+    }
+
+    private void editRule(RuleCardViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        Rule rule = rules.get(position);
+        Navigation.findNavController(holder.itemView)
                 .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(position,
-                        rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY)));
+                        rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY));
+    }
 
-        holder.deleteButton.setOnClickListener(view -> {
-            Rule removingRule = rule;
-            rules.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, getItemCount());
-
-            try {
-                DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
-            } catch (SQLException e) {
-                //todo Обработать ошибки корректно
-                e.printStackTrace();
+    private void deleteRule(int position) {
+        Rule removingRule = rules.get(position);
+        try {
+            DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
+        } catch (SQLException e) {
+            Throwable cause = e.getCause();
+            while (cause != null) {
+                if (cause instanceof SQLiteConstraintException) {
+                    Log.e(LOG_TAG, "Rule deletion error", e);
+                    Toast.makeText(context, R.string.edit_rule_unable_delete_used, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                cause = cause.getCause();
             }
-        });
+
+            throw new DatabaseException(e);
+        }
+
+        rules.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 
     @Override

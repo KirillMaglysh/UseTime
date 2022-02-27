@@ -9,6 +9,8 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import java.sql.SQLException;
 import java.util.List;
 
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper.PREDEFINED_ID;
+
 /**
  * Place here class purpose.
  *
@@ -38,15 +40,7 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
     }
 
     public Category getDefaultCategory() throws SQLException {
-        Category category = getCategoryByName(Category.DEFAULT_CATEGORY_NAME);
-        if (category == null) {
-            category = new Category();
-            category.setName(Category.DEFAULT_CATEGORY_NAME);
-//            category.setRuleId(0L);
-            create(category);
-        }
-
-        return category;
+        return queryForId(PREDEFINED_ID);
     }
 
     public List<Category> getAllUserCategories() throws SQLException {

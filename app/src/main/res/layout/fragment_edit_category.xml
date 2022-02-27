@@ -10,7 +10,7 @@
 
     <EditText
         android:id="@+id/dialog_category_label"
-        style="@style/Theme.EditDialogField.Text.Bold"
+        style="@style/Theme.EditDialogField.Text"
         android:hint="@string/edit_category_name_hint"
         android:importantForAutofill="no" />
 
@@ -21,9 +21,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rule_list_in_category_dialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/rule_in_category_dialog"
-        tools:itemCount="6" />
+        android:layout_height="@dimen/edit_dialog_list_view_height"
+        tools:listitem="@layout/rule_in_category_dialog" />
 
     <LinearLayout style="@style/Theme.EditDialogButtonSet">
 

@@ -10,9 +10,10 @@
     <dimen name="cat_image_margin">10dp</dimen>
     <dimen name="fragment_padding">6dp</dimen>
 
+    <dimen name="primary_text_size">16dp</dimen>
+    <dimen name="secondary_text_size">12dp</dimen>
+
     <dimen name="card_view_padding">10dp</dimen>
-    <dimen name="card_title_text_size">16dp</dimen>
-    <dimen name="card_desc_text_size">12dp</dimen>
     <dimen name="card_desc_margin_start">10dp</dimen>
     <dimen name="card_desc_day_margin">4dp</dimen>
     <dimen name="card_button_size">48dp</dimen>
@@ -24,6 +25,5 @@
     <dimen name="list_button_top_margin">16dp</dimen>
     <dimen name="list_button_inset">0dp</dimen>
 
-    <dimen name="edit_dialog_label_text_size">12dp</dimen>
-    <dimen name="edit_dialog_field_text_size">16dp</dimen>
+    <dimen name="edit_dialog_list_view_height">300dp</dimen>
 </resources>
