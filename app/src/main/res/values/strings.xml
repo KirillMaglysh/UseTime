@@ -29,6 +29,7 @@
     <string name="menu_category_list">Categories</string>
     <string name="card_button_edit">Edit</string>
     <string name="card_button_remove">Remove</string>
+    <string name="card_button_track_app">Track app</string>
     <string name="monday_cut">Mon</string>
     <string name="tuesday_cut">Tue</string>
     <string name="wednesday_cut">Wed</string>
