@@ -1,7 +1,5 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,6 +15,12 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Activi
 
 import java.util.List;
 
+/**
+ * Main and single activity of the app
+ *
+ * @author Kirill
+ * @since 18.11.21
+ */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_applist,
                 R.id.nav_category_list,
                 R.id.nav_rule_list)
-                .setDrawerLayout(drawer)
+                .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);

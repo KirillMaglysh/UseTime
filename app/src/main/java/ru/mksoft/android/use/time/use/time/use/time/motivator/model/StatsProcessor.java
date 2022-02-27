@@ -85,7 +85,7 @@ public class StatsProcessor {
     }
 
     @NotNull
-    private AppUseStats createAppUseStatsForDate(Date curDate, UsageStats usageStat, UserApp userApp) {
+    private static AppUseStats createAppUseStatsForDate(Date curDate, UsageStats usageStat, UserApp userApp) {
         AppUseStats dbUseStats = new AppUseStats();
         dbUseStats.setDate(curDate);
         dbUseStats.setUsageTime(usageStat.getTotalTimeVisible());
@@ -95,7 +95,7 @@ public class StatsProcessor {
     }
 
     @Nullable
-    private List<UserApp> getUserApps() {
+    private static List<UserApp> getUserApps() {
         List<UserApp> userApps = null;
         try {
             userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUserApps();
@@ -103,10 +103,11 @@ public class StatsProcessor {
             //todo: корректно обработать ошибку
             e.printStackTrace();
         }
+
         return userApps;
     }
 
-    private AppListParseResults parseAppList(List<UserApp> userApps) {
+    private static AppListParseResults parseAppList(List<UserApp> userApps) {
         TreeMap<String, UserApp> userAppMap = new TreeMap<>();
         Date minDate = userApps.get(0).getLastUpdateDate();
         for (UserApp userApp : userApps) {

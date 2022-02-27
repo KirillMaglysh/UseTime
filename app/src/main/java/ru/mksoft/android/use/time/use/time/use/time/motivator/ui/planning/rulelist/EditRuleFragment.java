@@ -32,8 +32,14 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateT
  * A simple {@link Fragment} subclass.
  * Use the {@link EditRuleFragment#} factory method to
  * create an instance of this fragment.
+ *
+ * @author Kirill
+ * @since 20.12.2022
  */
 public class EditRuleFragment extends BottomSheetDialogFragment {
+    /**
+     * Key needs to get time limit from bundle
+     */
     public static final String EDIT_TIME_LIMIT_DIALOG_RESULT_KEY = "edit_time_limit_dialog_result";
     private static final Map<Rule.DayOfWeek, Integer> DAY_OF_WEEK_TEXT_KEYS = new EnumMap<>(Rule.DayOfWeek.class);
 
@@ -49,16 +55,12 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
 
     private FragmentEditRuleBinding binding;
 
+    /**
+     * Default constructor
+     */
     public EditRuleFragment() {
         setCancelable(false);
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment TrackNewAppDialog.
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

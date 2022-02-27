@@ -4,6 +4,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -16,21 +19,21 @@ public class DateTimeUtils {
     private static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
 
     /**
-     * Возвращает отформатированное значение времени в минутах.
+     * Returns formatted time value in minutes
      *
-     * @param time время в минутах
-     * @return строка вида "HH:mm"
+     * @param time time in minutes
+     * @return string in format "HH:mm"
      */
     public static String getFormattedMinutesTime(int time) {
         return getFormattedHoursMinutesTime(time / 60, time % 60);
     }
 
     /**
-     * Возвращает отформатированное значение времени.
+     * Returns formatted time value.
      *
      * @param hours   время в часах
      * @param minutes время в минутах
-     * @return строка вида "HH:mm"
+     * @return string in format "HH:mm"
      */
     public static String getFormattedHoursMinutesTime(int hours, int minutes) {
         return String.format(Locale.ENGLISH, DAY_TIME_LIMIT_FORMAT, hours, minutes);
@@ -60,12 +63,21 @@ public class DateTimeUtils {
     }
 
     /**
-     * Распарсивает значение поля ввода времени (строка вида "HH:mm").
+     * Parse value of time input field (string in format "HH:mm").
      *
-     * @param timeField поля ввода времени
-     * @return количество минут
+     * @param timeField time input field
+     * @return minutes value
      */
     public static int parseTimeFieldValue(@NonNull TextView timeField) {
         return parseHoursMinutesTime(timeField.getText());
+    }
+
+    /**
+     * Returns begin of current date
+     *
+     * @return current date begin
+     */
+    public static Date getDateOfCurrentDayBegin() {
+        return Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 }

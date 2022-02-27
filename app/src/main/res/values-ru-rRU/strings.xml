@@ -45,4 +45,6 @@
     <string name="edit_time_limit_label_friday">по пятницам</string>
     <string name="edit_time_limit_label_saturday">по субботам</string>
     <string name="edit_time_limit_label_sunday">по воскресеньям</string>
+    <string name="menu_stats">Статистика</string>
+    <string name="statistics_label">Статистика</string>
 </resources>

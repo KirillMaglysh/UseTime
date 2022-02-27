@@ -118,4 +118,25 @@
             android:name="rule_minutes"
             app:argType="integer" />
     </dialog>
+
+    <fragment
+            android:id="@+id/nav_short_stats_list"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats.ShortStatsListFragment"
+            android:label="@string/menu_rulelist"
+            tools:layout="@layout/fragment_short_stats_list">
+        <action
+                android:id="@+id/action_nav_short_stats_list_to_nav_full_stats"
+                app:destination="@id/nav_full_stats"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/nav_full_stats"
+            android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats.FullCategoryStatsFragment"
+            android:label="@string/menu_rulelist"
+            tools:layout="@layout/fragment_full_category_stats">
+
+        <argument
+                android:name="category_id"
+                app:argType="string"/>
+    </fragment>
 </navigation>

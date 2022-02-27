@@ -9,6 +9,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,6 +27,12 @@ public class AppUseStatsDao extends BaseDaoImpl<AppUseStats, Long> {
         super(connectionSource, dataClass);
     }
 
+    /**
+     * Returns list of all categories which exist in database
+     *
+     * @return List of all categories which exist in database
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<AppUseStats> getAllCategories() throws SQLException {
         return this.queryForAll();
     }
@@ -45,6 +52,14 @@ public class AppUseStatsDao extends BaseDaoImpl<AppUseStats, Long> {
     }
 */
 
+    /**
+     * Removes AppUseStats stats for userApp for date.
+     *
+     * @param userApp application for which you want to remove stats
+     * @param date date, for which you want to remove stats
+     * @return number of removed field in database
+     * @throws SQLException in case of incorrect work with database
+     */
     public int removeAppStatsPerDay(UserApp userApp, Date date) throws SQLException {
         DeleteBuilder<AppUseStats, Long> queryBuilder = deleteBuilder();
         deleteBuilder().where()
@@ -55,20 +70,31 @@ public class AppUseStatsDao extends BaseDaoImpl<AppUseStats, Long> {
         return delete(preparedQuery);
     }
 
+    /**
+     * Returns today AppUseStats of application
+     *
+     * @param userApp application, for which you want to get stats
+     * @return Returns today AppUseStats of application
+     * @throws SQLException in case of incorrect work with database
+     */
     public AppUseStats getTodayAppStats(UserApp userApp) throws SQLException {
         QueryBuilder<AppUseStats, Long> queryBuilder = queryBuilder();
-        Date date = new Date(45);
-        LocalDate date1 = LocalDate.of(2002, 12, 16);
-        date1.;
 
         queryBuilder.where()
                 .eq(AppUseStats.FIELD_USER_APP, userApp)
-                .eq(AppUseStats.FIELD_DATE, Date.from(LocalDate.now().toString()));
+                .eq(AppUseStats.FIELD_DATE, DateTimeUtils.getDateOfCurrentDayBegin());
         PreparedQuery<AppUseStats> preparedQuery = queryBuilder.prepare();
 
         return queryForFirst(preparedQuery);
     }
 
+    /**
+     * Returns summary today time of using category's applications
+     *
+     * @param category category, for which you want to get stats
+     * @return summary time today of using category's applications
+     * @throws SQLException in case of incorrect work with database
+     */
     public Long getCategoryTodaySumStats(Category category) throws SQLException {
         List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getUserAppsForCategory(category);
         long sumUseTime = 0;

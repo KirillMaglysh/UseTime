@@ -21,11 +21,19 @@ public class AppListBuilder {
     private final PackageManager packageManager;
     private final Context context;
 
-    public AppListBuilder(PackageManager packageManager, Context context) {
-        this.packageManager = packageManager;
+    /**
+     * Constructor
+     *
+     * @param context application context
+     */
+    public AppListBuilder(Context context) {
+        this.packageManager = context.getPackageManager();
         this.context = context;
     }
 
+    /**
+     * Updates information about application on the device in other thread
+     */
     public void buildAppList() {
         new Thread(new Runnable() {
             @Override
@@ -125,7 +133,7 @@ public class AppListBuilder {
         NOT_LOADED
     }
 
-    class AppParams {
+    static class AppParams {
         int originalPos;
         boolean wasFound;
 

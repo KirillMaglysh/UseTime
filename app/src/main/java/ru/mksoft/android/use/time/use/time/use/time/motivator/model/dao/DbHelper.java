@@ -30,6 +30,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     private UserAppDAO userAppDAO = null;
     private AppUseStatsDao appUseStatsDao = null;
 
+    /**
+     * @param context application context
+     */
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -51,6 +54,10 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         Log.w(TAG, "upgrade database");
     }
 
+    /**
+     * @return CategoryDAO
+     * @throws SQLException in case of incorrect work with database
+     */
     public CategoryDAO getCategoryDAO() throws SQLException {
         if (categoryDAO == null) {
             categoryDAO = new CategoryDAO(getConnectionSource(), Category.class);
@@ -59,6 +66,10 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return categoryDAO;
     }
 
+    /**
+     * @return UserAppDAO
+     * @throws SQLException in case of incorrect work with database
+     */
     public UserAppDAO getUserAppDAO() throws SQLException {
         if (userAppDAO == null) {
             userAppDAO = new UserAppDAO(getConnectionSource(), UserApp.class);
@@ -67,6 +78,10 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return userAppDAO;
     }
 
+    /**
+     * @return RuleDAO
+     * @throws SQLException in case of incorrect work with database
+     */
     public RuleDAO getRuleDAO() throws SQLException {
         if (ruleDAO == null) {
             ruleDAO = new RuleDAO(getConnectionSource(), Rule.class);
@@ -75,6 +90,10 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return ruleDAO;
     }
 
+    /**
+     * @return AppUseStatsDao
+     * @throws SQLException in case of incorrect work with database
+     */
     public AppUseStatsDao getAppUseStatsDao() throws SQLException {
         if (appUseStatsDao == null) {
             appUseStatsDao = new AppUseStatsDao(getConnectionSource(), AppUseStats.class);

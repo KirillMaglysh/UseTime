@@ -20,7 +20,14 @@ import java.util.Date;
 @Setter
 @DatabaseTable(tableName = "USER_APP")
 public class UserApp {
+    /**
+     * Name of column IS_TRACKED in dp
+     */
     public static final String FIELD_IS_TRACKED = "IS_TRACKED";
+
+    /**
+     *  Name of column CATEGORY in dp
+     */
     public static final String FIELD_CATEGORY = "CATEGORY";
 
     @DatabaseField(generatedId = true)
