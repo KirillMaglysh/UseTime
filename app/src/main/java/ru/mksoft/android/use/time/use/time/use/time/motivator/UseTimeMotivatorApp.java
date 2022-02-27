@@ -16,7 +16,7 @@ public class UseTimeMotivatorApp extends Application {
 //        deleteDatabase("use_time_motivator.db");
         super.onCreate();
         DbHelperFactory.setHelper(getApplicationContext());
-        new AppListBuilder(getPackageManager()).buildAppList();
+        new AppListBuilder(getApplicationContext()).buildAppList();
     }
 
     @Override

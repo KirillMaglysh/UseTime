@@ -11,7 +11,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.InvalidT
 import java.util.Map;
 
 /**
- * Place here class purpose.
+ * Class for database table "RULE" representation.
  *
  * @author Kirill
  * @since 18.11.2021
@@ -119,10 +119,10 @@ public class Rule {
     }
 
     /**
-     * Возвращает лимит времени за определённый день недели.
+     * Returns time limit за определённый день недели.
      *
-     * @param dayOfWeek день недели
-     * @return лимит времени
+     * @param dayOfWeek day of week
+     * @return time limit
      */
     @NonNull
     public Integer getTime(@NonNull DayOfWeek dayOfWeek) {

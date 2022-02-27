@@ -22,5 +22,10 @@
             android:id="@+id/nav_category_list"
             android:icon="@drawable/ic_menu_categories"
             android:title="@string/menu_category_list" />
+
+        <item
+                android:id="@+id/nav_short_stats_list"
+                android:icon="@drawable/ic_menu_categories"
+                android:title="@string/menu_stats" />
     </group>
 </menu>

@@ -12,6 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
 
+/**
+ * Fragment which shows all installed user applications. Here user can track or untrack applications
+ *
+ * @author Kirill
+ * @since 15.01.2022
+ */
 public class AppListFragment extends Fragment {
     private FragmentAppListBinding binding;
 
@@ -19,8 +25,7 @@ public class AppListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAppListBinding.inflate(inflater, container, false);
 
-        PackageManager packageManager = getContext().getPackageManager();
-        AppListBuilder appListBuilder = new AppListBuilder(packageManager);
+        AppListBuilder appListBuilder = new AppListBuilder(getContext());
 
         RecyclerView recyclerView = binding.appListRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -1,10 +1,11 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,11 +22,22 @@ public class AppListBuilder {
     private static final String LOG_TAG = AppListBuilder.class.getSimpleName();
 
     private final PackageManager packageManager;
+    // TODO: Проверить необходимость хранинеия переменной
+    private final Context context;
 
-    public AppListBuilder(PackageManager packageManager) {
-        this.packageManager = packageManager;
+    /**
+     * Constructor
+     *
+     * @param context application context
+     */
+    public AppListBuilder(Context context) {
+        this.packageManager = context.getPackageManager();
+        this.context = context;
     }
 
+    /**
+     * Updates information about application on the device in other thread
+     */
     public void buildAppList() {
         new Thread(new Runnable() {
             private Category defaultCategory;
@@ -60,13 +72,7 @@ public class AppListBuilder {
                             sortedUntracked.get(info.uid).wasFound = true;
                         } else if (packageManager.getLaunchIntentForPackage(info.packageName) != null) {
                             addNewUntrackedAppIntoDB(info);
-                            Intent intent = packageManager.getLaunchIntentForPackage(info.packageName);
-
-
-//                            UsageStatsManager usm = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
                         }
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -78,6 +84,7 @@ public class AppListBuilder {
                 newApp.setSystemId(info.uid);
                 newApp.setPackageName(String.valueOf(info.packageName));
                 newApp.setCategory(defaultCategory);
+                newApp.setLastUpdateDate(DateTimeUtils.getDateOfCurrentDayBegin());
 
                 DbHelperFactory.getHelper().getUserAppDAO().create(newApp);
             }
@@ -133,7 +140,7 @@ public class AppListBuilder {
         NOT_LOADED
     }
 
-    class AppParams {
+    static class AppParams {
         int originalPos;
         boolean wasFound;
 
