@@ -8,6 +8,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 
@@ -64,8 +65,8 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
             initializeDataBase();
         } catch (SQLException e) {
-            Log.e(LOG_TAG, "error creating DB " + DATABASE_NAME);
-            throw new RuntimeException(e);
+            Log.e(LOG_TAG, "Error creating DB " + DATABASE_NAME);
+            throw new DatabaseException(e);
         }
     }
 
