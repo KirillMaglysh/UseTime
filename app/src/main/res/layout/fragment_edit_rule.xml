@@ -10,7 +10,7 @@
 
     <EditText
         android:id="@+id/edit_rule_label"
-        style="@style/Theme.EditDialogField.Text.Bold"
+        style="@style/Theme.EditDialogField.Text"
         android:hint="@string/edit_rule_name_hint"
         android:importantForAutofill="no" />
 

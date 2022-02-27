@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/edit_time_limit_title"
-        style="@style/Theme.EditDialogField.Text.Bold"/>
+        style="@style/Theme.EditDialogField.Text"/>
 
     <TimePicker
         android:id="@+id/time_limit_editor"
