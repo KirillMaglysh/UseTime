@@ -1,10 +1,12 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.types.TimeStampType;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * Place here class purpose.
@@ -31,8 +33,8 @@ public class AppUseStats {
             canBeNull = false)
     private UserApp userApp;
 
-    @DatabaseField(columnName = "DATE", uniqueIndexName = "unique_app_date_idx", canBeNull = false)
-    private TimeStampType date;
+    @DatabaseField(columnName = "DATE", dataType = DataType.DATE_STRING, format = "yyyy-MM-dd", uniqueIndexName = "unique_app_date_idx", canBeNull = false)
+    private Date date;
 
     @DatabaseField(columnName = "USAGE_TIME", canBeNull = false)
     private Long usageTime;

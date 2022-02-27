@@ -1,27 +1,17 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
-import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.FieldConverter;
-import com.j256.ormlite.field.FieldType;
-import com.j256.ormlite.field.types.DateStringType;
-import com.j256.ormlite.field.types.DateTimeType;
-import com.j256.ormlite.field.types.SqlDateStringType;
-import com.j256.ormlite.field.types.TimeStampType;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -34,53 +24,109 @@ import java.util.TreeMap;
 public class StatsProcessor {
     private final Context context;
 
+    /**
+     * Constructor
+     *
+     * @param context context of Activity
+     */
     public StatsProcessor(Context context) {
         this.context = context;
     }
 
+    /**
+     * Updates stats of all app begin with its last update
+     */
     public void updateUseStats() {
+        List<UserApp> userApps = getUserApps();
+
+        AppListParseResults appListParseResults = parseAppList(userApps);
+        TreeMap<String, UserApp> userAppMap = appListParseResults.getUserAppMap();
+
+        Calendar nextDate = Calendar.getInstance();
+        Date today = Date.from(Instant.now());
+        for (Date curDate = appListParseResults.getMinDate(); curDate.before(today); ) {
+            nextDate.setTime(curDate);
+            nextDate.add(Calendar.DATE, 1);
+
+            processDateStats(userAppMap, nextDate, curDate);
+
+            curDate.setTime(nextDate.getTimeInMillis());
+        }
+    }
+
+    private void processDateStats(TreeMap<String, UserApp> userAppMap, Calendar nextDate, Date curDate) {
+        List<UsageStats> usageStats = queryUsageStats(nextDate, curDate);
+        for (UsageStats usageStat : usageStats) {
+            UserApp userApp = userAppMap.get(usageStat.getPackageName());
+            if (userApp != null && userAppMap.containsKey(userApp.getPackageName())) {
+                if (curDate.equals(userApp.getLastUpdateDate())) {
+                    try {
+                        DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (curDate.after(userApp.getLastUpdateDate()) || curDate.equals(userApp.getLastUpdateDate())) {
+                    AppUseStats dbUseStats = createAppUseStatsForDate(curDate, usageStat, userApp);
+                    try {
+                        DbHelperFactory.getHelper().getAppUseStatsDao().create(dbUseStats);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private List<UsageStats> queryUsageStats(Calendar nextDate, Date curDate) {
+        return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
+                .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, curDate.getTime(), nextDate.getTimeInMillis());
+    }
+
+    @NotNull
+    private AppUseStats createAppUseStatsForDate(Date curDate, UsageStats usageStat, UserApp userApp) {
+        AppUseStats dbUseStats = new AppUseStats();
+        dbUseStats.setDate(curDate);
+        dbUseStats.setUsageTime(usageStat.getTotalTimeVisible());
+        dbUseStats.setDate(curDate);
+        dbUseStats.setUserApp(userApp);
+        return dbUseStats;
+    }
+
+    @Nullable
+    private List<UserApp> getUserApps() {
         List<UserApp> userApps = null;
         try {
             userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUserApps();
         } catch (SQLException e) {
+            //todo: корректно обработать ошибку
             e.printStackTrace();
         }
+        return userApps;
+    }
 
+    private AppListParseResults parseAppList(List<UserApp> userApps) {
         TreeMap<String, UserApp> userAppMap = new TreeMap<>();
+        Date minDate = userApps.get(0).getLastUpdateDate();
         for (UserApp userApp : userApps) {
             userAppMap.put(userApp.getPackageName(), userApp);
-        }
-
-        long startTime = 0;
-        long endTime = 0;
-        for (int i = 1; i < Calendar.DAY_OF_WEEK; i++) {
-            UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-            List<UsageStats> usageStats = usm.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, startTime, endTime);
-
-            for (UsageStats usageStat : usageStats) {
-                UserApp userApp = userAppMap.get(usageStat.getPackageName());
-
-
-                AppUseStats appUseStats = new AppUseStats();
-                DateStringType.getSingleton().
-                TimeStampType.getSingleton().sqlArgToJava(,appUseStats.getDate(), )
-
-//                if (userApp != null && ) {
-//                    SqlDateStringType.getSingleton().sqlArgToJava(DataType.SQL_DATE, userApp.getLastUpdate(), 0);
-//                    FieldConverter
-                }
+            if (minDate.before(userApp.getLastUpdateDate())) {
+                minDate = userApp.getLastUpdateDate();
             }
         }
 
-        Calendar calendar = Calendar.getInstance();
-        long endTime = calendar.getTimeInMillis();
+        return new AppListParseResults(userAppMap, minDate);
+    }
 
-        LocalDateTime localDateTime = LocalDate.now().atStartOfDay();
-        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-//        long startTime = instant.toEpochMilli();
-        calendar.add(Calendar.YEAR, -1);
-        long startTime = calendar.getTimeInMillis();
+    @Getter
+    private static class AppListParseResults {
+        private final TreeMap<String, UserApp> userAppMap;
+        private final Date minDate;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        public AppListParseResults(TreeMap<String, UserApp> userAppMap, Date minDate) {
+            this.userAppMap = userAppMap;
+            this.minDate = minDate;
+        }
     }
 }
