@@ -3,6 +3,8 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-import org.jetbrains.annotations.NotNull;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
+import com.google.android.material.button.MaterialButton;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
@@ -34,6 +35,7 @@ import java.util.List;
 
 public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final String TRACK_NEW_APP_DIALOG_RESULT_KEY = "track_new_app_dialog_result";
+    public static final String UNTRACK_APP_DIALOG_RESULT_KEY = "untrack_app_dialog_result";
     public static final String CHOSEN_CATEGORY_ID_RESULT_KEY = "chosen_category_id";
     public static final String APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "app_holder_position_in_adapter_id";
 
@@ -47,6 +49,14 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     List<UserApp> trackedApps;
     List<UserApp> untrackedApps;
 
+    /**
+     * Constructor.
+     *
+     * @param fragment      parent fragment
+     * @param binding       fragment binding
+     * @param trackedApps   list of tracked apps
+     * @param untrackedApps list of untracked apps
+     */
     public AppListRecyclerAdapter(Fragment fragment, FragmentAppListBinding binding,
                                   List<UserApp> trackedApps, List<UserApp> untrackedApps) {
         this.trackedApps = trackedApps;
@@ -56,35 +66,61 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         lifecycleOwner = fragment.getViewLifecycleOwner();
         this.binding = binding;
 
-        fragmentManager.setFragmentResultListener(TRACK_NEW_APP_DIALOG_RESULT_KEY, lifecycleOwner, (requestKey, result) -> {
-            if (!TRACK_NEW_APP_DIALOG_RESULT_KEY.equals(requestKey)) {
-                return;
-            }
 
-            int positionInAdapter = result.getInt(APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY);
-            int newArrayPosition = positionInAdapter - 1;
-            UserApp addingApp = untrackedApps.get(newArrayPosition);
-            ((MainActivity) context).getStatsProcessor().addAppStats(addingApp);
-
-            trackedApps.add(addingApp);
-            untrackedApps.remove(newArrayPosition);
-            notifyItemRemoved(positionInAdapter);
-            notifyItemRangeChanged(positionInAdapter, getItemCount());
-
-            addingApp.setIsTracked(true);
-            try {
-                addingApp.setCategory(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CHOSEN_CATEGORY_ID_RESULT_KEY)));
-                DbHelperFactory.getHelper().getUserAppDAO().update(addingApp);
-            } catch (SQLException e) {
-                //todo Обработать ошибки корректно
-                e.printStackTrace();
-            }
-        });
+        fragmentManager.setFragmentResultListener(TRACK_NEW_APP_DIALOG_RESULT_KEY, lifecycleOwner, this::trackNewApp);
+        fragmentManager.setFragmentResultListener(UNTRACK_APP_DIALOG_RESULT_KEY, lifecycleOwner, this::untrackApp);
     }
 
-    @NotNull
+    private void trackNewApp(@NonNull String requestKey, @NonNull Bundle result) {
+        if (!TRACK_NEW_APP_DIALOG_RESULT_KEY.equals(requestKey)) {
+            return;
+        }
+
+        int positionInAdapter = result.getInt(APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY);
+        int newArrayPosition = positionInAdapter - 1;
+        UserApp addingApp = untrackedApps.get(newArrayPosition);
+
+        addingApp.setIsTracked(true);
+        try {
+            addingApp.setCategory(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CHOSEN_CATEGORY_ID_RESULT_KEY)));
+            DbHelperFactory.getHelper().getUserAppDAO().update(addingApp);
+        } catch (SQLException e) {
+            //todo Обработать ошибки корректно
+            e.printStackTrace();
+        }
+
+        trackedApps.add(addingApp);
+        untrackedApps.remove(newArrayPosition);
+        notifyItemRemoved(positionInAdapter);
+        notifyItemRangeChanged(positionInAdapter, getItemCount());
+    }
+
+    private void untrackApp(@NonNull String requestKey, @NonNull Bundle result) {
+        if (!UNTRACK_APP_DIALOG_RESULT_KEY.equals(requestKey)) {
+            return;
+        }
+
+        int newPosition = result.getInt(APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY);
+        int newArrayPosition = newPosition - 2 - untrackedApps.size();
+        UserApp removingApp = trackedApps.get(newArrayPosition);
+
+        try {
+            removingApp.setIsTracked(false);
+            DbHelperFactory.getHelper().getUserAppDAO().update(removingApp);
+        } catch (SQLException e) {
+            //todo Обработать ошибки корректно
+            e.printStackTrace();
+        }
+
+        untrackedApps.add(removingApp);
+        trackedApps.remove(newArrayPosition);
+        notifyItemRemoved(newPosition);
+        notifyItemRangeChanged(getItemCount() - trackedApps.size() - 2, getItemCount());
+    }
+
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             return new AppTypeLabel(LayoutInflater.from(context).inflate(R.layout.app_list_type, parent, false));
         } else {
@@ -93,7 +129,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position == 0 || position == untrackedApps.size() + 1) {
             bindLabel((AppTypeLabel) holder, position);
         } else {
@@ -123,30 +159,19 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void bindTrackedApp(AppCardViewHolder appCardHolder) {
-        appCardHolder.appDeleteButton.setText("DEL");
+        ((MaterialButton) appCardHolder.appDeleteButton).setIcon(context.getDrawable(R.drawable.ic_favorite_filled));
+        ((MaterialButton) appCardHolder.appDeleteButton).setIconTintMode(PorterDuff.Mode.DST_IN);
         appCardHolder.appCategory.setText(trackedApps.get(appCardHolder.getAdapterPosition() - 2 - untrackedApps.size()).getCategory().getName());
 
-        appCardHolder.appDeleteButton.setOnClickListener(view -> {
-            int newPosition = appCardHolder.getAdapterPosition();
-            int newArrayPosition = newPosition - 2 - untrackedApps.size();
-            UserApp removingApp = trackedApps.get(newArrayPosition);
-            untrackedApps.add(removingApp);
-            trackedApps.remove(newArrayPosition);
-            notifyItemRemoved(newPosition);
-            notifyItemRangeChanged(newPosition, getItemCount());
-
-            try {
-                removingApp.setIsTracked(false);
-                DbHelperFactory.getHelper().getUserAppDAO().update(removingApp);
-            } catch (SQLException e) {
-                //todo Обработать ошибки корректно
-                e.printStackTrace();
-            }
-        });
+        appCardHolder.appDeleteButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
+                .navigate(AppListFragmentDirections.actionNavApplistToNavUntrackAppDialog(
+                        appCardHolder.appLabel.getText().toString(), appCardHolder.getAdapterPosition())));
     }
 
     private void bindUntrackedApp(AppCardViewHolder appCardHolder) {
-        appCardHolder.appDeleteButton.setText("ADD");
+        ((MaterialButton) appCardHolder.appDeleteButton).setIcon(context.getDrawable(R.drawable.ic_favorite));
+        ((MaterialButton) appCardHolder.appDeleteButton).setIconTintMode(PorterDuff.Mode.SRC_IN);
+        appCardHolder.appCategory.setText("");
 
         appCardHolder.appDeleteButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
                 .navigate(AppListFragmentDirections.actionNavApplistToNavTrackNewAppDialog(
@@ -154,11 +179,8 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void bindLabel(AppTypeLabel holder, int position) {
-        if (position == 0) {
-            holder.typeLabel.setText("НЕОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ");
-        } else {
-            holder.typeLabel.setText("ОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ");
-        }
+        int appTypeLabel = position == 0 ? R.string.untracked_app : R.string.tracked_apps;
+        holder.typeLabel.setText(appTypeLabel);
     }
 
     @Override
@@ -174,7 +196,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class AppTypeLabel extends RecyclerView.ViewHolder {
         TextView typeLabel;
 
-        public AppTypeLabel(@NonNull @NotNull View itemView) {
+        public AppTypeLabel(@NonNull View itemView) {
             super(itemView);
             typeLabel = itemView.findViewById(R.id.app_list_type);
         }

@@ -29,6 +29,7 @@
     <string name="menu_category_list">Categories</string>
     <string name="card_button_edit">Edit</string>
     <string name="card_button_remove">Remove</string>
+    <string name="card_button_track_app">Track app</string>
     <string name="monday_cut">Mon</string>
     <string name="tuesday_cut">Tue</string>
     <string name="wednesday_cut">Wed</string>
@@ -58,6 +59,11 @@
     <string name="edit_time_limit_label_friday">Friday</string>
     <string name="edit_time_limit_label_saturday">Saturday</string>
     <string name="edit_time_limit_label_sunday">Sunday</string>
+    <string name="track_new_app_label">Track application</string>
+    <string name="track_new_app_category_label">Category</string>
+    <string name="untrack_app_label">Disable App Tracking</string>
+    <string name="untracked_app">UNTRACKED APPLICATIONS</string>
+    <string name="tracked_apps">TRACKED APPLICATIONS</string>
     <string name="menu_stats">Statistics</string>
     <string name="statistics_label">Satistics</string>
 </resources>

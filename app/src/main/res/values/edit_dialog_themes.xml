@@ -8,15 +8,14 @@
         <item name="android:padding">@dimen/fragment_padding</item>
     </style>
 
-    <style name="Theme.EditDialogLabel" parent="">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">@style/Theme.Text.Secondary</item>
+    <style name="Theme.EditDialog.Warning">
+        <item name="android:background">@drawable/warning_dialog_background</item>
     </style>
 
     <style name="Theme.EditDialogField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/edit_dialog_title_padding_bottom</item>
         <item name="android:textAppearance">@style/Theme.Text.Primary.Bold</item>
     </style>
 
@@ -24,9 +23,21 @@
         <item name="android:inputType">text</item>
     </style>
 
-    <style name="Theme.EditDialogButtonSet" parent="">
+    <style name="Theme.EditDialogStaticContent" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Theme.EditDialogStaticContent.Title">
+        <item name="android:paddingBottom">@dimen/edit_dialog_title_padding_bottom</item>
+        <item name="android:textAppearance">@style/Theme.Text.Primary.Bold</item>
+    </style>
+
+    <style name="Theme.EditDialogStaticContent.Label">
+        <item name="android:textAppearance">@style/Theme.Text.Secondary</item>
+    </style>
+
+    <style name="Theme.EditDialogStaticContent.ButtonSet">
         <item name="android:paddingTop">5dp</item>
     </style>
 

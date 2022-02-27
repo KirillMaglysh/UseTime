@@ -6,20 +6,20 @@
 
     <TextView
         android:id="@+id/edit_time_limit_label"
-        style="@style/Theme.EditDialogLabel"/>
+        style="@style/Theme.EditDialogStaticContent.Label" />
 
     <TextView
         android:id="@+id/edit_time_limit_title"
-        style="@style/Theme.EditDialogField.Text"/>
+        style="@style/Theme.EditDialogField.Text" />
 
     <TimePicker
         android:id="@+id/time_limit_editor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:timePickerMode="spinner"/>
+        android:timePickerMode="spinner" />
 
-    <LinearLayout style="@style/Theme.EditDialogButtonSet">
+    <LinearLayout style="@style/Theme.EditDialogStaticContent.ButtonSet">
 
         <Button
             android:id="@+id/cancel_rule_edition_button"
