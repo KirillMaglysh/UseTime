@@ -48,4 +48,15 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
 
         return query(preparedQuery);
     }
+
+    public List<UserApp> getTrackedUserAppsForCategory(Category category) throws SQLException {
+        QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
+        queryBuilder.where()
+                .eq(UserApp.FIELD_CATEGORY, category)
+                .and()
+                .eq(UserApp.FIELD_IS_TRACKED, true);
+        PreparedQuery<UserApp> preparedQuery = queryBuilder.prepare();
+
+        return query(preparedQuery);
+    }
 }

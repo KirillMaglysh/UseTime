@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -44,15 +44,16 @@ public class AppListBuilder {
 
             @Override
             public void run() {
+                List<UserApp> untrackedApps;
+                List<UserApp> trackedApps;
                 try {
                     defaultCategory = DbHelperFactory.getHelper().getCategoryDAO().getDefaultCategory();
+                    trackedApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
+                    untrackedApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUntrackedApps();
                 } catch (SQLException e) {
                     Log.e(LOG_TAG, "Error getting default category");
                     throw new DatabaseException(e);
                 }
-
-                List<UserApp> untrackedApps = queryUntrackedApps();
-                List<UserApp> trackedApps = queryTrackedApps();
 
                 TreeMap<Integer, AppParams> sortedTracked = createAppsMap(trackedApps);
                 TreeMap<Integer, AppParams> sortedUntracked = createAppsMap(untrackedApps);
@@ -60,6 +61,9 @@ public class AppListBuilder {
 
                 deleteNotFoundApps(trackedApps, sortedTracked);
                 deleteNotFoundApps(untrackedApps, sortedUntracked);
+                // TODO: обработать возможную гонку состояний
+//                listener.processAppListBuilded();
+                ((MainActivity) context).getStatsProcessor().updateUseStats();
             }
 
             private void readCurrentAppList(TreeMap<Integer, AppParams> sortedTracked, TreeMap<Integer, AppParams> sortedUntracked) {
@@ -110,28 +114,6 @@ public class AppListBuilder {
                 });
             }
         }).start();
-    }
-
-    public List<UserApp> queryUntrackedApps() {
-        List<UserApp> untrackedApps = new ArrayList<>();
-        try {
-            untrackedApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUntrackedApps();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return untrackedApps;
-    }
-
-    public List<UserApp> queryTrackedApps() {
-        List<UserApp> userApps = new ArrayList<>();
-        try {
-            userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return userApps;
     }
 
     enum AppListState {

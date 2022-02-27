@@ -11,11 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListFragmentDirections;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -43,8 +39,8 @@ public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         CategoryIntShortStatsCardHolder cardHolder = (CategoryIntShortStatsCardHolder) holder;
         ShortStatsListFragment.CategoryInShortSummary categoryStats = categoriesInShortSummary.get(position);
-        cardHolder.hourValInShortCategoryStats.setText(categoryStats.getTime()[0]);
-        cardHolder.minValInShortCategoryStats.setText(categoryStats.getTime()[1]);
+        cardHolder.hourValInShortCategoryStats.setText(String.valueOf(categoryStats.getHours()));
+        cardHolder.minValInShortCategoryStats.setText(String.valueOf(categoryStats.getMinutes()));
         cardHolder.categoryInShortStatsLabel.setText(categoryStats.getCategory().getName());
 
         ((CategoryIntShortStatsCardHolder) holder).moreButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)

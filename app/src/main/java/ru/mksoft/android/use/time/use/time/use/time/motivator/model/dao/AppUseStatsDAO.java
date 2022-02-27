@@ -55,7 +55,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * Removes AppUseStats stats for userApp for date.
      *
      * @param userApp application for which you want to remove stats
-     * @param date date, for which you want to remove stats
+     * @param date    date, for which you want to remove stats
      * @return number of removed field in database
      * @throws SQLException in case of incorrect work with database
      */
@@ -81,6 +81,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
 
         queryBuilder.where()
                 .eq(AppUseStats.FIELD_USER_APP, userApp)
+                .and()
                 .eq(AppUseStats.FIELD_DATE, DateTimeUtils.getDateOfCurrentDayBegin());
         PreparedQuery<AppUseStats> preparedQuery = queryBuilder.prepare();
 
@@ -95,7 +96,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * @throws SQLException in case of incorrect work with database
      */
     public Long getCategoryTodaySumStats(Category category) throws SQLException {
-        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getUserAppsForCategory(category);
+        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         long sumUseTime = 0;
         for (UserApp userApp : userAppsForCategory) {
             sumUseTime += getTodayAppStats(userApp).getUsageTime();

@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,11 +63,16 @@ public class ShortStatsListFragment extends Fragment {
     @Getter
     public class CategoryInShortSummary {
         private Category category;
-        private String[] time;
+        int minutes;
+        int hours;
+//        private String[] time;
 
         public CategoryInShortSummary(Category category, long timeInMilliseconds) {
             this.category = category;
-            time = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss:SSS", Locale.US).format(timeInMilliseconds).split(" ");
+            minutes = (int) TimeUnit.MILLISECONDS.toMinutes(timeInMilliseconds) % 60;
+            hours = (int) TimeUnit.MILLISECONDS.toHours(timeInMilliseconds) % 24;
+//            new DateFormat("HH mm", Locale.getDefault()).format(timeInMilliseconds).split(" ");
+//            time = new SimpleDateFormat("HH mm", Locale.UK).format(timeInMilliseconds).split(" ");
         }
     }
 }

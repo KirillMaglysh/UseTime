@@ -37,9 +37,12 @@ public class StatsProcessor {
      * Updates stats of all app begin with its last update
      */
     public void updateUseStats() {
-        List<UserApp> userApps = getUserApps();
+        List<UserApp> trackedUserApps = getTrackedUserApps();
+        if (trackedUserApps.isEmpty()) {
+            return;
+        }
 
-        AppListParseResults appListParseResults = parseAppList(userApps);
+        AppListParseResults appListParseResults = parseAppList(trackedUserApps);
         TreeMap<String, UserApp> userAppMap = appListParseResults.getUserAppMap();
 
         Calendar nextDate = Calendar.getInstance();
@@ -95,10 +98,10 @@ public class StatsProcessor {
     }
 
     @Nullable
-    private static List<UserApp> getUserApps() {
+    private static List<UserApp> getTrackedUserApps() {
         List<UserApp> userApps = null;
         try {
-            userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUserApps();
+            userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
         } catch (SQLException e) {
             //todo: корректно обработать ошибку
             e.printStackTrace();
@@ -118,6 +121,14 @@ public class StatsProcessor {
         }
 
         return new AppListParseResults(userAppMap, minDate);
+    }
+
+    private void updateAppStats() {
+
+    }
+
+    private void deleteAppStats() {
+
     }
 
     @Getter
