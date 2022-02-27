@@ -61,6 +61,9 @@
     <string name="edit_time_limit_label_sunday">Sunday</string>
     <string name="track_new_app_label">Track application</string>
     <string name="track_new_app_category_label">Category</string>
+    <string name="untrack_app_label">Disable App Tracking</string>
+    <string name="untracked_app">UNTRACKED APPLICATIONS</string>
+    <string name="tracked_apps">TRACKED APPLICATIONS</string>
     <string name="menu_stats">Statistics</string>
     <string name="statistics_label">Satistics</string>
 </resources>

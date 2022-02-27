@@ -8,6 +8,10 @@
         <item name="android:padding">@dimen/fragment_padding</item>
     </style>
 
+    <style name="Theme.EditDialog.Warning">
+        <item name="android:background">@drawable/warning_dialog_background</item>
+    </style>
+
     <style name="Theme.EditDialogField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
