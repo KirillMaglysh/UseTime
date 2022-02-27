@@ -7,11 +7,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.*;
 
 import java.sql.SQLException;
 
@@ -37,7 +33,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     private CategoryDAO categoryDAO = null;
     private RuleDAO ruleDAO = null;
     private UserAppDAO userAppDAO = null;
-    private AppUseStatsDao appUseStatsDao = null;
+    private AppUseStatsDAO appUseStatsDao = null;
 
     /**
      * Constructor
@@ -64,6 +60,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Rule.class);
             TableUtils.createTable(connectionSource, Category.class);
             TableUtils.createTable(connectionSource, UserApp.class);
+            TableUtils.createTable(connectionSource, AppUseStats.class);
 
             initializeDataBase();
         } catch (SQLException e) {
@@ -117,9 +114,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
      * @return AppUseStatsDao
      * @throws SQLException in case of incorrect work with database
      */
-    public AppUseStatsDao getAppUseStatsDao() throws SQLException {
+    public AppUseStatsDAO getAppUseStatsDao() throws SQLException {
         if (appUseStatsDao == null) {
-            appUseStatsDao = new AppUseStatsDao(getConnectionSource(), AppUseStats.class);
+            appUseStatsDao = new AppUseStatsDAO(getConnectionSource(), AppUseStats.class);
         }
 
         return appUseStatsDao;

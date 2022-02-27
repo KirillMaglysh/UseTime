@@ -16,6 +16,7 @@ import java.util.Date;
  */
 
 @DatabaseTable(tableName = "APP_USE_STATS")
+
 @Getter
 @Setter
 public class AppUseStats {
@@ -29,11 +30,10 @@ public class AppUseStats {
             foreign = true,
             foreignAutoRefresh = true,
             foreignAutoCreate = true,
-            uniqueIndexName = "unique_app_date_idx",
             canBeNull = false)
     private UserApp userApp;
 
-    @DatabaseField(columnName = "DATE", dataType = DataType.DATE_STRING, format = "yyyy-MM-dd", uniqueIndexName = "unique_app_date_idx", canBeNull = false)
+    @DatabaseField(columnName = "DATE", dataType = DataType.DATE_STRING, format = "yyyy-MM-dd", canBeNull = false)
     private Date date;
 
     @DatabaseField(columnName = "USAGE_TIME", canBeNull = false)

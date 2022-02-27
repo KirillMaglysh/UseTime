@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Утилиты для работы с датой и временем.
+ * Utils for work with date and time.
  *
  * @author Kirill
  * @since 26.02.2022
@@ -31,8 +31,8 @@ public class DateTimeUtils {
     /**
      * Returns formatted time value.
      *
-     * @param hours   время в часах
-     * @param minutes время в минутах
+     * @param hours   time in hours
+     * @param minutes time in minutes
      * @return string in format "HH:mm"
      */
     public static String getFormattedHoursMinutesTime(int hours, int minutes) {
@@ -40,21 +40,21 @@ public class DateTimeUtils {
     }
 
     /**
-     * Возвращает отформатированный лимит времени правила за определённый день недели.
+     * Returns formatted rule time limit for specific day of the week.
      *
-     * @param rule      правило
-     * @param dayOfWeek день недели
-     * @return строка вида "HH:mm"
+     * @param rule      rule
+     * @param dayOfWeek day of week
+     * @return string in format "HH:mm"
      */
     public static String getFormattedLimitTime(@NonNull Rule rule, @NonNull Rule.DayOfWeek dayOfWeek) {
         return getFormattedMinutesTime(rule.getTime(dayOfWeek));
     }
 
     /**
-     * Распарсивает строковое значение времени (строка вида "HH:mm").
+     * Parse string time value (string in format "HH:mm").
      *
-     * @param time строковое значение времени
-     * @return количество минут
+     * @param time time value in string format
+     * @return minutes number
      */
     public static int parseHoursMinutesTime(@NonNull CharSequence time) {
         int hours = Integer.parseInt(String.valueOf(time.subSequence(0, 2)));

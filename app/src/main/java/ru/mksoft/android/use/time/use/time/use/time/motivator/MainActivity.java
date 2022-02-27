@@ -1,7 +1,5 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
-
-import java.util.List;
 
 /**
  * Main and single activity of the app
@@ -30,36 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-//        startActivity(intent);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        List<ApplicationInfo> appList = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-//        String packageName = appList.get(2).packageName;
-
-//            Context packageContext = createPackageContext(packageName, 0);
-/*
-        while (uEvents.hasNextEvent()) {
-            UsageEvents.Event e = new UsageEvents.Event();
-            uEvents.getNextEvent(e);
-
-            if (e != null) {
-                Log.d(TAG, "Event: " + e.getPackageName() + "\t" + e.getTimeStamp());
-            }
-        }
-
-        System.out.println("aaaaa");
-*/
-
-//        if (UStats.getUsageStatsList(this).isEmpty()) {
-//            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-//            startActivity(intent);
-//
-//        }
-
-//        UsageStatsManager usm = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
 
         setSupportActionBar(binding.appBarMain.toolbar);
 

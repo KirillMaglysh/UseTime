@@ -12,7 +12,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +21,8 @@ import java.util.List;
  * @author Kirill
  * @since 23.02.2022
  */
-public class AppUseStatsDao extends BaseDaoImpl<AppUseStats, Long> {
-    protected AppUseStatsDao(ConnectionSource connectionSource, Class<AppUseStats> dataClass) throws SQLException {
+public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
+    protected AppUseStatsDAO(ConnectionSource connectionSource, Class<AppUseStats> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }
 

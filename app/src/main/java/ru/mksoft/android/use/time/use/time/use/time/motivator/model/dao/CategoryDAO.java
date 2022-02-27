@@ -48,5 +48,4 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         categories.remove(0);
         return categories;
     }
-
 }

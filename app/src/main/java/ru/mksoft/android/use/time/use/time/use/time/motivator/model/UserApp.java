@@ -1,5 +1,6 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -37,17 +38,12 @@ public class UserApp {
     @DatabaseField(columnName = "PACKAGE_NAME", width = 32, index = true, canBeNull = false)
     private String packageName;
 
-    @DatabaseField(columnName = "CATEGORY",
-            foreign = true,
-            foreignAutoRefresh = true,
-            foreignAutoCreate = true,
-            index = true,
-            canBeNull = false)
+    @DatabaseField(columnName = "CATEGORY", foreign = true, foreignAutoRefresh = true, columnDefinition = "integer references CATEGORIES(id) on delete restrict", index = true, canBeNull = false)
     private Category category;
 
     @DatabaseField(columnName = "IS_TRACKED", index = true, canBeNull = false)
     private Boolean isTracked = false;
 
-    @DatabaseField(columnName = "LAST_UPDATE_DATE", dataType = DataType.DATE_STRING, format = "yyyy-MM-dd", uniqueIndexName = "unique_app_date_idx", canBeNull = false)
+    @DatabaseField(columnName = "LAST_UPDATE_DATE", dataType = DataType.DATE_STRING, format = "yyyy-MM-dd", canBeNull = false)
     private Date lastUpdateDate;
 }
