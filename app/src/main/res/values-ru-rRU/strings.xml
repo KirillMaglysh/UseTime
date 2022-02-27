@@ -19,6 +19,7 @@
     <string name="menu_rule_list">Правила</string>
     <string name="card_button_edit">Изменить</string>
     <string name="card_button_remove">Удалить</string>
+    <string name="card_button_track_app">Отслеживать приложение</string>
     <string name="menu_edit_rule">Редактировать правило</string>
     <string name="monday_cut">Пнд</string>
     <string name="tuesday_cut">Втр</string>

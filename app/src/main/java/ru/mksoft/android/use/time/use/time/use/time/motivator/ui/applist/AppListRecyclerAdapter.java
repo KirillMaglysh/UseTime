@@ -3,6 +3,7 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-import org.jetbrains.annotations.NotNull;
+import com.google.android.material.button.MaterialButton;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
@@ -79,9 +80,9 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         });
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             return new AppTypeLabel(LayoutInflater.from(context).inflate(R.layout.app_list_type, parent, false));
         } else {
@@ -90,7 +91,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position == 0 || position == untrackedApps.size() + 1) {
             bindLabel((AppTypeLabel) holder, position);
         } else {
@@ -120,7 +121,8 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void bindTrackedApp(AppCardViewHolder appCardHolder) {
-        appCardHolder.appDeleteButton.setText("DEL");
+        ((MaterialButton) appCardHolder.appDeleteButton).setIcon(context.getDrawable(R.drawable.ic_favorite_filled));
+        ((MaterialButton) appCardHolder.appDeleteButton).setIconTintMode(PorterDuff.Mode.DST_IN);
         appCardHolder.appCategory.setText(trackedApps.get(appCardHolder.getAdapterPosition() - 2 - untrackedApps.size()).getCategory().getName());
 
         appCardHolder.appDeleteButton.setOnClickListener(view -> {
@@ -143,7 +145,9 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void bindUntrackedApp(AppCardViewHolder appCardHolder) {
-        appCardHolder.appDeleteButton.setText("ADD");
+        ((MaterialButton) appCardHolder.appDeleteButton).setIcon(context.getDrawable(R.drawable.ic_favorite));
+        ((MaterialButton) appCardHolder.appDeleteButton).setIconTintMode(PorterDuff.Mode.SRC_IN);
+        appCardHolder.appCategory.setText("");
 
         appCardHolder.appDeleteButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
                 .navigate(AppListFragmentDirections.actionNavApplistToNavTrackNewAppDialog(
@@ -171,7 +175,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     class AppTypeLabel extends RecyclerView.ViewHolder {
         TextView typeLabel;
 
-        public AppTypeLabel(@NonNull @NotNull View itemView) {
+        public AppTypeLabel(@NonNull View itemView) {
             super(itemView);
             typeLabel = itemView.findViewById(R.id.app_list_type);
         }
