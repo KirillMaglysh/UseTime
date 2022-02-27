@@ -26,4 +26,5 @@
 
     <dimen name="edit_dialog_label_text_size">12dp</dimen>
     <dimen name="edit_dialog_field_text_size">16dp</dimen>
+    <dimen name="edit_dialog_list_view_height">300dp</dimen>
 </resources>
