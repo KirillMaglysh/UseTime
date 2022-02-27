@@ -28,6 +28,22 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="Theme.Text" parent=""/>
+
+    <style name="Theme.Text.Primary">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
+    </style>
+
+    <style name="Theme.Text.Primary.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.Text.Secondary">
+        <item name="android:textColor">@color/secondary_text_color</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
+
     <style name="Theme.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -40,14 +56,11 @@
     </style>
 
     <style name="Theme.CardTitle" parent="Theme.CardText">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/card_title_text_size</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/Theme.Text.Primary.Bold</item>
     </style>
 
     <style name="Theme.CardDesc" parent="Theme.CardText">
-        <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textSize">@dimen/card_desc_text_size</item>
+        <item name="android:textAppearance">@style/Theme.Text.Secondary</item>
         <item name="android:layout_marginStart">@dimen/card_desc_margin_start</item>
     </style>
 

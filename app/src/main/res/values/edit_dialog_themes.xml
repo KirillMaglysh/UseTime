@@ -11,23 +11,17 @@
     <style name="Theme.EditDialogLabel" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textSize">@dimen/edit_dialog_label_text_size</item>
+        <item name="android:textAppearance">@style/Theme.Text.Secondary</item>
     </style>
 
     <style name="Theme.EditDialogField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/edit_dialog_field_text_size</item>
+        <item name="android:textAppearance">@style/Theme.Text.Primary.Bold</item>
     </style>
 
     <style name="Theme.EditDialogField.Text">
         <item name="android:inputType">text</item>
-    </style>
-
-    <style name="Theme.EditDialogField.Text.Bold">
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Theme.EditDialogButtonSet" parent="">
@@ -43,7 +37,7 @@
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/design_default_color_primary</item>
-        <item name="android:textSize">@dimen/edit_dialog_field_text_size</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
     </style>
 
     <style name="Theme.EditTimeLimitDialog" parent="" />
@@ -55,14 +49,11 @@
     </style>
 
     <style name="Theme.EditTimeLimitDialog.DayText.Desc">
-        <item name="android:textSize">@dimen/edit_dialog_label_text_size</item>
-        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textAppearance">@style/Theme.Text.Secondary</item>
     </style>
 
     <style name="Theme.EditTimeLimitDialog.DayText.Field">
-        <item name="android:textSize">@dimen/edit_dialog_field_text_size</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/Theme.Text.Primary.Bold</item>
     </style>
 
     <style name="Theme.EditTimeLimitDialog.DayCell">

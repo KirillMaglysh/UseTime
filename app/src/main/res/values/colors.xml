@@ -10,4 +10,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFFF0000</color>
     <color name="rounded_corner_background">#8BC34A</color>
+    <color name="primary_text_color">@color/black</color>
+    <color name="secondary_text_color">@color/dark_gray</color>
 </resources>
