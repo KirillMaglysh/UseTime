@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="ABACABARU"
-          android:id="@+id/category_in_dialog_label"
->
-</CheckBox>
+    android:id="@+id/category_in_dialog_label"
+    style="@style/Theme.EditDialogStaticContent" />
