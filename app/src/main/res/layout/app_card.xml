@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Theme.CardView">
+    style="@style/Theme.CardView.Outer">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+    <LinearLayout style="@style/Theme.CardView.InnerLayout">
 
         <ImageView
             android:id="@+id/app_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/app_list_icon_size"
+            android:layout_height="@dimen/app_list_icon_size"
             android:layout_weight="0"
+            android:layout_marginStart="@dimen/card_desc_margin_start"
+            android:layout_gravity="center_vertical"
             android:contentDescription="@string/app_icon_description"
-            android:layout_gravity="center"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
@@ -38,11 +35,10 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/app_add_delete_card"
+            android:id="@+id/app_card_action_button"
             style="@style/Theme.CardButton"
             android:layout_weight="0"
             android:contentDescription="@string/card_button_track_app"
-            app:icon="@drawable/ic_favorite"
-            app:iconPadding="0dp" />
+            app:icon="@drawable/ic_favorite" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
