@@ -10,7 +10,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,11 +42,18 @@ public class StatsProcessor {
             return;
         }
 
+        try {
+            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
+            System.out.println("AAxzzdAAa");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         AppListParseResults appListParseResults = parseAppList(trackedUserApps);
         TreeMap<String, UserApp> userAppMap = appListParseResults.getUserAppMap();
 
         Calendar nextDate = Calendar.getInstance();
-        Date today = Date.from(Instant.now());
+        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
         for (Date curDate = appListParseResults.getMinDate(); curDate.before(today) || curDate.equals(today); ) {
             nextDate.setTime(curDate);
             nextDate.add(Calendar.DATE, 1);
@@ -55,6 +61,10 @@ public class StatsProcessor {
             processDateStats(userAppMap, nextDate, curDate);
 
             curDate.setTime(nextDate.getTimeInMillis());
+        }
+
+        for (UserApp trackedUserApp : trackedUserApps) {
+            trackedUserApp.setLastUpdateDate(today);
         }
     }
 
@@ -65,6 +75,13 @@ public class StatsProcessor {
             if (userApp != null && userAppMap.containsKey(userApp.getPackageName())) {
                 if (curDate.equals(userApp.getLastUpdateDate())) {
                     try {
+                        try {
+                            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
+                            System.out.println("AAxzzdAAa");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
                         DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -72,9 +89,15 @@ public class StatsProcessor {
                 }
 
                 if (curDate.after(userApp.getLastUpdateDate()) || curDate.equals(userApp.getLastUpdateDate())) {
-                    AppUseStats dbUseStats = createAppUseStatsForDate(curDate, usageStat, userApp);
                     try {
-                        DbHelperFactory.getHelper().getAppUseStatsDao().create(dbUseStats);
+                        try {
+                            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
+                            System.out.println("AAxzzdAAa");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+                        DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, usageStat, userApp));
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -85,7 +108,7 @@ public class StatsProcessor {
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
         return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
-                .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, curDate.getTime(), nextDate.getTimeInMillis());
+                .queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, curDate.getTime(), nextDate.getTimeInMillis());
     }
 
     @NotNull
@@ -114,10 +137,10 @@ public class StatsProcessor {
 
     private static AppListParseResults parseAppList(List<UserApp> userApps) {
         TreeMap<String, UserApp> userAppMap = new TreeMap<>();
-        Date minDate = userApps.get(0).getLastUpdateDate();
+        Date minDate = DateTimeUtils.getDateOfCurrentDayBegin();
         for (UserApp userApp : userApps) {
             userAppMap.put(userApp.getPackageName(), userApp);
-            if (minDate.before(userApp.getLastUpdateDate())) {
+            if (minDate.after(userApp.getLastUpdateDate())) {
                 minDate = userApp.getLastUpdateDate();
             }
         }
@@ -126,7 +149,7 @@ public class StatsProcessor {
     }
 
     public void addAppStats(UserApp userApp) {
-        Date curDate = DateTimeUtils.getDateOfCurrentDayBegin();
+        Date curDate = DateTimeUtils.getDateOtherDayBegin(-Calendar.DAY_OF_WEEK);
         Calendar nextDate = Calendar.getInstance();
         Date today = DateTimeUtils.getDateOfCurrentDayBegin();
         while (curDate.before(today) || curDate.equals(today)) {
@@ -135,18 +158,25 @@ public class StatsProcessor {
 
             for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
                 if (userApp.getPackageName().equals(usageStat.getPackageName())) {
-                    createAppUseStatsForDate(curDate, usageStat, userApp);
+                    try {
+                        DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, usageStat, userApp));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 }
             }
 
             curDate.setTime(nextDate.getTimeInMillis());
         }
+
+        userApp.setLastUpdateDate(today);
     }
 
     public void removeAppAllStats(UserApp userApp) {
         try {
-            DbHelperFactory.getHelper().getAppUseStatsDao().removeAllAppStats(userApp);
+            DbHelperFactory.getHelper().getAppUseStatsDao().removeAppAllStats(userApp);
         } catch (SQLException e) {
             e.printStackTrace();
         }

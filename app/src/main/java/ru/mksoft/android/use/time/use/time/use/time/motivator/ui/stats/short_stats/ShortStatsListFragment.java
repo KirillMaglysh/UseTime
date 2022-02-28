@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import lombok.Getter;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentShortStatsListBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
@@ -31,6 +32,13 @@ public class ShortStatsListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentShortStatsListBinding.inflate(inflater, container, false);
+
+        try {
+            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
+            System.out.println("AAxzzdAAa");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         RecyclerView recyclerView = binding.appListRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

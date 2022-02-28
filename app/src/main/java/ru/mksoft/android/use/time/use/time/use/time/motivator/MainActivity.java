@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-//        startActivity(intent);
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        startActivity(intent);
         appListBuilder = new AppListBuilder(this);
         appListBuilder.buildAppList();
         statsProcessor = new StatsProcessor(this);

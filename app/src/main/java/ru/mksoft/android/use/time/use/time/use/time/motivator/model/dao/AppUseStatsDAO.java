@@ -60,13 +60,13 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * @throws SQLException in case of incorrect work with database
      */
     public int removeAppStatsPerDay(UserApp userApp, Date date) throws SQLException {
-        DeleteBuilder<AppUseStats, Long> queryBuilder = deleteBuilder();
-        deleteBuilder().where()
+        DeleteBuilder<AppUseStats, Long> deleteBuilder = deleteBuilder();
+        deleteBuilder.where()
                 .eq(AppUseStats.FIELD_USER_APP, userApp)
                 .and()
                 .eq(AppUseStats.FIELD_DATE, date);
 
-        PreparedDelete<AppUseStats> preparedQuery = queryBuilder.prepare();
+        PreparedDelete<AppUseStats> preparedQuery = deleteBuilder.prepare();
         return delete(preparedQuery);
     }
 
@@ -106,12 +106,16 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return sumUseTime;
     }
 
-    public int removeAllAppStats(UserApp userApp) throws SQLException {
+    public int removeAppAllStats(UserApp userApp) throws SQLException {
         DeleteBuilder<AppUseStats, Long> queryBuilder = deleteBuilder();
         deleteBuilder().where()
                 .eq(AppUseStats.FIELD_USER_APP, userApp);
 
         PreparedDelete<AppUseStats> preparedQuery = queryBuilder.prepare();
         return delete(preparedQuery);
+    }
+
+    public List<AppUseStats> getAllUseStats() throws SQLException {
+        return queryForAll();
     }
 }

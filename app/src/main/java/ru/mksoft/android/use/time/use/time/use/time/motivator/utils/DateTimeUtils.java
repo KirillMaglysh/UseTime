@@ -82,7 +82,7 @@ public class DateTimeUtils {
         return Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static Date getDateDayOther(int diff) {
+    public static Date getDateOtherDayBegin(int diff) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(getDateOfCurrentDayBegin());
         calendar.add(Calendar.DATE, diff);
