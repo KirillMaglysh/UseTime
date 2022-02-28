@@ -159,21 +159,21 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void bindTrackedApp(AppCardViewHolder appCardHolder) {
-        ((MaterialButton) appCardHolder.appDeleteButton).setIcon(context.getDrawable(R.drawable.ic_favorite_filled));
-        ((MaterialButton) appCardHolder.appDeleteButton).setIconTintMode(PorterDuff.Mode.DST_IN);
+        ((MaterialButton) appCardHolder.appActionButton).setIcon(context.getDrawable(R.drawable.ic_favorite_filled));
+        ((MaterialButton) appCardHolder.appActionButton).setIconTintMode(PorterDuff.Mode.DST_IN);
         appCardHolder.appCategory.setText(trackedApps.get(appCardHolder.getAdapterPosition() - 2 - untrackedApps.size()).getCategory().getName());
 
-        appCardHolder.appDeleteButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
+        appCardHolder.appActionButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
                 .navigate(AppListFragmentDirections.actionNavApplistToNavUntrackAppDialog(
                         appCardHolder.appLabel.getText().toString(), appCardHolder.getAdapterPosition())));
     }
 
     private void bindUntrackedApp(AppCardViewHolder appCardHolder) {
-        ((MaterialButton) appCardHolder.appDeleteButton).setIcon(context.getDrawable(R.drawable.ic_favorite));
-        ((MaterialButton) appCardHolder.appDeleteButton).setIconTintMode(PorterDuff.Mode.SRC_IN);
+        ((MaterialButton) appCardHolder.appActionButton).setIcon(context.getDrawable(R.drawable.ic_favorite));
+        ((MaterialButton) appCardHolder.appActionButton).setIconTintMode(PorterDuff.Mode.SRC_IN);
         appCardHolder.appCategory.setText("");
 
-        appCardHolder.appDeleteButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
+        appCardHolder.appActionButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
                 .navigate(AppListFragmentDirections.actionNavApplistToNavTrackNewAppDialog(
                         appCardHolder.appLabel.getText().toString(), appCardHolder.getAdapterPosition())));
     }
@@ -206,14 +206,14 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private final TextView appLabel;
         private final ImageView appIcon;
         private final TextView appCategory;
-        private final Button appDeleteButton;
+        private final Button appActionButton;
 
         public AppCardViewHolder(View itemView) {
             super(itemView);
             appLabel = itemView.findViewById(R.id.app_label);
             appIcon = itemView.findViewById(R.id.app_icon);
             appCategory = itemView.findViewById(R.id.app_category);
-            appDeleteButton = itemView.findViewById(R.id.app_add_delete_card);
+            appActionButton = itemView.findViewById(R.id.app_card_action_button);
         }
     }
 }
