@@ -57,4 +57,6 @@
     <string name="tracked_apps">ОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>
     <string name="menu_stats">Статистика</string>
     <string name="statistics_label">Статистика</string>
+    <string name="stat_usage_hour_sign">ч</string>
+    <string name="stat_usage_minute_sign">м</string>
 </resources>
