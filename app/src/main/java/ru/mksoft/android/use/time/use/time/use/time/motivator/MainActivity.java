@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         appListBuilder = new AppListBuilder(this);
-        appListBuilder.buildAppList();
         statsProcessor = new StatsProcessor(this);
+        appListBuilder.buildAppList();
 
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());

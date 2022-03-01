@@ -39,7 +39,7 @@ public class ShortStatsListFragment extends Fragment implements StatsProcessor.S
 
         StatsProcessor statsProcessor = ((MainActivity) getContext()).getStatsProcessor();
         progressBar = binding.shortStatsListProgressWindow.progressWindow;
-        if (statsProcessor.isPrecessed()) {
+        if (statsProcessor.isProcessed()) {
             processStatsProcessedBuilt();
         } else {
             statsProcessor.subscribe(this);

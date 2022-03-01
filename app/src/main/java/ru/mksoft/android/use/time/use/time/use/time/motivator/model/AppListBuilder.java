@@ -40,12 +40,18 @@ public class AppListBuilder {
     /**
      * Updates information about application on the device in other thread
      */
-    public void buildAppList() {
+    public synchronized void buildAppList() {
         new Thread(new Runnable() {
             private Category defaultCategory;
 
             @Override
             public void run() {
+                isBuilt = false;
+                ((MainActivity) context).getStatsProcessor().setProcessed(false);
+                process();
+            }
+
+            private synchronized void process() {
                 List<UserApp> untrackedApps;
                 List<UserApp> trackedApps;
                 try {

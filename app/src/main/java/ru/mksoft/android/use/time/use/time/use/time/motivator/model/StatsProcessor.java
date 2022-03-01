@@ -21,7 +21,7 @@ import java.util.*;
 public class StatsProcessor {
     private final Context context;
     private StatsProcessedListener uiListener;
-    private boolean isPrecessed;
+    private boolean isProcessed;
 
     /**
      * Constructor
@@ -36,6 +36,7 @@ public class StatsProcessor {
      * Updates stats of all app begin with its last update
      */
     public void updateUseStats() {
+        isProcessed = false;
         List<UserApp> trackedUserApps = getTrackedUserApps();
         if (trackedUserApps.isEmpty()) {
             notifyStatsProcessed();
@@ -61,7 +62,7 @@ public class StatsProcessor {
     }
 
     private void notifyStatsProcessed() {
-        isPrecessed = true;
+        isProcessed = true;
         if (uiListener != null) {
             uiListener.processStatsProcessedBuilt();
         }
@@ -193,8 +194,12 @@ public class StatsProcessor {
         }
     }
 
-    public boolean isPrecessed() {
-        return isPrecessed;
+    public boolean isProcessed() {
+        return isProcessed;
+    }
+
+    public void setProcessed(boolean processed) {
+        isProcessed = processed;
     }
 
     public void subscribe(StatsProcessedListener listener) {
