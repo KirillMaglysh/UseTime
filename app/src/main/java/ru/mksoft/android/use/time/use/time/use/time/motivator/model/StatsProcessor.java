@@ -152,21 +152,24 @@ public class StatsProcessor {
     }
 
     public void addAppStats(UserApp userApp) {
-        Date curDate = DateTimeUtils.getDateOtherDayBegin(-Calendar.DAY_OF_WEEK);
-        Calendar nextDate = Calendar.getInstance();
-        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
-        while (curDate.before(today) || curDate.equals(today)) {
-            nextDate.setTime(curDate);
-            nextDate.add(Calendar.DATE, 1);
-            addNewAppUsageStatsForDate(userApp, curDate, nextDate);
-            curDate.setTime(nextDate.getTimeInMillis());
-        }
+        isProcessed = false;
+        new Thread(() -> {
+            Date curDate = DateTimeUtils.getDateOtherDayBegin(-Calendar.DAY_OF_WEEK);
+            Calendar nextDate = Calendar.getInstance();
+            Date today = DateTimeUtils.getDateOfCurrentDayBegin();
+            while (curDate.before(today) || curDate.equals(today)) {
+                nextDate.setTime(curDate);
+                nextDate.add(Calendar.DATE, 1);
+                addNewAppUsageStatsForDate(userApp, curDate, nextDate);
+                curDate.setTime(nextDate.getTimeInMillis());
+            }
 
-        userApp.setLastUpdateDate(today);
+            userApp.setLastUpdateDate(today);
+            notifyStatsProcessed();
+        }).start();
     }
 
     private void addNewAppUsageStatsForDate(UserApp userApp, Date curDate, Calendar nextDate) {
-//        List<UsageStats> usageStats = queryUsageStats(curDate, nextDate);
         for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
             if (userApp.getPackageName().equals(usageStat.getPackageName())) {
                 try {
