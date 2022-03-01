@@ -1,10 +1,11 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.fragment.app.Fragment;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 
 /**
@@ -59,5 +60,11 @@ public class FullCategoryStatsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_full_category_stats, container, false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
+        super.onDestroyView();
     }
 }

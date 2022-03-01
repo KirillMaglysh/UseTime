@@ -37,4 +37,12 @@
                 android:layout_width="match_parent"
         />
     </LinearLayout>
+
+    <!--
+        <include
+                android:id="@+id/home_progress_window"
+                layout="@layout/progress_window"
+                android:visibility="invisible"
+        />
+    -->
 </LinearLayout>

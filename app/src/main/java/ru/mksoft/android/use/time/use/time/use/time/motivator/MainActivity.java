@@ -1,5 +1,8 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -14,6 +17,9 @@ import com.google.android.material.navigation.NavigationView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
+
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Main and single activity of the app
@@ -33,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         startActivity(intent);
+
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.DATE, -1);
+//        long startTime = calendar.getTimeInMillis();
+//
+//        List<UsageStats> usageStats = ((UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE))
+//                .queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, startTime, Calendar.getInstance().getTimeInMillis());
+
         appListBuilder = new AppListBuilder(this);
         appListBuilder.buildAppList();
         statsProcessor = new StatsProcessor(this);
@@ -75,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
+        appListBuilder.buildAppList();
         super.onResume();
     }
 

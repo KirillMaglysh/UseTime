@@ -32,7 +32,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * @return List of all categories which exist in database
      * @throws SQLException in case of incorrect work with database
      */
-    public List<AppUseStats> getAllCategories() throws SQLException {
+    public List<AppUseStats> getAllStats() throws SQLException {
         return this.queryForAll();
     }
 
@@ -100,6 +100,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         long sumUseTime = 0;
         for (UserApp userApp : userAppsForCategory) {
+            List<AppUseStats> allStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllStats();
             sumUseTime += getTodayAppStats(userApp).getUsageTime();
         }
 
@@ -113,9 +114,5 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
 
         PreparedDelete<AppUseStats> preparedQuery = queryBuilder.prepare();
         return delete(preparedQuery);
-    }
-
-    public List<AppUseStats> getAllUseStats() throws SQLException {
-        return queryForAll();
     }
 }

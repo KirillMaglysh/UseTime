@@ -24,6 +24,8 @@ public class AppListBuilder {
     private final PackageManager packageManager;
     // TODO: Проверить необходимость хранинеия переменной
     private final Context context;
+    private boolean isBuilt;
+    private AppListBuiltListener uiListener;
 
     /**
      * Constructor
@@ -61,9 +63,9 @@ public class AppListBuilder {
 
                 deleteNotFoundApps(trackedApps, sortedTracked);
                 deleteNotFoundApps(untrackedApps, sortedUntracked);
+
                 // TODO: обработать возможную гонку состояний
-//                listener.processAppListBuilded();
-                ((MainActivity) context).getStatsProcessor().updateUseStats();
+                notifyAppListBuilt();
             }
 
             private void readCurrentAppList(TreeMap<Integer, AppParams> sortedTracked, TreeMap<Integer, AppParams> sortedUntracked) {
@@ -116,19 +118,40 @@ public class AppListBuilder {
         }).start();
     }
 
-    enum AppListState {
-        LOADED,
-        LOADING,
-        NOT_LOADED
+    private void notifyAppListBuilt() {
+        isBuilt = true;
+        if (uiListener != null) {
+            uiListener.processAppListBuilt();
+        }
+
+        ((MainActivity) context).getStatsProcessor().updateUseStats();
+    }
+
+    public boolean isBuilt() {
+        return isBuilt;
+    }
+
+    public void subscribe(AppListBuiltListener listener) {
+        uiListener = listener;
+    }
+
+    public void unsubscribeUIListener() {
+        uiListener = null;
+    }
+
+    public interface AppListBuiltListener {
+        void processAppListBuilt();
     }
 
     static class AppParams {
         int originalPos;
+
         boolean wasFound;
 
         public AppParams(int originalPos) {
             this.originalPos = originalPos;
             wasFound = false;
         }
+
     }
 }

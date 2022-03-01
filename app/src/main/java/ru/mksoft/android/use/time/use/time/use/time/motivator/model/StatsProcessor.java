@@ -10,10 +10,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Place here class purpose.
@@ -23,6 +20,8 @@ import java.util.TreeMap;
  */
 public class StatsProcessor {
     private final Context context;
+    private StatsProcessedListener uiListener;
+    private boolean isPrecessed;
 
     /**
      * Constructor
@@ -39,14 +38,8 @@ public class StatsProcessor {
     public void updateUseStats() {
         List<UserApp> trackedUserApps = getTrackedUserApps();
         if (trackedUserApps.isEmpty()) {
+            notifyStatsProcessed();
             return;
-        }
-
-        try {
-            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
-            System.out.println("AAxzzdAAa");
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         AppListParseResults appListParseResults = parseAppList(trackedUserApps);
@@ -63,59 +56,68 @@ public class StatsProcessor {
             curDate.setTime(nextDate.getTimeInMillis());
         }
 
+        setUserAppsLastUpdate(trackedUserApps, today);
+        notifyStatsProcessed();
+    }
+
+    private void notifyStatsProcessed() {
+        isPrecessed = true;
+        if (uiListener != null) {
+            uiListener.processStatsProcessedBuilt();
+        }
+    }
+
+    private static void setUserAppsLastUpdate(List<UserApp> trackedUserApps, Date today) {
         for (UserApp trackedUserApp : trackedUserApps) {
             trackedUserApp.setLastUpdateDate(today);
         }
     }
 
     private void processDateStats(TreeMap<String, UserApp> userAppMap, Calendar nextDate, Date curDate) {
-        List<UsageStats> usageStats = queryUsageStats(curDate, nextDate);
-        for (UsageStats usageStat : usageStats) {
+        for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
             UserApp userApp = userAppMap.get(usageStat.getPackageName());
-            if (userApp != null && userAppMap.containsKey(userApp.getPackageName())) {
-                if (curDate.equals(userApp.getLastUpdateDate())) {
-                    try {
-                        try {
-                            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
-                            System.out.println("AAxzzdAAa");
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+            if (userApp != null) {
+                updateAppUseStatsForDate(curDate, usageStat.getTotalTimeVisible(), userApp);
+                userAppMap.replace(userApp.getPackageName(), userApp);
+            }
+        }
 
-                        DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+        for (Map.Entry<String, UserApp> entry : userAppMap.entrySet()) {
+            updateAppUseStatsForDate(curDate, 0, entry.getValue());
+        }
+    }
 
-                if (curDate.after(userApp.getLastUpdateDate()) || curDate.equals(userApp.getLastUpdateDate())) {
-                    try {
-                        try {
-                            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
-                            System.out.println("AAxzzdAAa");
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+    private static void updateAppUseStatsForDate(Date curDate, long totalTimeVisible, UserApp userApp) {
+        if (curDate.equals(userApp.getLastUpdateDate())) {
+            try {
+                DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
-                        DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, usageStat, userApp));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+        if (curDate.after(userApp.getLastUpdateDate()) || curDate.equals(userApp.getLastUpdateDate())) {
+            try {
+                DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, totalTimeVisible, userApp));
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
+//        List<UsageStats> usageStats = ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
+//                .queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, curDate.getTime(), Calendar.getInstance().getTimeInMillis());
+
         return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
-                .queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, curDate.getTime(), nextDate.getTimeInMillis());
+                .queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, curDate.getTime(), nextDate.getTimeInMillis());
     }
 
     @NotNull
-    private static AppUseStats createAppUseStatsForDate(Date curDate, UsageStats usageStat, UserApp userApp) {
+    private static AppUseStats createAppUseStatsForDate(Date curDate, long totalTimeVisible, UserApp userApp) {
         AppUseStats dbUseStats = new AppUseStats();
         dbUseStats.setDate(curDate);
-        dbUseStats.setUsageTime(usageStat.getTotalTimeVisible());
+        dbUseStats.setUsageTime(totalTimeVisible);
         dbUseStats.setDate(curDate);
         dbUseStats.setUserApp(userApp);
 
@@ -155,23 +157,32 @@ public class StatsProcessor {
         while (curDate.before(today) || curDate.equals(today)) {
             nextDate.setTime(curDate);
             nextDate.add(Calendar.DATE, 1);
-
-            for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
-                if (userApp.getPackageName().equals(usageStat.getPackageName())) {
-                    try {
-                        DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, usageStat, userApp));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                    break;
-                }
-            }
-
+            addNewAppUsageStatsForDate(userApp, curDate, nextDate);
             curDate.setTime(nextDate.getTimeInMillis());
         }
 
         userApp.setLastUpdateDate(today);
+    }
+
+    private void addNewAppUsageStatsForDate(UserApp userApp, Date curDate, Calendar nextDate) {
+//        List<UsageStats> usageStats = queryUsageStats(curDate, nextDate);
+        for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
+            if (userApp.getPackageName().equals(usageStat.getPackageName())) {
+                try {
+                    DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, usageStat.getTotalTimeVisible(), userApp));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                return;
+            }
+        }
+
+        try {
+            DbHelperFactory.getHelper().getAppUseStatsDao().create(createAppUseStatsForDate(curDate, 0, userApp));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void removeAppAllStats(UserApp userApp) {
@@ -180,6 +191,22 @@ public class StatsProcessor {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isPrecessed() {
+        return isPrecessed;
+    }
+
+    public void subscribe(StatsProcessedListener listener) {
+        uiListener = listener;
+    }
+
+    public void unsubscribeUIListener() {
+        uiListener = null;
+    }
+
+    public interface StatsProcessedListener {
+        void processStatsProcessedBuilt();
     }
 
     @Getter

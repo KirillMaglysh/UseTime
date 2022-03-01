@@ -5,50 +5,53 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import lombok.Getter;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentShortStatsListBinding;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ShortStatsListFragment#} factory method to
  * create an instance of this fragment.
+ *
+ * @author Kirill
+ * @since 20.02.2022
  */
-public class ShortStatsListFragment extends Fragment {
+public class ShortStatsListFragment extends Fragment implements StatsProcessor.StatsProcessedListener {
     private FragmentShortStatsListBinding binding;
+    private ConstraintLayout progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentShortStatsListBinding.inflate(inflater, container, false);
 
-        try {
-            List<AppUseStats> allUseStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllUseStats();
-            System.out.println("AAxzzdAAa");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        StatsProcessor statsProcessor = ((MainActivity) getContext()).getStatsProcessor();
+        progressBar = binding.shortStatsListProgressWindow.progressWindow;
+        if (statsProcessor.isPrecessed()) {
+            processStatsProcessedBuilt();
+        } else {
+            statsProcessor.subscribe(this);
+            progressBar.setVisibility(View.VISIBLE);
         }
-
-        RecyclerView recyclerView = binding.appListRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new ShortStatsListRecyclerAdapter(this.getContext(), buildCategoryList()));
 
         return binding.getRoot();
     }
 
     @Override
     public void onDestroyView() {
+        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         super.onDestroyView();
         binding = null;
     }
@@ -66,6 +69,18 @@ public class ShortStatsListFragment extends Fragment {
         }
 
         return shortSummaries;
+    }
+
+    @Override
+    public void processStatsProcessedBuilt() {
+        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
+        ((MainActivity) getContext()).runOnUiThread(() -> {
+            RecyclerView recyclerView = binding.statsListRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(new ShortStatsListRecyclerAdapter(this.getContext(), buildCategoryList()));
+        });
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Getter

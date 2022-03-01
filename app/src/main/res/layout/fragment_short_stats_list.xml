@@ -20,7 +20,7 @@
     />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/app_list_recycler_view"
+            android:id="@+id/stats_list_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="6dp"
@@ -32,4 +32,10 @@
             app:layout_constraintTop_toBottomOf="@+id/statistics_label"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="1.0"/>
+
+    <include
+            android:id="@+id/short_stats_list_progress_window"
+            layout="@layout/progress_window"
+            android:visibility="invisible"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

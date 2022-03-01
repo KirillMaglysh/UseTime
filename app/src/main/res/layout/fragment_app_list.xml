@@ -19,4 +19,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
     />
+
+    <include
+            android:id="@+id/app_list_progress_window"
+            layout="@layout/progress_window"
+            android:visibility="invisible"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>
