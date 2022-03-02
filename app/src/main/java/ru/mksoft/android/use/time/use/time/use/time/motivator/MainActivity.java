@@ -1,8 +1,5 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -19,7 +16,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuild
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
 
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Main and single activity of the app
@@ -60,18 +56,22 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+        buildTopLevelMenu(drawer);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private void buildTopLevelMenu(DrawerLayout drawer) {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home,
                 R.id.nav_applist,
                 R.id.nav_category_list,
-                R.id.nav_rule_list)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+                R.id.nav_rule_list,
+                R.id.nav_short_stats_list
+        ).setOpenableLayout(drawer).build();
     }
 
     @Override
