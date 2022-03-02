@@ -1,77 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
->
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-    >
-        <TextView
-                android:id="@+id/category_in_short_stats_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Theme.CardView.Outer">
+
+    <LinearLayout style="@style/Theme.CardView.InnerLayout">
 
         <TextView
+            android:id="@+id/category_in_short_stats_label"
+            style="@style/Theme.CardTitle"
+            android:gravity="start"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0">
+
+            <TextView
                 android:id="@+id/hour_val_in_short_category_stats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15"
+                style="@style/Theme.CardStatsText.TimeValue.Hours"
                 app:layout_constraintEnd_toStartOf="@+id/hour_label_in_short_category_stats"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:paddingEnd="5dp"
-        />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ч"
-                app:layout_constraintEnd_toStartOf="@+id/min_val_in_short_category_stats"
+            <TextView
                 android:id="@+id/hour_label_in_short_category_stats"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingEnd="8dp"
-        />
+                style="@style/Theme.CardStatsText.TimeSign"
+                android:layout_width="12dp"
+                android:text="@string/stat_usage_hour_sign"
+                app:layout_constraintEnd_toStartOf="@+id/minute_val_in_short_category_stats"
+                app:layout_constraintBaseline_toBaselineOf="@+id/hour_val_in_short_category_stats"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-                android:id="@+id/min_val_in_short_category_stats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15"
-                app:layout_constraintEnd_toStartOf="@+id/min_label_in_short_category_stats"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingEnd="5dp"
-        />
+            <TextView
+                android:id="@+id/minute_val_in_short_category_stats"
+                style="@style/Theme.CardStatsText.TimeValue.Minutes"
+                app:layout_constraintEnd_toStartOf="@+id/minute_label_in_short_category_stats"
+                app:layout_constraintBaseline_toBaselineOf="@+id/hour_val_in_short_category_stats"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-                android:id="@+id/min_label_in_short_category_stats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="М"
-                app:layout_constraintEnd_toStartOf="@+id/more_button_in_short_category_stats"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingEnd="8dp"
-        />
+            <TextView
+                android:id="@+id/minute_label_in_short_category_stats"
+                style="@style/Theme.CardStatsText.TimeSign"
+                android:text="@string/stat_usage_minute_sign"
+                android:layout_width="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@+id/hour_val_in_short_category_stats"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="more"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/more_button_in_short_category_stats"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="5dp"
-        />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:id="@+id/more_button_in_short_category_stats"
+            style="@style/Theme.CardButton"
+            android:contentDescription=""
+            app:icon="@drawable/ic_more" />
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -66,4 +66,6 @@
     <string name="tracked_apps">TRACKED APPLICATIONS</string>
     <string name="menu_stats">Statistics</string>
     <string name="statistics_label">Satistics</string>
+    <string name="stat_usage_hour_sign">h</string>
+    <string name="stat_usage_minute_sign">m</string>
 </resources>
