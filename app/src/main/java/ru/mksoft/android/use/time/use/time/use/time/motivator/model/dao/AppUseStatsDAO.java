@@ -100,7 +100,6 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         long sumUseTime = 0;
         for (UserApp userApp : userAppsForCategory) {
-            List<AppUseStats> allStats = DbHelperFactory.getHelper().getAppUseStatsDao().getAllStats();
             sumUseTime += getTodayAppStats(userApp).getUsageTime();
         }
 

@@ -71,6 +71,11 @@ public class StatsProcessor {
     private static void setUserAppsLastUpdate(List<UserApp> trackedUserApps, Date today) {
         for (UserApp trackedUserApp : trackedUserApps) {
             trackedUserApp.setLastUpdateDate(today);
+            try {
+                DbHelperFactory.getHelper().getUserAppDAO().update(trackedUserApp);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -79,7 +84,7 @@ public class StatsProcessor {
             UserApp userApp = userAppMap.get(usageStat.getPackageName());
             if (userApp != null) {
                 updateAppUseStatsForDate(curDate, usageStat.getTotalTimeVisible(), userApp);
-                userAppMap.replace(userApp.getPackageName(), userApp);
+                userAppMap.remove(userApp.getPackageName());
             }
         }
 
@@ -91,7 +96,8 @@ public class StatsProcessor {
     private static void updateAppUseStatsForDate(Date curDate, long totalTimeVisible, UserApp userApp) {
         if (curDate.equals(userApp.getLastUpdateDate())) {
             try {
-                DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
+                int deletedN = DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
+                System.out.println("adsskj;;adsj");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -107,11 +113,11 @@ public class StatsProcessor {
     }
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
-//        List<UsageStats> usageStats = ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
-//                .queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, curDate.getTime(), Calendar.getInstance().getTimeInMillis());
+        List<UsageStats> usageStats = ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
+                .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), Calendar.getInstance().getTimeInMillis());
 
         return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
-                .queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, curDate.getTime(), nextDate.getTimeInMillis());
+                .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), nextDate.getTimeInMillis());
     }
 
     @NotNull
