@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
@@ -17,6 +18,9 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 
 import java.sql.SQLException;
 import java.util.List;
+
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListRecyclerAdapter.TRACK_NEW_APP_DIALOG_RESULT_KEY;
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.AppListRecyclerAdapter.UNTRACK_APP_DIALOG_RESULT_KEY;
 
 /**
  * Fragment which shows all installed user applications. Here user can track or untrack applications
@@ -45,8 +49,11 @@ public class AppListFragment extends Fragment implements AppListBuilder.AppListB
 
     @Override
     public void onDestroyView() {
-        ((MainActivity) getContext()).getAppListBuilder().unsubscribeUIListener();
         super.onDestroyView();
+        ((MainActivity) getContext()).getAppListBuilder().unsubscribeUIListener();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.clearFragmentResultListener(TRACK_NEW_APP_DIALOG_RESULT_KEY);
+        fragmentManager.clearFragmentResultListener(UNTRACK_APP_DIALOG_RESULT_KEY);
         binding = null;
     }
 

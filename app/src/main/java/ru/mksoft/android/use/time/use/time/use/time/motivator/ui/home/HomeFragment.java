@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentHomeBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ShortSummaryBinding;
@@ -47,8 +46,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-//        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         super.onDestroyView();
+//        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         binding = null;
     }
 }

@@ -52,6 +52,7 @@
     <string name="edit_time_limit_label_sunday">по воскресеньям</string>
     <string name="track_new_app_label">Отслеживать приложение</string>
     <string name="track_new_app_category_label">Категория</string>
+    <string name="track_new_app_choose_category_warning">Выберите категорию</string>
     <string name="untrack_app_label">Отключить отслеживание приложения</string>
     <string name="untracked_app">НЕОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>
     <string name="tracked_apps">ОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>
@@ -59,4 +60,6 @@
     <string name="statistics_label">Статистика</string>
     <string name="stat_usage_hour_sign">ч</string>
     <string name="stat_usage_minute_sign">м</string>
+    <string name="message_dialog_default_error_title">Ошибка</string>
+    <string name="message_dialog_default_warning_title">Предупреждение</string>
 </resources>
