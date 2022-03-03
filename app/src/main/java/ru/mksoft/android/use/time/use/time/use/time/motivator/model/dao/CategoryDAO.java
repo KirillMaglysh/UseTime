@@ -22,8 +22,36 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         super(connectionSource, dataClass);
     }
 
+    /**
+     * Returns a list of all categories.
+     *
+     * @return list of all categories
+     * @throws SQLException database error
+     */
     public List<Category> getAllCategories() throws SQLException {
         return this.queryForAll();
+    }
+
+    /**
+     * Returns a list of all categories, excluding the default one
+     *
+     * @return list of all categories
+     * @throws SQLException database error
+     */
+    public List<Category> getAllCategoriesWoDefault() throws SQLException {
+        QueryBuilder<Category, Long> queryBuilder = queryBuilder();
+        queryBuilder.where().ne("id", PREDEFINED_ID);
+        return query(queryBuilder.prepare());
+    }
+
+    /**
+     * Returns the number of all categories, excluding the default one
+     *
+     * @return number of all categories
+     * @throws SQLException database error
+     */
+    public long getCategoriesWoDefaultCount() throws SQLException {
+        return queryBuilder().where().ne("id", PREDEFINED_ID).countOf();
     }
 
     public Category getCategoryByName(String name) throws SQLException {
@@ -41,11 +69,5 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
 
     public Category getDefaultCategory() throws SQLException {
         return queryForId(PREDEFINED_ID);
-    }
-
-    public List<Category> getAllUserCategories() throws SQLException {
-        List<Category> categories = this.queryForAll();
-        categories.remove(0);
-        return categories;
     }
 }

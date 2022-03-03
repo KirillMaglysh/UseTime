@@ -62,6 +62,7 @@
     <string name="track_new_app_label">Track application</string>
     <string name="track_new_app_category_label">Category</string>
     <string name="track_new_app_choose_category_warning">Chose category</string>
+    <string name="track_new_app_categories_not_found_warning">You must create at least one category before enabling usage time tracking</string>
     <string name="untrack_app_label">Disable App Tracking</string>
     <string name="untracked_app">UNTRACKED APPLICATIONS</string>
     <string name="tracked_apps">TRACKED APPLICATIONS</string>
