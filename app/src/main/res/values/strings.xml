@@ -61,6 +61,7 @@
     <string name="edit_time_limit_label_sunday">Sunday</string>
     <string name="track_new_app_label">Track application</string>
     <string name="track_new_app_category_label">Category</string>
+    <string name="track_new_app_choose_category_warning">Chose category</string>
     <string name="untrack_app_label">Disable App Tracking</string>
     <string name="untracked_app">UNTRACKED APPLICATIONS</string>
     <string name="tracked_apps">TRACKED APPLICATIONS</string>
@@ -68,4 +69,7 @@
     <string name="statistics_label">Satistics</string>
     <string name="stat_usage_hour_sign">h</string>
     <string name="stat_usage_minute_sign">m</string>
+    <string name="message_dialog_default_error_title">Error</string>
+    <string name="message_dialog_default_warning_title">Warning</string>
+    <string name="message_dialog_default_positive_button_title" translatable="false">OK</string>
 </resources>

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_rule_list_to_nav_edit_rule"
             app:destination="@id/nav_edit_rule" />
+        <action
+            android:id="@+id/action_nav_rule_list_to_nav_message_dialog"
+            app:destination="@id/nav_message_dialog" />
     </fragment>
 
     <fragment
@@ -29,6 +32,9 @@
         <action
             android:id="@+id/action_nav_category_list_to_nav_edit_category"
             app:destination="@id/nav_edit_category" />
+        <action
+            android:id="@+id/action_nav_category_list_to_nav_message_dialog"
+            app:destination="@id/nav_message_dialog" />
     </fragment>
 
     <fragment
@@ -45,9 +51,43 @@
     </fragment>
 
     <dialog
+        android:id="@+id/nav_message_dialog"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialog"
+        android:label="fragment_message_dialog"
+        tools:layout="@layout/fragment_message_dialog">
+
+        <argument
+            android:name="dialogType"
+            app:argType="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="message"
+            app:argType="string" />
+
+        <argument
+            android:name="positiveButtonTitle"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="negativeButtonTitle"
+            app:argType="string"
+            app:nullable="true" />
+
+    </dialog>
+
+    <dialog
         android:id="@+id/nav_track_new_app_dialog"
         android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.TrackNewAppDialog"
         tools:layout="@layout/fragment_track_new_app_dialog">
+        <action
+            android:id="@+id/action_nav_track_new_app_dialog_to_nav_message_dialog"
+            app:destination="@id/nav_message_dialog" />
 
         <argument
             android:name="appLabel"
@@ -78,6 +118,9 @@
         android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.categorylist.EditCategoryFragment"
         android:label="@string/menu_edit_category"
         tools:layout="@layout/fragment_category_list">
+        <action
+            android:id="@+id/action_nav_edit_category_to_nav_message_dialog"
+            app:destination="@id/nav_message_dialog" />
 
         <argument
             android:name="category_holder_position"
@@ -97,6 +140,12 @@
         android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditRuleFragment"
         android:label="@string/menu_edit_rule"
         tools:layout="@layout/fragment_rule_list">
+        <action
+            android:id="@+id/action_nav_edit_rule_to_fragment_edit_time_limit"
+            app:destination="@id/fragment_edit_time_limit" />
+        <action
+            android:id="@+id/action_nav_edit_rule_to_nav_message_dialog"
+            app:destination="@id/nav_message_dialog" />
 
         <argument
             android:name="rule_holder_position"
@@ -109,9 +158,6 @@
         <argument
             android:name="create_or_add_rule"
             app:argType="string" />
-        <action
-            android:id="@+id/action_nav_edit_rule_to_fragment_edit_time_limit"
-            app:destination="@id/fragment_edit_time_limit" />
     </dialog>
 
     <dialog

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 import java.sql.SQLException;
 
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListRecyclerAdapter.CREATED_RULE_DIALOG_RESULT_KEY;
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListRecyclerAdapter.EDIT_RULE_DIALOG_RESULT_KEY;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +50,9 @@ public class RuleListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.clearFragmentResultListener(EDIT_RULE_DIALOG_RESULT_KEY);
+        fragmentManager.clearFragmentResultListener(CREATED_RULE_DIALOG_RESULT_KEY);
         binding = null;
     }
 }

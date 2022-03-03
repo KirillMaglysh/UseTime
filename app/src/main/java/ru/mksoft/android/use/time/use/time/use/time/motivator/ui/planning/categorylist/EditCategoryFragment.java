@@ -5,10 +5,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -17,6 +18,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Fragme
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 
 import java.sql.SQLException;
 
@@ -98,13 +100,13 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
 
     private void add(Category category, Rule rule, String resultType, Integer positionInAdapter) {
         if (rule == null) {
-            Toast.makeText(this.getContext(), R.string.edit_category_choose_rule_warning, Toast.LENGTH_LONG).show();
+            warning(R.string.edit_category_choose_rule_warning);
             return;
         }
 
         String name = binding.dialogCategoryLabel.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this.getContext(), R.string.edit_category_name_empty_warning, Toast.LENGTH_LONG).show();
+            warning(R.string.edit_category_name_empty_warning);
             return;
         }
 
@@ -113,7 +115,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
         try {
             DbHelperFactory.getHelper().getCategoryDAO().createOrUpdate(category);
         } catch (SQLException e) {
-            Toast.makeText(this.getContext(), R.string.edit_category_name_exists_warning, Toast.LENGTH_LONG).show();
+            warning(R.string.edit_category_name_exists_warning);
             return;
         }
 
@@ -127,5 +129,17 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
 
     private void cancel(View view) {
         dismiss();
+    }
+
+    private void warning(int messageId) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main);
+        navHostFragment.getNavController().navigate(EditCategoryFragmentDirections.actionNavEditCategoryToNavMessageDialog(
+                MessageDialogType.WARNING,
+                null,
+                requireContext().getString(messageId),
+                null,
+                null
+        ));
     }
 }

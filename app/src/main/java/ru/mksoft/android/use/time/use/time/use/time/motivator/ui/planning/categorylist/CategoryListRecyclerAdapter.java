@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +19,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Fragme
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.RuleListRecyclerAdapter;
 
 import java.sql.SQLException;
@@ -110,7 +110,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
             holder.deleteButton.setVisibility(View.INVISIBLE);
         } else {
             holder.editButton.setOnClickListener(view -> editCategory(holder));
-            holder.deleteButton.setOnClickListener(view -> deleteCategory(holder.getAdapterPosition()));
+            holder.deleteButton.setOnClickListener(view -> deleteCategory(view, holder.getAdapterPosition()));
         }
     }
 
@@ -121,7 +121,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                         categories.get(position).getId().toString(), EDIT_CATEGORY_DIALOG_RESULT_KEY));
     }
 
-    private void deleteCategory(int position) {
+    private void deleteCategory(View view, int position) {
         Category removingCategory = categories.get(position);
         try {
             DbHelperFactory.getHelper().getCategoryDAO().delete(removingCategory);
@@ -129,8 +129,15 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
             Throwable cause = e.getCause();
             while (cause != null) {
                 if (cause instanceof SQLiteConstraintException) {
-                    Log.e(LOG_TAG, "Rule deletion error", e);
-                    Toast.makeText(context, R.string.edit_category_unable_delete_used, Toast.LENGTH_LONG).show();
+                    Log.e(LOG_TAG, "Category deletion error", e);
+                    Navigation.findNavController(view)
+                            .navigate(CategoryListFragmentDirections.actionNavCategoryListToNavMessageDialog(
+                                    MessageDialogType.ERROR,
+                                    null,
+                                    context.getString(R.string.edit_category_unable_delete_used),
+                                    null,
+                                    null
+                            ));
                     return;
                 }
                 cause = cause.getCause();
