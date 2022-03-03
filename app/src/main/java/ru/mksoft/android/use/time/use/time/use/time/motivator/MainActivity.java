@@ -1,8 +1,11 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,7 +27,7 @@ import java.util.Calendar;
  * @since 18.11.21
  */
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -39,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
         long start = calendar.getTimeInMillis();
 //        List<UsageStats> usageStats = ((UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE))
 //                .queryUsageStats(UsageStatsManager.IN, start, end);
-
-
-        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        startActivity(intent);
 
         appListBuilder = new AppListBuilder(this);
         statsProcessor = new StatsProcessor(this);
@@ -98,7 +97,55 @@ public class MainActivity extends AppCompatActivity {
         return appListBuilder;
     }
 
+    /**
+     * Return statistics processor.
+     *
+     * @return statistics processor
+     */
     public StatsProcessor getStatsProcessor() {
         return statsProcessor;
+    }
+
+    /**
+     * Request PACKAGE_USAGE_STATS permission.
+     *
+     * @param listener request listener
+     */
+    public void requestPackageUsageStatsPermission(RequestPackageUsageStatsPermissionListener listener) {
+        AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        int mode = checkUsageStatsPermission
+                (appOps);
+
+        if (mode == AppOpsManager.MODE_ALLOWED) {
+            listener.onPermissionGranted(true);
+            return;
+        }
+
+        appOps.startWatchingMode(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                getPackageName(),
+                (operation, packageName) -> {
+                    int newMode = checkUsageStatsPermission(appOps);
+                    Log.i(LOG_TAG, "PACKAGE_USAGE_STATS permission changed to " + newMode);
+                    listener.onPermissionGranted(newMode == AppOpsManager.MODE_ALLOWED);
+                });
+
+        // todo ограничить количество запросов и решить, что делать, если пользователь не даёт нужное разрешение
+        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+    }
+
+    private int checkUsageStatsPermission(AppOpsManager appOps) {
+        return appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
+    }
+
+    /**
+     * Listener for request statistics processor result.
+     */
+    public interface RequestPackageUsageStatsPermissionListener {
+        /**
+         * Action when permission requested
+         *
+         * @param isGranted true, if granted
+         */
+        void onPermissionGranted(boolean isGranted);
     }
 }
