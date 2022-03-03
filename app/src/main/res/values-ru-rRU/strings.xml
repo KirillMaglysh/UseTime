@@ -53,6 +53,7 @@
     <string name="track_new_app_label">Отслеживать приложение</string>
     <string name="track_new_app_category_label">Категория</string>
     <string name="track_new_app_choose_category_warning">Выберите категорию</string>
+    <string name="track_new_app_categories_not_found_warning">Перед подключением отслеживания времени использования необходимо создать хотя бы одну категорию</string>
     <string name="untrack_app_label">Отключить отслеживание приложения</string>
     <string name="untracked_app">НЕОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>
     <string name="tracked_apps">ОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>

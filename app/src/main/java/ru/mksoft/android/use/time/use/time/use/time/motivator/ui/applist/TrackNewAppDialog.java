@@ -58,7 +58,7 @@ public class TrackNewAppDialog extends BottomSheetDialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         TrackAppCategoryListRecyclerAdapter categoryListAdapter = null;
         try {
-            categoryListAdapter = new TrackAppCategoryListRecyclerAdapter(DbHelperFactory.getHelper().getCategoryDAO().getAllCategories());
+            categoryListAdapter = new TrackAppCategoryListRecyclerAdapter(DbHelperFactory.getHelper().getCategoryDAO().getAllCategoriesWoDefault());
             recyclerView.setAdapter(categoryListAdapter);
         } catch (SQLException e) {
             e.printStackTrace();

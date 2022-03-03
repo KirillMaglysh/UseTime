@@ -33,7 +33,7 @@ public class CategoryListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         CategoryListRecyclerAdapter adapter = null;
         try {
-            adapter = new CategoryListRecyclerAdapter(this, binding, DbHelperFactory.getHelper().getCategoryDAO().getAllUserCategories());
+            adapter = new CategoryListRecyclerAdapter(this, binding, DbHelperFactory.getHelper().getCategoryDAO().getAllCategoriesWoDefault());
             recyclerView.setAdapter(adapter);
         } catch (SQLException e) {
             //todo Обработать ошибки корректно

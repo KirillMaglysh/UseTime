@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_nav_applist_to_nav_untrack_app_dialog"
             app:destination="@id/nav_untrack_app_dialog" />
+        <action
+            android:id="@+id/action_nav_applist_to_nav_message_dialog"
+            app:destination="@id/nav_message_dialog" />
     </fragment>
 
     <dialog
