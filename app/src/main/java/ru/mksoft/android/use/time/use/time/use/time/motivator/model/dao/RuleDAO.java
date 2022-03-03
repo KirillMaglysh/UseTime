@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Place here class purpose.
+ * Rule data access object.
  *
  * @author Kirill
  * @since 11.02.2022
@@ -20,10 +20,23 @@ public class RuleDAO extends BaseDaoImpl<Rule, Long> {
         super(connectionSource, dataClass);
     }
 
+    /**
+     * Returns all rules.
+     *
+     * @return all rules
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<Rule> getAllRules() throws SQLException {
         return this.queryForAll();
     }
 
+    /**
+     * Returns a rule by name.
+     *
+     * @param name rule name
+     * @return rule
+     * @throws SQLException in case of incorrect work with database
+     */
     public Rule getRuleByName(String name) throws SQLException {
         QueryBuilder<Rule, Long> queryBuilder = queryBuilder();
         queryBuilder.where().eq(Rule.FIELD_RULE_NAME, name);

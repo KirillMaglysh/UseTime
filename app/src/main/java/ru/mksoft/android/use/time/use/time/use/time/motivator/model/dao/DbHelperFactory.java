@@ -4,7 +4,7 @@ import android.content.Context;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 /**
- * Place here class purpose.
+ * Database Helper Factory.
  *
  * @author Kirill
  * @since 18.11.2021
