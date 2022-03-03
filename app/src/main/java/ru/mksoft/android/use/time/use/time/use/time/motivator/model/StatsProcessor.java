@@ -26,6 +26,7 @@ public class StatsProcessor {
     private final MainActivity activity;
     private StatsProcessedListener uiListener;
     private boolean isProcessed;
+    private final MainActivity.RequestPackageUsageStatsPermissionListener updateUseStatsRequestPackageUsageStatsPermissionListener;
 
     /**
      * Constructor
@@ -34,19 +35,22 @@ public class StatsProcessor {
      */
     public StatsProcessor(MainActivity activity) {
         this.activity = activity;
+
+        // Using a single listener to prevent duplicating permission requests at application startup
+        updateUseStatsRequestPackageUsageStatsPermissionListener = isGranted -> {
+            if (isGranted) {
+                updateUseStatsGrantedPermission();
+            } else {
+                Log.w(LOG_TAG, "Package usage stats permission denied");
+            }
+        };
     }
 
     /**
      * Updates stats of all app begin with its last update
      */
     public void updateUseStats() {
-        activity.requestPackageUsageStatsPermission(isGranted -> {
-            if (isGranted) {
-                updateUseStatsGrantedPermission();
-            } else {
-                Log.w(LOG_TAG, "Package usage stats permission denied");
-            }
-        });
+        activity.requestPackageUsageStatsPermission(updateUseStatsRequestPackageUsageStatsPermissionListener);
     }
 
     private void updateUseStatsGrantedPermission() {
