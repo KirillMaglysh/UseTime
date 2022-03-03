@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * Place here class purpose.
+ * Class for database table "APP_USE_STATS" representation.
  *
  * @author Kirill
  * @since 23.02.2022
@@ -20,9 +20,17 @@ import java.util.Date;
 @Getter
 @Setter
 public class AppUseStats {
+    /**
+     * USER_APP field name
+     */
     public static final String FIELD_USER_APP = "USER_APP";
+
+    /**
+     * DATE field name
+     */
     public static final String FIELD_DATE = "DATE";
 
+    @SuppressWarnings("FieldNamingConvention")
     @DatabaseField(generatedId = true)
     private Long id;
 
@@ -33,7 +41,11 @@ public class AppUseStats {
             canBeNull = false)
     private UserApp userApp;
 
-    @DatabaseField(columnName = "DATE", dataType = DataType.DATE_STRING, format = "yyyy-MM-dd", canBeNull = false)
+    @SuppressWarnings("FieldNamingConvention")
+    @DatabaseField(columnName = "DATE",
+            dataType = DataType.DATE_STRING,
+            format = "yyyy-MM-dd",
+            canBeNull = false)
     private Date date;
 
     @DatabaseField(columnName = "USAGE_TIME", canBeNull = false)
