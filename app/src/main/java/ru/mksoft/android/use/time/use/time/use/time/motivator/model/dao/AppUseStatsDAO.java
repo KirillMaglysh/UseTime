@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Place here class purpose.
+ * Application usage statistics data access object.
  *
  * @author Kirill
  * @since 23.02.2022
@@ -27,7 +27,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     }
 
     /**
-     * Returns list of all categories which exist in database
+     * Returns list of all categories which exist in database.
      *
      * @return List of all categories which exist in database
      * @throws SQLException in case of incorrect work with database
@@ -71,7 +71,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     }
 
     /**
-     * Returns today AppUseStats of application
+     * Returns today AppUseStats of application.
      *
      * @param userApp application, for which you want to get stats
      * @return Returns today AppUseStats of application
@@ -90,7 +90,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     }
 
     /**
-     * Returns summary today time of using category's applications
+     * Returns summary today time of using category's applications.
      *
      * @param category category, for which you want to get stats
      * @return summary time today of using category's applications
@@ -106,6 +106,13 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return sumUseTime;
     }
 
+    /**
+     * Clears application usage statistics.
+     *
+     * @param userApp application
+     * @return number of records deleted
+     * @throws SQLException in case of incorrect work with database
+     */
     public int removeAppAllStats(UserApp userApp) throws SQLException {
         DeleteBuilder<AppUseStats, Long> queryBuilder = deleteBuilder();
         deleteBuilder().where()
