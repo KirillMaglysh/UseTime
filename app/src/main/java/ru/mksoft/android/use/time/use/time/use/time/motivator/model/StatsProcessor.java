@@ -3,9 +3,11 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.util.Log;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
@@ -19,23 +21,35 @@ import java.util.*;
  * @since 24.02.2022
  */
 public class StatsProcessor {
-    private final Context context;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private final MainActivity activity;
     private StatsProcessedListener uiListener;
     private boolean isProcessed;
 
     /**
      * Constructor
      *
-     * @param context context of Activity
+     * @param activity context of Activity
      */
-    public StatsProcessor(Context context) {
-        this.context = context;
+    public StatsProcessor(MainActivity activity) {
+        this.activity = activity;
     }
 
     /**
      * Updates stats of all app begin with its last update
      */
     public void updateUseStats() {
+        activity.requestPackageUsageStatsPermission(isGranted -> {
+            if (isGranted) {
+                updateUseStatsGrantedPermission();
+            } else {
+                Log.w(LOG_TAG, "Package usage stats permission denied");
+            }
+        });
+    }
+
+    private void updateUseStatsGrantedPermission() {
         isProcessed = false;
         List<UserApp> trackedUserApps = getTrackedUserApps();
         if (trackedUserApps.isEmpty()) {
@@ -113,10 +127,10 @@ public class StatsProcessor {
     }
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
-        List<UsageStats> usageStats = ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
+        List<UsageStats> usageStats = ((UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE))
                 .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), Calendar.getInstance().getTimeInMillis());
 
-        return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
+        return ((UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE))
                 .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), nextDate.getTimeInMillis());
     }
 
@@ -157,7 +171,22 @@ public class StatsProcessor {
         return new AppListParseResults(userAppMap, minDate);
     }
 
+    /**
+     * Add application statistic.
+     *
+     * @param userApp application
+     */
     public void addAppStats(UserApp userApp) {
+        activity.requestPackageUsageStatsPermission(isGranted -> {
+            if (isGranted) {
+                addAppStatsGrantedPermission(userApp);
+            } else {
+                Log.w(LOG_TAG, "Package usage stats permission denied");
+            }
+        });
+    }
+
+    private void addAppStatsGrantedPermission(UserApp userApp) {
         isProcessed = false;
         new Thread(() -> {
             Date curDate = DateTimeUtils.getDateOtherDayBegin(-Calendar.DAY_OF_WEEK);
