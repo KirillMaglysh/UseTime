@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,6 +37,8 @@ import java.util.List;
  */
 
 public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String LOG_TAG = AppListRecyclerAdapter.class.getSimpleName();
+
     public static final String TRACK_NEW_APP_DIALOG_RESULT_KEY = "track_new_app_dialog_result";
     public static final String UNTRACK_APP_DIALOG_RESULT_KEY = "untrack_app_dialog_result";
     public static final String CHOSEN_CATEGORY_ID_RESULT_KEY = "chosen_category_id";
@@ -176,9 +180,31 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ((MaterialButton) appCardHolder.appActionButton).setIconTintMode(PorterDuff.Mode.SRC_IN);
         appCardHolder.appCategory.setText("");
 
-        appCardHolder.appActionButton.setOnClickListener(view -> Navigation.findNavController(appCardHolder.itemView)
+        appCardHolder.appActionButton.setOnClickListener(view -> onTrackButtonClick(view, appCardHolder));
+    }
+
+    private void onTrackButtonClick(View view, AppCardViewHolder appCardHolder) {
+        try {
+            if (DbHelperFactory.getHelper().getCategoryDAO().getCategoriesWoDefaultCount() == 0) {
+                Log.w(LOG_TAG, "Categories for tracking not found");
+                Navigation.findNavController(view)
+                        .navigate(AppListFragmentDirections.actionNavApplistToNavMessageDialog(
+                                MessageDialogType.WARNING,
+                                null,
+                                context.getString(R.string.track_new_app_categories_not_found_warning),
+                                null,
+                                null
+                        ));
+                return;
+            }
+        } catch (SQLException e) {
+            //todo Обработать ошибки корректно
+            e.printStackTrace();
+        }
+
+        Navigation.findNavController(appCardHolder.itemView)
                 .navigate(AppListFragmentDirections.actionNavApplistToNavTrackNewAppDialog(
-                        appCardHolder.appLabel.getText().toString(), appCardHolder.getAdapterPosition())));
+                        appCardHolder.appLabel.getText().toString(), appCardHolder.getAdapterPosition()));
     }
 
     private void bindLabel(AppTypeLabel holder, int position) {

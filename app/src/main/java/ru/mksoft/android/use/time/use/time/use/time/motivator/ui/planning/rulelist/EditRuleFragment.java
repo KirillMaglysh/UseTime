@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +17,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentEditRuleBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 
 import java.sql.SQLException;
 import java.util.EnumMap;
@@ -84,6 +84,13 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
 
         fillRuleData(finalRule);
         assignListeners(fragmentArgs, finalRule);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.clearFragmentResultListener(EDIT_TIME_LIMIT_DIALOG_RESULT_KEY);
     }
 
     private void fillRuleData(Rule rule) {
@@ -170,7 +177,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
     private void saveRule(Rule rule, String resultType, Integer positionInAdapter) {
         String ruleName = binding.editRuleLabel.getText().toString().trim();
         if (TextUtils.isEmpty(ruleName)) {
-            Toast.makeText(this.getContext(), R.string.edit_category_name_empty_warning, Toast.LENGTH_LONG).show();
+            warning(R.string.edit_category_name_empty_warning);
             return;
         }
 
@@ -179,7 +186,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
         try {
             DbHelperFactory.getHelper().getRuleDAO().createOrUpdate(rule);
         } catch (SQLException e) {
-            Toast.makeText(this.getContext(), R.string.edit_category_name_exists_warning, Toast.LENGTH_LONG).show();
+            warning(R.string.edit_category_name_exists_warning);
             return;
         }
 
@@ -201,5 +208,17 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
         timeLimits.put(SATURDAY, parseTimeFieldValue(binding.saturdayTimeLimit));
         timeLimits.put(SUNDAY, parseTimeFieldValue(binding.sundayTimeLimit));
         return timeLimits;
+    }
+
+    private void warning(int messageId) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment_content_main);
+        navHostFragment.getNavController().navigate(EditRuleFragmentDirections.actionNavEditRuleToNavMessageDialog(
+                MessageDialogType.WARNING,
+                null,
+                requireContext().getString(messageId),
+                null,
+                null
+        ));
     }
 }

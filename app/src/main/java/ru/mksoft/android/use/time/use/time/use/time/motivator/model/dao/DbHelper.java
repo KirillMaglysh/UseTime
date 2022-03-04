@@ -22,6 +22,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "use_time_motivator.db";
     private static final int DATABASE_VERSION = 1;
+
     /**
      * Идентификатор записи, создаваемой по умолчанию.
      */
@@ -49,8 +50,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase database) {
         super.onOpen(database);
-        // Без этой строки не работают ограничения обновления и удаления
-        // данных в связанных таблицах.
+        // Without this line, update and delete data restrictions in related tables do not work.
         database.execSQL("PRAGMA foreign_keys = ON;");
     }
 
@@ -75,7 +75,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * @return CategoryDAO
+     * Return the category data access object.
+     *
+     * @return category data access object
      * @throws SQLException in case of incorrect work with database
      */
     public CategoryDAO getCategoryDAO() throws SQLException {
@@ -87,7 +89,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * @return UserAppDAO
+     * Return the application data access object.
+     *
+     * @return application data access object
      * @throws SQLException in case of incorrect work with database
      */
     public UserAppDAO getUserAppDAO() throws SQLException {
@@ -99,7 +103,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * @return RuleDAO
+     * Return the rule data access object.
+     *
+     * @return rule data access object
      * @throws SQLException in case of incorrect work with database
      */
     public RuleDAO getRuleDAO() throws SQLException {
@@ -111,7 +117,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * @return AppUseStatsDao
+     * Return the application usage statistics data access object.
+     *
+     * @return application usage statistics data access object
      * @throws SQLException in case of incorrect work with database
      */
     public AppUseStatsDAO getAppUseStatsDao() throws SQLException {

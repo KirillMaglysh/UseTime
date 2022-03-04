@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +19,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Fragme
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 
 import java.sql.SQLException;
@@ -103,7 +103,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
             holder.deleteButton.setVisibility(View.INVISIBLE);
         } else {
             holder.editButton.setOnClickListener(view -> editRule(holder));
-            holder.deleteButton.setOnClickListener(view -> deleteRule(holder.getAdapterPosition()));
+            holder.deleteButton.setOnClickListener(view -> deleteRule(view, holder.getAdapterPosition()));
         }
     }
 
@@ -115,7 +115,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                         rule.getId().toString(), EDIT_RULE_DIALOG_RESULT_KEY));
     }
 
-    private void deleteRule(int position) {
+    private void deleteRule(View view, int position) {
         Rule removingRule = rules.get(position);
         try {
             DbHelperFactory.getHelper().getRuleDAO().delete(removingRule);
@@ -124,7 +124,14 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
             while (cause != null) {
                 if (cause instanceof SQLiteConstraintException) {
                     Log.e(LOG_TAG, "Rule deletion error", e);
-                    Toast.makeText(context, R.string.edit_rule_unable_delete_used, Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(view)
+                            .navigate(RuleListFragmentDirections.actionNavRuleListToNavMessageDialog(
+                                    MessageDialogType.ERROR,
+                                    null,
+                                    context.getString(R.string.edit_rule_unable_delete_used),
+                                    null,
+                                    null
+                            ));
                     return;
                 }
                 cause = cause.getCause();

@@ -11,27 +11,35 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.InvalidT
 import java.util.Map;
 
 /**
- * Class for database table "RULE" representation.
+ * Class for database table "RULES" representation.
  *
  * @author Kirill
  * @since 18.11.2021
  */
 @DatabaseTable(tableName = "RULES")
 public class Rule {
-    @SuppressWarnings("JavaDoc")
+    /**
+     * RULE_NAME field name
+     */
     public static final String FIELD_RULE_NAME = "RULE_NAME";
-    //    public static final String DEFAULT_RULE_NAME = "GHDF-HGFH-TUYT-ASDF";
+
     /**
      * Неограниченное время (максимальное количество минут в сутках).
      */
     public static final int NO_LIMIT_TIME = 23 * 60 + 59;
 
+    @SuppressWarnings("FieldNamingConvention")
     @DatabaseField(generatedId = true)
     @Getter
     @Setter
     private Long id;
 
-    @DatabaseField(columnName = FIELD_RULE_NAME, unique = true, width = 32, index = true, canBeNull = false)
+    @SuppressWarnings("FieldNamingConvention")
+    @DatabaseField(columnName = FIELD_RULE_NAME,
+            unique = true,
+            width = 32,
+            index = true,
+            canBeNull = false)
     @Getter
     @Setter
     private String name;
@@ -62,16 +70,16 @@ public class Rule {
     }
 
     /**
-     * Конструктор
+     * Constructor.
      */
     public Rule() {
         setDailySameLimits(NO_LIMIT_TIME);
     }
 
     /**
-     * Задаёт лимиты времени
+     * Sets time limits by day of the week.
      *
-     * @param timeLimits лимиты времени по дням недели
+     * @param timeLimits time limits by day of the week
      */
     public void setDayLimits(Map<DayOfWeek, Integer> timeLimits) {
         mondayMinutes = validateTimeLimitInMinutes(timeLimits, DayOfWeek.MONDAY);
@@ -84,9 +92,9 @@ public class Rule {
     }
 
     /**
-     * Задаёт одинаковые лимиты времени для каждого дня
+     * Sets the same time limits for each day.
      *
-     * @param timeLimit лимиты времени для всех дней недели
+     * @param timeLimit time limits for each day
      */
     public void setDailySameLimits(@NonNull Integer timeLimit) {
         mondayMinutes = validateTimeLimitInMinutes(timeLimit);
@@ -99,30 +107,30 @@ public class Rule {
     }
 
     /**
-     * Возвращает количество часов лимита времени за определённый день недели.
+     * Returns the number of hours in the time limit for a given day of the week.
      *
-     * @param dayOfWeek день недели
-     * @return количество часов лимита
+     * @param dayOfWeek day of the week
+     * @return number of hours in the time limit
      */
     public int getHoursLimitTime(@NonNull DayOfWeek dayOfWeek) {
         return getTime(dayOfWeek) / 60;
     }
 
     /**
-     * Возвращает количество минут лимита времени за определённый день недели.
+     * Returns the number of minutes of the time limit for a given day of the week.
      *
-     * @param dayOfWeek день недели
-     * @return количество минут лимита
+     * @param dayOfWeek day of the week
+     * @return number of minutes of the time limit
      */
     public int getMinutesLimitTime(@NonNull DayOfWeek dayOfWeek) {
         return getTime(dayOfWeek) % 60;
     }
 
     /**
-     * Returns time limit за определённый день недели.
+     * Returns the time limit for a specific day of the week in minutes.
      *
-     * @param dayOfWeek day of week
-     * @return time limit
+     * @param dayOfWeek day of the week
+     * @return time limit in minutes
      */
     @NonNull
     public Integer getTime(@NonNull DayOfWeek dayOfWeek) {
@@ -175,35 +183,35 @@ public class Rule {
     }
 
     /**
-     * Дни недели
+     * Day of the week.
      */
     public enum DayOfWeek {
         /**
-         * Понедельник
+         * Monday. Day number - 0.
          */
         MONDAY(0),
         /**
-         * Вторник
+         * Tuesday. Day number - 1.
          */
         TUESDAY(1),
         /**
-         * Среда
+         * Wednesday. Day number - 2.
          */
         WEDNESDAY(2),
         /**
-         * Четверг
+         * Thursday. Day number - 3.
          */
         THURSDAY(3),
         /**
-         * Пятница
+         * Пятница. Day number - 4.
          */
         FRIDAY(4),
         /**
-         * Суббота
+         * Saturday. Day number - 5.
          */
         SATURDAY(5),
         /**
-         * Воскресенье
+         * Sunday. Day number - 6.
          */
         SUNDAY(6);
 
@@ -214,10 +222,10 @@ public class Rule {
         }
 
         /**
-         * Возвращает номер дня недели.
-         * Неделя начинается с понедельника. Номер 0 !!!!!
+         * Returns the number of the day of the week.
+         * The week starts on Monday. Number 0!!!!!
          *
-         * @return номер дня недели
+         * @return number of the day of the week
          */
         public int dayNumber() {
             return dayNumber;

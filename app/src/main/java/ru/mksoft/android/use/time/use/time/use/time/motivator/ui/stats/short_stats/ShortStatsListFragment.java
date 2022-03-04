@@ -51,8 +51,8 @@ public class ShortStatsListFragment extends Fragment implements StatsProcessor.S
 
     @Override
     public void onDestroyView() {
-        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         super.onDestroyView();
+        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         binding = null;
     }
 

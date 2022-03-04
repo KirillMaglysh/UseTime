@@ -131,8 +131,8 @@ public class FullCategoryStatsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         super.onDestroyView();
+        ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
     }
 
     private static class LeftAxisValueFormatter extends ValueFormatter {

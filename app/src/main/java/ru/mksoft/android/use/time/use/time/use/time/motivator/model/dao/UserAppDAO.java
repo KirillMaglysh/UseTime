@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Place here class purpose.
+ * Application data access object.
  *
  * @author Kirill
  * @since 18.11.2021
@@ -21,10 +21,22 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
         super(connectionSource, dataClass);
     }
 
+    /**
+     * Returns all applications.
+     *
+     * @return all applications
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<UserApp> getAllUserApps() throws SQLException {
         return this.queryForAll();
     }
 
+    /**
+     * Returns tracked applications.
+     *
+     * @return tracked applications
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<UserApp> getAllTrackedApps() throws SQLException {
         QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
         queryBuilder.where().eq(UserApp.FIELD_IS_TRACKED, true);
@@ -33,6 +45,12 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
         return query(preparedQuery);
     }
 
+    /**
+     * Return untracked applications.
+     *
+     * @return untracked applications
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<UserApp> getAllUntrackedApps() throws SQLException {
         QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
         queryBuilder.where().eq(UserApp.FIELD_IS_TRACKED, false);
@@ -41,6 +59,28 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
         return query(preparedQuery);
     }
 
+    /**
+     * Returns applications with the given category.
+     *
+     * @param category category
+     * @return applications with the given category
+     * @throws SQLException in case of incorrect work with database
+     */
+    public List<UserApp> getUserAppsForCategory(Category category) throws SQLException {
+        QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
+        queryBuilder.where().eq(UserApp.FIELD_CATEGORY, category);
+        PreparedQuery<UserApp> preparedQuery = queryBuilder.prepare();
+
+        return query(preparedQuery);
+    }
+
+    /**
+     * Returns the tracked applications with the given category.
+     *
+     * @param category category
+     * @return tracked applications with the given category
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<UserApp> getTrackedUserAppsForCategory(Category category) throws SQLException {
         QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
         queryBuilder.where()
