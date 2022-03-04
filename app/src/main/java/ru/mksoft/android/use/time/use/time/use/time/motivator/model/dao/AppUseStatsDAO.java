@@ -12,6 +12,8 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,16 +42,63 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     public AppUseStats queryForId(Long id) throws SQLException {
         return super.queryForId(id);
     }
-/*
 
-    public List<AppUseStats> getAppStatsForPeriod(UserApp userApp, SqlDateType start, SqlDateType end) throws SQLException {
+    public List<AppUseStats> getAppStatsForPeriod(UserApp userApp, Date start, Date end) throws SQLException {
         QueryBuilder<AppUseStats, Long> queryBuilder = queryBuilder();
-        queryBuilder.where().eq(AppUseStats.FIELD_USER_APP, userApp).between(AppUseStats.FIELD_DATE, start, end);
+        queryBuilder.where()
+                .eq(AppUseStats.FIELD_USER_APP, userApp)
+                .and()
+                .between(AppUseStats.FIELD_DATE, start, end);
         PreparedQuery<AppUseStats> preparedQuery = queryBuilder.prepare();
 
         return query(preparedQuery);
     }
-*/
+
+    public List<List<AppUseStats>> getCategoryAppsStatsForPeriod(Category category, Date start, Date end) throws SQLException {
+        List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
+        List<List<AppUseStats>> timeByDays = new ArrayList<>();
+
+        for (UserApp userApp : userApps) {
+            timeByDays.add(getAppStatsForPeriod(userApp, start, end));
+        }
+
+        return timeByDays;
+    }
+
+    public List<Long> getCategorySumSuffixTimeStats(Category category, int dayNum) throws SQLException {
+        List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
+        List<Long> timeByDays = new ArrayList<>(dayNum);
+        for (int i = 0; i < dayNum; i++) {
+            timeByDays.add(0L);
+        }
+
+        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
+        Date startDay = DateTimeUtils.getDateOtherDayBegin(-dayNum + 1);
+        for (UserApp userApp : userApps) {
+            List<AppUseStats> statsForPeriod = getAppStatsForPeriod(userApp, startDay, today);
+            for (int i = 0; i < timeByDays.size(); i++) {
+                timeByDays.set(i, timeByDays.get(i) + statsForPeriod.get(i).getUsageTime());
+            }
+        }
+
+        return timeByDays;
+    }
+
+    public List<Long> getCategorySumTimeStats(Category category, Date start, Date end) throws SQLException {
+        List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
+        List<Long> timeByDays = Arrays.asList(0L, 0L, 0L, 0L, 0L, 0L, 0L);
+
+        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
+        Date sevenDayAgo = DateTimeUtils.getDateOtherDayBegin(6);
+        for (UserApp userApp : userApps) {
+            List<AppUseStats> statsForPeriod = getAppStatsForPeriod(userApp, sevenDayAgo, today);
+            for (int i = 0; i < timeByDays.size(); i++) {
+                timeByDays.set(i, timeByDays.get(i) + statsForPeriod.get(i).getUsageTime());
+            }
+        }
+
+        return timeByDays;
+    }
 
     /**
      * Removes AppUseStats stats for userApp for date.

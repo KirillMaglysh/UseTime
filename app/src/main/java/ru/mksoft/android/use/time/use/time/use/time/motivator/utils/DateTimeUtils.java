@@ -18,6 +18,7 @@ import java.util.Locale;
  */
 public class DateTimeUtils {
     private static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
+    public static final String[] DAY_LABELS_RU = {"ПН", " ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"};
 
     /**
      * Returns formatted time value in minutes
