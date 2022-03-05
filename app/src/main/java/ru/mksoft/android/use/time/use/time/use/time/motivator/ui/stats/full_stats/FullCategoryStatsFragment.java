@@ -19,7 +19,9 @@ import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentFullCategoryStatsBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
@@ -50,8 +52,12 @@ public class FullCategoryStatsFragment extends Fragment {
         binding = FragmentFullCategoryStatsBinding.inflate(inflater, container, false);
         barChart = binding.categoryStats7DayBarChart;
         editBarChart();
-
         Category category = getCategory();
+        Rule rule = category.getRule();
+
+        new RuleViewHolder(binding.ruleBodyInFullStats.getRoot()).fillRuleData(rule);
+
+
         binding.categoryInFullStatsLabel.setText(category.getName());
 
         List<Integer> stats = getStats(category);

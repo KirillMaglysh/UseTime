@@ -43,13 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Calendar calendar = Calendar.getInstance();
-        long end = calendar.getTimeInMillis();
-        calendar.add(Calendar.DATE, -10);
-        long start = calendar.getTimeInMillis();
-//        List<UsageStats> usageStats = ((UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE))
-//                .queryUsageStats(UsageStatsManager.IN, start, end);
-
         someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 this::processRequestUsageStatsPermissionResult

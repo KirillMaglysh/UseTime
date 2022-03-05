@@ -23,4 +23,16 @@
 
     />
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/category_stats_7_day_bar_Chart"
+            android:layout_marginTop="10dp"
+    >
+        <include
+                android:id="@+id/rule_body_in_full_stats"
+                layout="@layout/rule_body"
+                app:layout_constraintBottom_toBottomOf="parent"
+        />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
