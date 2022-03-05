@@ -17,8 +17,10 @@ import java.util.Locale;
  * @since 26.02.2022
  */
 public class DateTimeUtils {
-    private static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
     public static final String[] DAY_LABELS_RU = {"ПН", " ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"};
+    public static final int MILLIS_IN_MINUTE = 60000;
+    private static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
+    private static final String DATE_DAY_MONTH_FORMAT = "%02d.%02d";
 
     /**
      * Returns formatted time value in minutes
@@ -50,6 +52,21 @@ public class DateTimeUtils {
      */
     public static String getFormattedLimitTime(@NonNull Rule rule, @NonNull Rule.DayOfWeek dayOfWeek) {
         return getFormattedMinutesTime(rule.getTime(dayOfWeek));
+    }
+
+    public static String getFormattedDayMonthDate(Calendar calendar) {
+        return String.format(Locale.getDefault(), DATE_DAY_MONTH_FORMAT, calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH) + 1);
+    }
+
+
+    public static String getFormattedDateWithDayOfWeek(Calendar calendar) {
+        return DAY_LABELS_RU[getDayOfWeek(calendar)] + " " + String.format(Locale.getDefault(), DATE_DAY_MONTH_FORMAT, calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH) + 1);
+    }
+
+    public static int getDayOfWeek(Calendar calendar) {
+//        return LocalDate.from(Instant.ofEpochMilli(calendar.getTimeInMillis())).get(ChronoField.DAY_OF_WEEK);
+        // todo() переделать на локализацию
+        return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? Calendar.MONDAY : calendar.get(Calendar.DAY_OF_WEEK) - 2;
     }
 
     /**

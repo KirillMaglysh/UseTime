@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +24,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtil
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -38,6 +38,7 @@ import java.util.List;
 public class FullCategoryStatsFragment extends Fragment {
     private BarChart barChart;
     private FragmentFullCategoryStatsBinding binding;
+    private String[] xAxisLabels = new String[Calendar.DAY_OF_WEEK];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,37 +46,32 @@ public class FullCategoryStatsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFullCategoryStatsBinding.inflate(inflater, container, false);
         barChart = binding.categoryStats7DayBarChart;
+        editBarChart();
 
         Category category = getCategory();
         binding.categoryInFullStatsLabel.setText(category.getName());
 
         List<Integer> stats = getStats(category);
-        createDataEntries(stats);
-
         List<BarEntry> entries = createDataEntries(stats);
 
         BarDataSet dataset = new BarDataSet(entries, "");
         dataset.setValueFormatter(new BarItemFormatter());
-
-        barChart.getLegend().setEnabled(false);
-//        Description description = new Description();
-//        description.setText("Использование за последние 7 дней");
-//        barChart.setDescription(description);
-        barChart.getDescription().setEnabled(false);
-
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        setXAxis();
-        setYAxis();
-
         barChart.setData(new BarData(dataset, dataset));
-        barChart.animateY(3000);
+        barChart.animateY(1000);
 
         return binding.getRoot();
+    }
+
+    private void editBarChart() {
+        barChart.getLegend().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
+        setXAxis();
+        setYAxis();
     }
 
     private static List<BarEntry> createDataEntries(List<Integer> stats) {
@@ -105,7 +101,7 @@ public class FullCategoryStatsFragment extends Fragment {
         try {
             List<Long> longStats = DbHelperFactory.getHelper().getAppUseStatsDao().getCategorySumSuffixTimeStats(category, 7);
             for (Long longStat : longStats) {
-                stats.add((int) (longStat / 60000));
+                stats.add((int) (longStat / DateTimeUtils.MILLIS_IN_MINUTE));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,7 +111,15 @@ public class FullCategoryStatsFragment extends Fragment {
     }
 
     private void setXAxis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.get(Calendar.DATE);
+        for (int i = 6; i >= 0; i--) {
+            xAxisLabels[i] = DateTimeUtils.getFormattedDateWithDayOfWeek(calendar);
+            calendar.add(Calendar.DATE, -1);
+        }
+
         XAxis xAxis = barChart.getXAxis();
+        xAxis.setTextSize(8);
         xAxis.setLabelCount(7);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -142,10 +146,10 @@ public class FullCategoryStatsFragment extends Fragment {
         }
     }
 
-    private static class XAxisValueFormatter extends ValueFormatter {
+    private class XAxisValueFormatter extends ValueFormatter {
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
-            return DateTimeUtils.DAY_LABELS_RU[(int) value - 1];
+            return xAxisLabels[(int) value - 1];
         }
     }
 

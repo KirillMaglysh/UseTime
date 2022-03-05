@@ -59,7 +59,7 @@ public class ShortStatsListFragment extends Fragment implements StatsProcessor.S
     private List<CategoryInShortSummary> buildCategoryList() {
         List<CategoryInShortSummary> shortSummaries = null;
         try {
-            List<Category> categories = DbHelperFactory.getHelper().getCategoryDAO().getAllCategories();
+            List<Category> categories = DbHelperFactory.getHelper().getCategoryDAO().getAllCategoriesWoDefault();
             shortSummaries = new ArrayList<>(categories.size());
             for (Category category : categories) {
                 shortSummaries.add(new CategoryInShortSummary(category, DbHelperFactory.getHelper().getAppUseStatsDao().getCategoryTodaySumStats(category)));

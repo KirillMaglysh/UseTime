@@ -60,21 +60,6 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
     }
 
     /**
-     * Returns applications with the given category.
-     *
-     * @param category category
-     * @return applications with the given category
-     * @throws SQLException in case of incorrect work with database
-     */
-    public List<UserApp> getUserAppsForCategory(Category category) throws SQLException {
-        QueryBuilder<UserApp, Long> queryBuilder = queryBuilder();
-        queryBuilder.where().eq(UserApp.FIELD_CATEGORY, category);
-        PreparedQuery<UserApp> preparedQuery = queryBuilder.prepare();
-
-        return query(preparedQuery);
-    }
-
-    /**
      * Returns the tracked applications with the given category.
      *
      * @param category category
