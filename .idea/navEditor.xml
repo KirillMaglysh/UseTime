@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="718" />
+                            <option name="y" value="-36" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -31,6 +31,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_nav_applist_to_nav_message_dialog">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_nav_applist_to_nav_track_new_app_dialog">
                               <value>
                                 <LayoutPositions />
@@ -62,6 +67,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_nav_category_list_to_nav_message_dialog">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -75,6 +85,15 @@
                             <option name="x" value="81" />
                             <option name="y" value="-355" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_edit_category_to_nav_message_dialog">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -91,6 +110,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_nav_edit_rule_to_fragment_edit_time_limit">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_edit_rule_to_nav_message_dialog">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -124,7 +148,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nav_rule_list">
+                  <entry key="nav_message_dialog">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -133,9 +157,26 @@
                             <option name="y" value="12" />
                           </Point>
                         </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_rule_list">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="44" />
+                            <option name="y" value="-18" />
+                          </Point>
+                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_nav_rule_list_to_nav_edit_rule">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_rule_list_to_nav_message_dialog">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -175,6 +216,15 @@
                             <option name="y" value="349" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_track_new_app_dialog_to_nav_message_dialog">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -183,8 +233,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-494" />
+                            <option name="y" value="16" />
                           </Point>
                         </option>
                       </LayoutPositions>

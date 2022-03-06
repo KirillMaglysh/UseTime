@@ -1,5 +1,6 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_stats;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
@@ -38,9 +38,10 @@ import java.util.List;
  * @since 01.03.2022
  */
 public class FullCategoryStatsFragment extends Fragment {
+    private static final int LABEL_NUM = Calendar.DAY_OF_WEEK;
     private BarChart barChart;
     private FragmentFullCategoryStatsBinding binding;
-    private String[] xAxisLabels = new String[Calendar.DAY_OF_WEEK];
+    private String[] xAxisLabels = new String[LABEL_NUM];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,15 +58,13 @@ public class FullCategoryStatsFragment extends Fragment {
 
         new RuleViewHolder(binding.ruleBodyInFullStats.getRoot()).fillRuleData(rule);
 
-
         binding.categoryInFullStatsLabel.setText(category.getName());
 
         List<Integer> stats = getStats(category);
-        List<BarEntry> entries = createDataEntries(stats);
 
-        BarDataSet dataset = new BarDataSet(entries, "");
+        BarDataSet dataset = new BarDataSet(createDataEntries(stats), "");
         dataset.setValueFormatter(new BarItemFormatter());
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataset.setColors(createColorSet(stats, rule));
 
         barChart.setData(new BarData(dataset, dataset));
         barChart.animateY(1000);
@@ -90,6 +89,25 @@ public class FullCategoryStatsFragment extends Fragment {
         return entries;
     }
 
+    private static int[] createColorSet(List<Integer> stats, Rule rule) {
+        int[] colorSet = new int[LABEL_NUM];
+        Calendar calendar = Calendar.getInstance();
+        for (int i = LABEL_NUM - 1; i >= 0; i--) {
+            Integer timeLimit = rule.getTime(Rule.DayOfWeek.values()[DateTimeUtils.getDayOfWeek(calendar)]);
+
+            int factor = Math.min((int) (stats.get(i) / (timeLimit / 100f)), 255);
+            if (timeLimit >= stats.get(i)) {
+                colorSet[i] = Color.rgb(factor, 255, 0);
+            } else {
+                colorSet[i] = Color.rgb(255, 255 - factor, 0);
+            }
+
+            calendar.add(Calendar.DATE, -1);
+        }
+
+        return colorSet;
+    }
+
     @Nullable
     private Category getCategory() {
         FullCategoryStatsFragmentArgs fragmentArgs = FullCategoryStatsFragmentArgs.fromBundle(getArguments());
@@ -99,13 +117,14 @@ public class FullCategoryStatsFragment extends Fragment {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return category;
     }
 
     private static List<Integer> getStats(Category category) {
         List<Integer> stats = new ArrayList<>();
         try {
-            List<Long> longStats = DbHelperFactory.getHelper().getAppUseStatsDao().getCategorySumSuffixTimeStats(category, 7);
+            List<Long> longStats = DbHelperFactory.getHelper().getAppUseStatsDao().getCategorySumSuffixTimeStats(category, LABEL_NUM);
             for (Long longStat : longStats) {
                 stats.add((int) (longStat / DateTimeUtils.MILLIS_IN_MINUTE));
             }
@@ -118,15 +137,14 @@ public class FullCategoryStatsFragment extends Fragment {
 
     private void setXAxis() {
         Calendar calendar = Calendar.getInstance();
-        calendar.get(Calendar.DATE);
-        for (int i = 6; i >= 0; i--) {
+        for (int i = LABEL_NUM - 1; i >= 0; i--) {
             xAxisLabels[i] = DateTimeUtils.getFormattedDateWithDayOfWeek(calendar);
             calendar.add(Calendar.DATE, -1);
         }
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setTextSize(8);
-        xAxis.setLabelCount(7);
+        xAxis.setLabelCount(LABEL_NUM);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
