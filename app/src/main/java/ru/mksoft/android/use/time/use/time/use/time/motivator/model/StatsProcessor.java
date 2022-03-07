@@ -114,8 +114,7 @@ public class StatsProcessor {
     private static void updateAppUseStatsForDate(Date curDate, long totalTimeVisible, UserApp userApp) {
         if (curDate.equals(userApp.getLastUpdateDate())) {
             try {
-                int deletedN = DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
-                System.out.println("adsskj;;adsj");
+                DbHelperFactory.getHelper().getAppUseStatsDao().removeAppStatsPerDay(userApp, curDate);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -131,9 +130,6 @@ public class StatsProcessor {
     }
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
-        List<UsageStats> usageStats = ((UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE))
-                .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), Calendar.getInstance().getTimeInMillis());
-
         return ((UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE))
                 .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), nextDate.getTimeInMillis());
     }

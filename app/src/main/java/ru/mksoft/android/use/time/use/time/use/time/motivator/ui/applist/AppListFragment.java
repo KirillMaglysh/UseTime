@@ -66,6 +66,8 @@ public class AppListFragment extends Fragment implements AppListBuilder.AppListB
             List<UserApp> allTrackedApps = null;
             List<UserApp> allUntrackedApps = null;
             try {
+                // todo Подумать на постраничными запросами к БД.
+                // todo Запрашивать только те приложения, которые надо отобразить.
                 allTrackedApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
                 allUntrackedApps = DbHelperFactory.getHelper().getUserAppDAO().getAllUntrackedApps();
             } catch (SQLException e) {
