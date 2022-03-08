@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
             for (int i = 0; i < needToPaint; i++) {
                 String name = SCALE_ITEM_LABEL_NAME_BEGIN + i;
                 int scaleItemID = getResources().getIdentifier(name,
-                        "id", getContext().getPackageName());
+                        "layout", getContext().getPackageName());
 
                 ((MainActivity) getContext()).runOnUiThread(() -> {
                     ImageView scaleItem = ((Activity) getContext()).findViewById(scaleItemID);
