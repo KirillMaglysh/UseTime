@@ -1,7 +1,6 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist;
 
 import android.graphics.drawable.Drawable;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 
 /**
  * Place here class purpose.
@@ -11,10 +10,17 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
  */
 public class AppCardInfo {
     String label;
+    @SuppressWarnings("FieldNamingConvention")
     Drawable icon;
-//    Category category;
     String category;
 
+    /**
+     * Constructor
+     *
+     * @param label label of the application
+     * @param icon icon of the application
+     * @param category category of the application
+     */
     public AppCardInfo(String label, Drawable icon, String category) {
         this.label = label;
         this.icon = icon;

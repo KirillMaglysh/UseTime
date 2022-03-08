@@ -15,7 +15,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentCategoryListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
@@ -36,14 +35,25 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.D
 public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryListRecyclerAdapter.CategoryCardViewHolder> {
     private static final String LOG_TAG = RuleListRecyclerAdapter.class.getSimpleName();
 
+    /**
+     * Key of fragment result listener if old category was edited
+     */
     public static final String EDIT_CATEGORY_DIALOG_RESULT_KEY = "edit_category_dialog_result";
-    public static final String CREATED_CATEGORY_DIALOG_RESULT_KEY = "created_category_dialog_result";
-    public static final String CATEGORY_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "category_holder_position_in_adapter_result";
-    public static final String CATEGORY_ID_RESULT_KEY = "category_id_result";
 
-    private final FragmentCategoryListBinding binding;
-    private final FragmentManager fragmentManager;
-    private final LifecycleOwner lifecycleOwner;
+    /**
+     * Key of fragment result listener if new category was created
+     */
+    public static final String CREATED_CATEGORY_DIALOG_RESULT_KEY = "created_category_dialog_result";
+
+    /**
+     * Key to get category position in adapter from result bundle
+     */
+    public static final String CATEGORY_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "category_holder_position_in_adapter_result";
+
+    /**
+     * Key to get id of of the category from result bundle
+     */
+    public static final String CATEGORY_ID_RESULT_KEY = "category_id_result";
 
     private final Context context;
     private final List<Category> categories;
@@ -52,15 +62,13 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
      * Конструктор.
      *
      * @param fragment   фрагмент
-     * @param binding    биндинг фрагмента
      * @param categories список категорий для отображения
      */
-    public CategoryListRecyclerAdapter(Fragment fragment, FragmentCategoryListBinding binding, List<Category> categories) {
+    public CategoryListRecyclerAdapter(Fragment fragment, List<Category> categories) {
         this.categories = categories;
         this.context = fragment.getContext();
-        fragmentManager = fragment.requireActivity().getSupportFragmentManager();
-        lifecycleOwner = fragment.getViewLifecycleOwner();
-        this.binding = binding;
+        FragmentManager fragmentManager = fragment.requireActivity().getSupportFragmentManager();
+        LifecycleOwner lifecycleOwner = fragment.getViewLifecycleOwner();
 
         fragmentManager.setFragmentResultListener(EDIT_CATEGORY_DIALOG_RESULT_KEY, lifecycleOwner, (requestKey, result) -> {
             if (!EDIT_CATEGORY_DIALOG_RESULT_KEY.equals(requestKey)) {
@@ -72,7 +80,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 categories.set(position, DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
                 notifyItemChanged(position);
             } catch (SQLException e) {
-                //todo Обработать ошибки корректно
+                //TODO Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -86,7 +94,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
                 categories.add(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CATEGORY_ID_RESULT_KEY)));
                 notifyItemInserted(categories.size());
             } catch (SQLException e) {
-                //todo Обработать ошибки корректно
+                //TODO Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -96,7 +104,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
     @Override
     public CategoryCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.category_card, parent, false);
-        return new CategoryListRecyclerAdapter.CategoryCardViewHolder(view);
+        return new CategoryCardViewHolder(view);
     }
 
     @Override
@@ -156,12 +164,7 @@ public class CategoryListRecyclerAdapter extends RecyclerView.Adapter<CategoryLi
         return categories.size();
     }
 
-    // fixme нужен ли дубль getItemCount() ?
-    public int getCategoryNum() {
-        return categories.size();
-    }
-
-    class CategoryCardViewHolder extends RecyclerView.ViewHolder {
+    static class CategoryCardViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryTitle;
         private final TextView ruleLabel;
         private final Button editButton;

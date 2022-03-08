@@ -28,20 +28,19 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning
  * A simple {@link Fragment} subclass.
  * Use the {@link EditCategoryFragment#} factory method to
  * create an instance of this fragment.
+ *
+ * @author Kirill
+ * @since 16.02.2022
  */
 public class EditCategoryFragment extends BottomSheetDialogFragment {
     private FragmentEditCategoryBinding binding;
 
+    /**
+     * Constructor
+     */
     public EditCategoryFragment() {
         setCancelable(false);
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment TrackNewAppDialog.
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
                     DbHelperFactory.getHelper().getCategoryDAO().queryForId(Long.valueOf(fragmentArgs.getCategoryId())) :
                     new Category();
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -75,7 +74,7 @@ public class EditCategoryFragment extends BottomSheetDialogFragment {
             ruleListAdapter = new RuleListInCategoryRecyclerAdapter(DbHelperFactory.getHelper().getRuleDAO().getAllRules(), selectedRuleId);
             recyclerView.setAdapter(ruleListAdapter);
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 

@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
@@ -40,14 +39,25 @@ import java.util.List;
 public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String LOG_TAG = AppListRecyclerAdapter.class.getSimpleName();
 
+    /**
+     * Key of track fragment working result
+     */
     public static final String TRACK_NEW_APP_DIALOG_RESULT_KEY = "track_new_app_dialog_result";
-    public static final String UNTRACK_APP_DIALOG_RESULT_KEY = "untrack_app_dialog_result";
-    public static final String CHOSEN_CATEGORY_ID_RESULT_KEY = "chosen_category_id";
-    public static final String APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "app_holder_position_in_adapter_id";
 
-    private final FragmentAppListBinding binding;
-    private final FragmentManager fragmentManager;
-    private final LifecycleOwner lifecycleOwner;
+    /**
+     * Key of untrack fragment working result
+     */
+    public static final String UNTRACK_APP_DIALOG_RESULT_KEY = "untrack_app_dialog_result";
+
+    /**
+     * Key to get chosen application category from result bundle
+     */
+    public static final String CHOSEN_CATEGORY_ID_RESULT_KEY = "chosen_category_id";
+
+    /**
+     * Key to get application card position in the adapter from result bundle
+     */
+    public static final String APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "app_holder_position_in_adapter_id";
 
     private static final int TYPE_ITEM = 0;
     private static final int APP_CARD_ITEM = 1;
@@ -59,19 +69,15 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      * Constructor.
      *
      * @param fragment      parent fragment
-     * @param binding       fragment binding
      * @param trackedApps   list of tracked apps
      * @param untrackedApps list of untracked apps
      */
-    public AppListRecyclerAdapter(Fragment fragment, FragmentAppListBinding binding,
-                                  List<UserApp> trackedApps, List<UserApp> untrackedApps) {
+    public AppListRecyclerAdapter(Fragment fragment, List<UserApp> trackedApps, List<UserApp> untrackedApps) {
         this.trackedApps = trackedApps;
         this.untrackedApps = untrackedApps;
         this.context = fragment.getContext();
-        fragmentManager = fragment.requireActivity().getSupportFragmentManager();
-        lifecycleOwner = fragment.getViewLifecycleOwner();
-        this.binding = binding;
-
+        FragmentManager fragmentManager = fragment.requireActivity().getSupportFragmentManager();
+        LifecycleOwner lifecycleOwner = fragment.getViewLifecycleOwner();
 
         fragmentManager.setFragmentResultListener(TRACK_NEW_APP_DIALOG_RESULT_KEY, lifecycleOwner, this::trackNewApp);
         fragmentManager.setFragmentResultListener(UNTRACK_APP_DIALOG_RESULT_KEY, lifecycleOwner, this::untrackApp);
@@ -92,7 +98,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             addingApp.setCategory(DbHelperFactory.getHelper().getCategoryDAO().queryForId(result.getLong(CHOSEN_CATEGORY_ID_RESULT_KEY)));
             DbHelperFactory.getHelper().getUserAppDAO().update(addingApp);
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -116,7 +122,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             removingApp.setIsTracked(false);
             DbHelperFactory.getHelper().getUserAppDAO().update(removingApp);
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -150,7 +156,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             try {
                 applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
             } catch (PackageManager.NameNotFoundException e) {
-                //todo Обработать ошибки корректно
+                //TODO Обработать ошибки корректно
                 e.printStackTrace();
             }
 
@@ -199,7 +205,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 return;
             }
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 
@@ -208,7 +214,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         appCardHolder.appLabel.getText().toString(), appCardHolder.getAdapterPosition()));
     }
 
-    private void bindLabel(AppTypeLabel holder, int position) {
+    private static void bindLabel(AppTypeLabel holder, int position) {
         int appTypeLabel = position == 0 ? R.string.untracked_app : R.string.tracked_apps;
         holder.typeLabel.setText(appTypeLabel);
     }
@@ -223,7 +229,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return untrackedApps.size() + trackedApps.size() + 2;
     }
 
-    class AppTypeLabel extends RecyclerView.ViewHolder {
+    static class AppTypeLabel extends RecyclerView.ViewHolder {
         TextView typeLabel;
 
         public AppTypeLabel(@NonNull View itemView) {
@@ -232,7 +238,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    class AppCardViewHolder extends RecyclerView.ViewHolder {
+    static class AppCardViewHolder extends RecyclerView.ViewHolder {
         private final TextView appLabel;
         private final ImageView appIcon;
         private final TextView appCategory;

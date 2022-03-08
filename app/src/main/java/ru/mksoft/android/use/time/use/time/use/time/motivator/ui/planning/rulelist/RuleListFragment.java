@@ -21,6 +21,9 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ *
+ * @author Kirill
+ * @since 10.02.2022
  */
 public class RuleListFragment extends Fragment {
     private FragmentRuleListBinding binding;
@@ -33,16 +36,16 @@ public class RuleListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         RuleListRecyclerAdapter adapter = null;
         try {
-            adapter = new RuleListRecyclerAdapter(this, binding, DbHelperFactory.getHelper().getRuleDAO().getAllRules());
+            adapter = new RuleListRecyclerAdapter(this, DbHelperFactory.getHelper().getRuleDAO().getAllRules());
             recyclerView.setAdapter(adapter);
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 
         RuleListRecyclerAdapter finalAdapter = adapter;
         binding.newRuleButton.setOnClickListener(v -> Navigation.findNavController(v)
-                .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(finalAdapter.getRuleNum(), "-1", CREATED_RULE_DIALOG_RESULT_KEY)));
+                .navigate(RuleListFragmentDirections.actionNavRuleListToNavEditRule(finalAdapter.getItemCount(), "-1", CREATED_RULE_DIALOG_RESULT_KEY)));
 
         return binding.getRoot();
     }

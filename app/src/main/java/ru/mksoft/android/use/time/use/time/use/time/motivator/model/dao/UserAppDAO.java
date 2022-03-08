@@ -22,16 +22,6 @@ public class UserAppDAO extends BaseDaoImpl<UserApp, Long> {
     }
 
     /**
-     * Returns all applications.
-     *
-     * @return all applications
-     * @throws SQLException in case of incorrect work with database
-     */
-    public List<UserApp> getAllUserApps() throws SQLException {
-        return this.queryForAll();
-    }
-
-    /**
      * Returns tracked applications.
      *
      * @return tracked applications

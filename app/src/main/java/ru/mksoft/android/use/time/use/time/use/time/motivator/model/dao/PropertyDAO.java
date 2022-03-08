@@ -25,10 +25,10 @@ public class PropertyDAO extends BaseDaoImpl<Property, Long> {
      */
     public void updateStrike(int strikeChange) throws SQLException {
         Property strike = queryForId(Property.STRIKE_FIELD_ID);
-        Integer strikeValue = strike.getValue();
+        Long strikeValue = strike.getValue();
         strikeValue += strikeChange;
-        if (Math.abs(strikeValue) >= Property.MAX_STRIKE) {
-            int levelChange = strikeValue / 7;
+        if (Math.abs(strikeValue) > Property.MAX_STRIKE) {
+            long levelChange = strikeValue / 7;
             updateLevel(levelChange);
             strikeValue -= levelChange * 7;
         }
@@ -37,7 +37,7 @@ public class PropertyDAO extends BaseDaoImpl<Property, Long> {
         update(strike);
     }
 
-    private void updateLevel(Integer levelChange) throws SQLException {
+    private void updateLevel(Long levelChange) throws SQLException {
         Property level = queryForId(Property.USER_LEVEL_FIELD_ID);
         level.setValue(Math.max(level.getValue() + levelChange, 0));
     }

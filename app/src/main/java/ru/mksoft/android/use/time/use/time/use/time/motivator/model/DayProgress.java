@@ -2,6 +2,7 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Place here class purpose.
@@ -11,15 +12,26 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
+@Setter
 public class DayProgress {
     private int failedGoalNumber;
     private long timeUsed;
 
-    public void plusTimeUsed(long add) {
+    /**
+     * Adds how much you want to timeUsed
+     *
+     * @param add how much you want to add to timeUsed
+     */
+    public void increaseTimeUsed(long add) {
         timeUsed += add;
     }
 
-    public void plusFailedGoal(long add) {
+    /**
+     * Adds how much you want to failedGoalNumber
+     *
+     * @param add how much you want to add to timeUsed
+     */
+    public void increaseFailedGoalNumber(long add) {
         failedGoalNumber += add;
     }
 }

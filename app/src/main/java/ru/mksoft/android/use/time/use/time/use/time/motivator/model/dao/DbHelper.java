@@ -6,6 +6,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.*;
 
@@ -171,21 +172,21 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     private static void initializeProperties() throws SQLException {
         PropertyDAO propertyDAO = DbHelperFactory.getHelper().getPropertyDAO();
-        Property strikeProperty = propertyDAO.queryForId(Property.STRIKE_FIELD_ID);
+        createNewEmptyProperty(propertyDAO, Property.STRIKE_FIELD_ID);
+        createNewEmptyProperty(propertyDAO, Property.USER_LEVEL_FIELD_ID);
+        createNewEmptyProperty(propertyDAO, Property.YESTERDAY_USED_TIME_FIELD_ID);
+        createNewEmptyProperty(propertyDAO, Property.YESTERDAY_FAILED_GOALS_NUMBER_FIELD_ID);
+    }
+
+    @NotNull
+    private static void createNewEmptyProperty(PropertyDAO propertyDAO, Long strikeFieldId) throws SQLException {
+        Property strikeProperty = propertyDAO.queryForId(strikeFieldId);
         if (strikeProperty == null) {
             strikeProperty = new Property();
-            strikeProperty.setId(Property.STRIKE_FIELD_ID);
-            strikeProperty.setValue(0);
-        }
-
-        Property userLevelProperty = propertyDAO.queryForId(Property.USER_LEVEL_FIELD_ID);
-        if (userLevelProperty == null) {
-            userLevelProperty = new Property();
-            userLevelProperty.setId(Property.USER_LEVEL_FIELD_ID);
-            userLevelProperty.setValue(0);
+            strikeProperty.setId(strikeFieldId);
+            strikeProperty.setValue(0L);
         }
 
         DbHelperFactory.getHelper().getPropertyDAO().create(strikeProperty);
-        DbHelperFactory.getHelper().getPropertyDAO().create(userLevelProperty);
     }
 }

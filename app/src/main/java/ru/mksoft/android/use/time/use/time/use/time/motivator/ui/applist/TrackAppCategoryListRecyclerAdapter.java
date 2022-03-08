@@ -19,10 +19,15 @@ import java.util.List;
  * @since 06.02.2022
  */
 public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<TrackAppCategoryListRecyclerAdapter.CategoryViewHolder> {
-    private List<Category> categories;
+    private final List<Category> categories;
     private CheckBox chosenCategory = null;
     private int chosenCategoryPosition = -1;
 
+    /**
+     * Constructor
+     *
+     * @param categories list of categories you want to show user
+     */
     public TrackAppCategoryListRecyclerAdapter(List<Category> categories) {
         this.categories = categories;
     }
@@ -54,6 +59,11 @@ public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<Tr
         return categories.size();
     }
 
+    /**
+     * Returns category which user chosen or null if he has chosen nothing
+     *
+     * @return category which user chosen or null if he has chosen nothing
+     */
     public Category getChosenCategory() {
         if (chosenCategoryPosition != -1) {
             return categories.get(chosenCategoryPosition);
@@ -62,7 +72,7 @@ public class TrackAppCategoryListRecyclerAdapter extends RecyclerView.Adapter<Tr
         }
     }
 
-    class CategoryViewHolder extends RecyclerView.ViewHolder {
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
         private final CheckBox categoryInListCheckbox;
 
         public CategoryViewHolder(View itemView) {

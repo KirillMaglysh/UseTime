@@ -46,6 +46,13 @@ public class Category {
             canBeNull = false)
     private String name;
 
+    /**
+     * Returns true if the goal is completed and false otherwise.
+     *
+     * @param date     date for which goal is checking
+     * @param usedTime used time for date
+     * @return true if the goal is completed and false otherwise
+     */
     public boolean isDayGoalCompleted(Date date, Long usedTime) {
         return rule.getTime(Rule.DayOfWeek.values()[(DateTimeUtils.getDayOfWeek(date))]) >= (usedTime / DateTimeUtils.MILLIS_IN_MINUTE);
     }
@@ -61,6 +68,6 @@ public class Category {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(id);
     }
 }

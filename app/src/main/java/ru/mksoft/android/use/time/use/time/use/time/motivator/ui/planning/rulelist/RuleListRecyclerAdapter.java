@@ -15,7 +15,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentRuleListBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
@@ -28,34 +27,46 @@ import java.util.List;
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper.PREDEFINED_ID;
 
 /**
- * Place here class purpose.
+ * Adapter for recycler view of rules in RuleFragment
  *
  * @author Kirill
  * @since 05.01.2022
  */
-
 public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecyclerAdapter.RuleCardViewHolder> {
     private static final String LOG_TAG = RuleListRecyclerAdapter.class.getSimpleName();
 
+    /**
+     * Key of fragment result listener if old rule was edited
+     */
     public static final String EDIT_RULE_DIALOG_RESULT_KEY = "edit_rule_dialog_result";
+
+    /**
+     * Key of fragment result listener if new rule was created
+     */
     public static final String CREATED_RULE_DIALOG_RESULT_KEY = "created_rule_dialog_result";
+
+    /**
+     * Key to get rule card position in the adapter from result bundle
+     */
     public static final String RULE_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY = "rule_holder_position_in_adapter_result";
+
+    /**
+     * Key to get rule id from result bundle
+     */
     public static final String RULE_ID_RESULT_KEY = "rule_id_result";
 
-    private final FragmentRuleListBinding binding;
-    private final FragmentManager fragmentManager;
-    private final LifecycleOwner lifecycleOwner;
-
     private final Context context;
-    private List<Rule> rules;
+    private final List<Rule> rules;
 
-    public RuleListRecyclerAdapter(Fragment fragment, FragmentRuleListBinding binding,
-                                   List<Rule> rules) {
+    /**
+     * @param fragment fragment which contains the recycler view
+     * @param rules list of the rules which you want to show the user
+     */
+    public RuleListRecyclerAdapter(Fragment fragment, List<Rule> rules) {
         this.rules = rules;
         this.context = fragment.getContext();
-        fragmentManager = fragment.requireActivity().getSupportFragmentManager();
-        lifecycleOwner = fragment.getViewLifecycleOwner();
-        this.binding = binding;
+        FragmentManager fragmentManager = fragment.requireActivity().getSupportFragmentManager();
+        LifecycleOwner lifecycleOwner = fragment.getViewLifecycleOwner();
 
         fragmentManager.setFragmentResultListener(EDIT_RULE_DIALOG_RESULT_KEY, lifecycleOwner, (requestKey, result) -> {
             if (!EDIT_RULE_DIALOG_RESULT_KEY.equals(requestKey)) {
@@ -67,7 +78,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                 rules.set(position, DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
                 notifyItemChanged(position);
             } catch (SQLException e) {
-                //todo Обработать ошибки корректно
+                //TODO Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -81,7 +92,7 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
                 rules.add(DbHelperFactory.getHelper().getRuleDAO().queryForId(result.getLong(RULE_ID_RESULT_KEY)));
                 notifyItemInserted(rules.size());
             } catch (SQLException e) {
-                //todo Обработать ошибки корректно
+                //TODO Обработать ошибки корректно
                 e.printStackTrace();
             }
         });
@@ -147,10 +158,6 @@ public class RuleListRecyclerAdapter extends RecyclerView.Adapter<RuleListRecycl
 
     @Override
     public int getItemCount() {
-        return rules.size();
-    }
-
-    public int getRuleNum() {
         return rules.size();
     }
 

@@ -65,10 +65,6 @@ public class Rule {
     @DatabaseField(columnName = "SUNDAY_MINUTES", canBeNull = false)
     private Integer sundayMinutes;
 
-    public Integer[] getDays() {
-        return new Integer[]{mondayMinutes, tuesdayMinutes, wednesdayMinutes, thursdayMinutes, fridayMinutes, saturdayMinutes, sundayMinutes};
-    }
-
     /**
      * Constructor.
      */

@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.e(LOG_TAG, "Permission requested: " + requestPackageUsageStatsPermissionListeners.size());
         if (requestPackageUsageStatsPermissionListeners.isEmpty()) {
-            // todo ограничить количество запросов и решить, что делать, если пользователь не даёт нужное разрешение
+            // TODO ограничить количество запросов и решить, что делать, если пользователь не даёт нужное разрешение
             someActivityResultLauncher.launch(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
 

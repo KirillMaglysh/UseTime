@@ -13,29 +13,36 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Fragme
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.rulelist.EditRuleFragment.EDIT_TIME_LIMIT_DIALOG_RESULT_KEY;
 
 /**
- * Place here class purpose.
+ * Fragment which is showing when user need to edit time limit
  *
  * @author Kirill
  * @since 24.02.2022
  */
 public class EditTimeLimitFragment extends BottomSheetDialogFragment {
+    /**
+     * Key to get name of the day from result bundle
+     */
     public static final String DAY_NAME_KEY = "day_name";
+
+    /**
+     * Key to get hours from result bundle
+     */
     public static final String RULE_HOURS_KEY = "rule_hours";
+
+    /**
+     * Key to get minutes from result bundle
+     */
     public static final String RULE_MINUTES_KEY = "rule_minutes";
 
     private FragmentEditTimeLimitBinding binding;
     private String dayName;
 
+    /**
+     * Constructor
+     */
     public EditTimeLimitFragment() {
         setCancelable(false);
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment TrackNewAppDialog.
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

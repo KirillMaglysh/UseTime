@@ -27,20 +27,19 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.applist.
  * A simple {@link Fragment} subclass.
  * Use the {@link TrackNewAppDialog#} factory method to
  * create an instance of this fragment.
+ *
+ * @author 02.03.2022
+ * @since Kirill
  */
 public class TrackNewAppDialog extends BottomSheetDialogFragment {
     private FragmentTrackNewAppDialogBinding binding;
 
+    /**
+     * Constructor
+     */
     public TrackNewAppDialog() {
         setCancelable(false);
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment TrackNewAppDialog.
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

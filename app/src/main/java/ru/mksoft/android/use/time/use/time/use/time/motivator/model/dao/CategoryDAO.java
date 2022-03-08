@@ -1,7 +1,6 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
@@ -20,16 +19,6 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.D
 public class CategoryDAO extends BaseDaoImpl<Category, Long> {
     protected CategoryDAO(ConnectionSource connectionSource, Class<Category> dataClass) throws SQLException {
         super(connectionSource, dataClass);
-    }
-
-    /**
-     * Returns a list of all categories.
-     *
-     * @return list of all categories
-     * @throws SQLException in case of incorrect work with database
-     */
-    public List<Category> getAllCategories() throws SQLException {
-        return this.queryForAll();
     }
 
     /**
@@ -54,21 +43,6 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         return queryBuilder().where().ne("id", PREDEFINED_ID).countOf();
     }
 
-    /**
-     * Returns a category by name.
-     *
-     * @param name category name
-     * @return category
-     * @throws SQLException in case of incorrect work with database
-     */
-    public Category getCategoryByName(String name) throws SQLException {
-        QueryBuilder<Category, Long> queryBuilder = queryBuilder();
-        queryBuilder.where().eq(Category.FIELD_CATEGORY_NAME, name);
-        PreparedQuery<Category> preparedQuery = queryBuilder.prepare();
-
-        return queryForFirst(preparedQuery);
-    }
-
     @Override
     public Category queryForId(@SuppressWarnings("MethodParameterNamingConvention") Long id) throws SQLException {
         return super.queryForId(id);
@@ -84,6 +58,12 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
         return queryForId(PREDEFINED_ID);
     }
 
+    /**
+     * Returns count of all user categories.
+     *
+     * @return count of all user categories
+     * @throws SQLException in case of incorrect work with database
+     */
     public long countOfUserCategories() throws SQLException {
         return countOf() - 1;
     }

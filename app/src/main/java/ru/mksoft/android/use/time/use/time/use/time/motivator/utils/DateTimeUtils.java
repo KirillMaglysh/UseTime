@@ -17,7 +17,16 @@ import java.util.Locale;
  * @since 26.02.2022
  */
 public class DateTimeUtils {
+
+    /**
+     * Labels of days of the week in russian
+     * TODO change for localized resources
+     */
     public static final String[] DAY_LABELS_RU = {"ПН", " ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"};
+
+    /**
+     * Number of milliseconds in one minute
+     */
     public static final int MILLIS_IN_MINUTE = 60000;
     private static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
     private static final String DATE_DAY_MONTH_FORMAT = "%02d.%02d";
@@ -54,22 +63,35 @@ public class DateTimeUtils {
         return getFormattedMinutesTime(rule.getTime(dayOfWeek));
     }
 
-    public static String getFormattedDayMonthDate(Calendar calendar) {
-        return String.format(Locale.getDefault(), DATE_DAY_MONTH_FORMAT, calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH) + 1);
-    }
-
-
+    /**
+     * Returns string value of the date with day of week.
+     *
+     * @param calendar date which formatted string value you need
+     * @return string value of the date with day of week
+     */
     public static String getFormattedDateWithDayOfWeek(Calendar calendar) {
-        // todo переделать на ресурсы с переводом
+        // TODO переделать на ресурсы с переводом
         return DAY_LABELS_RU[getDayOfWeek(calendar)] + " " + String.format(Locale.getDefault(), DATE_DAY_MONTH_FORMAT, calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH) + 1);
     }
 
+    /**
+     * Returns number of day of week of your date
+     *
+     * @param calendar calendar pointing at date which day of week you want to know
+     * @return number of day of week of your date
+     */
     public static int getDayOfWeek(Calendar calendar) {
 //        return LocalDate.from(Instant.ofEpochMilli(calendar.getTimeInMillis())).get(ChronoField.DAY_OF_WEEK);
-        // todo() переделать на локализацию, попробовать использовать enum из Rule
+        // TODO() переделать на локализацию, попробовать использовать enum из Rule
         return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 6 : calendar.get(Calendar.DAY_OF_WEEK) - 2;
     }
 
+    /**
+     * Returns number of day of week of your date
+     *
+     * @param date date which day of week you want to know
+     * @return number of day of week of your date
+     */
     public static int getDayOfWeek(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -107,6 +129,12 @@ public class DateTimeUtils {
         return Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
+    /**
+     * Returns Date of begin of the chosen day begin
+     *
+     * @param diff diff of date with today
+     * @return Date of begin of the chosen day begin
+     */
     public static Date getDateOtherDayBegin(int diff) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(getDateOfCurrentDayBegin());

@@ -40,8 +40,7 @@ import java.util.List;
 public class FullCategoryStatsFragment extends Fragment {
     private static final int LABEL_NUM = Calendar.DAY_OF_WEEK;
     private BarChart barChart;
-    private FragmentFullCategoryStatsBinding binding;
-    private String[] xAxisLabels = new String[LABEL_NUM];
+    private final String[] xAxisLabels = new String[LABEL_NUM];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class FullCategoryStatsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentFullCategoryStatsBinding.inflate(inflater, container, false);
+        ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentFullCategoryStatsBinding binding = FragmentFullCategoryStatsBinding.inflate(inflater, container, false);
         barChart = binding.categoryStats7DayBarChart;
         editBarChart();
         Category category = getCategory();
@@ -95,8 +94,8 @@ public class FullCategoryStatsFragment extends Fragment {
         for (int i = LABEL_NUM - 1; i >= 0; i--) {
             Integer timeLimit = rule.getTime(Rule.DayOfWeek.values()[DateTimeUtils.getDayOfWeek(calendar)]);
 
-            // todo попробовать упростить логику определения цвета
-            // todo подумать над количеством градаций уровня
+            // TODO попробовать упростить логику определения цвета
+            // TODO подумать над количеством градаций уровня
             int factor = Math.min((int) (stats.get(i) / (timeLimit / 100f)), 255);
             if (timeLimit >= stats.get(i)) {
                 colorSet[i] = Color.rgb(factor, 255, 0);

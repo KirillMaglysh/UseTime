@@ -23,6 +23,12 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Random;
 
+/**
+ * Fragment with short information about current stats and strike
+ *
+ * @author Kirill
+ * @since 06.03.2022
+ */
 public class HomeFragment extends Fragment implements StatsProcessor.StatsProcessedUIListener {
     private FragmentHomeBinding binding;
     private static final String QUOTE_RESOURCE_NAME_BEGIN = "quote";
@@ -70,7 +76,7 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
             updateDayHomeStats(binding.todaySummary, statsProcessor.getTodayProgress());
             updateDayHomeStats(binding.yesterdaySummary, statsProcessor.getYesterdayProgress());
 
-            int strikeChange = 0;
+            long strikeChange = 0;
             try {
                 strikeChange = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.STRIKE_FIELD_ID).getValue();
             } catch (SQLException e) {
@@ -81,8 +87,19 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
         });
     }
 
-    private void fillScale(int strikeChange) {
+    private void fillScale(long strikeChange) {
         scaleDrawThread = new ScaleDrawThread(strikeChange);
+        //TODO() добавить больше картинок для градации
+        if (strikeChange < -1) {
+            binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.angry_64x64));
+        } else if (strikeChange > 5) {
+            binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.laughtingoutloud_64x64));
+        } else if (strikeChange > 0) {
+            binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.happy_64x64));
+        } else {
+            binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.angry_64x64));
+        }
+
         scaleDrawThread.start();
     }
 
@@ -95,28 +112,34 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
             e.printStackTrace();
         }
 
+        if (progress.getFailedGoalNumber() > 0) {
+            summary.goalStatsValue.setTextColor(getResources().getColor(R.color.red));
+        } else {
+            summary.goalStatsValue.setTextColor(getResources().getColor(R.color.teal_200));
+        }
+
         summary.goalStatsValue.setText(String.format(Locale.getDefault(), "%d / %d",
                 categoryNumber - progress.getFailedGoalNumber(), categoryNumber));
     }
 
     @AllArgsConstructor
     private class ScaleDrawThread extends Thread {
-        private int strikeChange;
+        private long strikeChange;
 
         @Override
         public void run() {
-            int needToPaint = Math.abs(strikeChange) + 5;
+            long needToPaint = Math.abs(strikeChange);
             for (int i = 0; i < needToPaint; i++) {
                 String name = SCALE_ITEM_LABEL_NAME_BEGIN + i;
                 int scaleItemID = getResources().getIdentifier(name,
-                        "layout", getContext().getPackageName());
+                        "id", getContext().getPackageName());
 
                 ((MainActivity) getContext()).runOnUiThread(() -> {
                     ImageView scaleItem = ((Activity) getContext()).findViewById(scaleItemID);
-                    if (strikeChange > 0) {
-                        scaleItem.setImageResource(R.drawable.green_rect64_64);
+                    if (strikeChange < 0) {
+                        scaleItem.setBackground(getResources().getDrawable(R.color.red));
                     } else {
-                        scaleItem.setImageResource(R.drawable.red_rect64_64);
+                        scaleItem.setBackground(getResources().getDrawable(R.color.teal_200));
                     }
                 });
 

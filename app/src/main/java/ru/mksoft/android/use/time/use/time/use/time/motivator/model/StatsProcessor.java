@@ -24,13 +24,14 @@ public class StatsProcessor {
 
     private final MainActivity activity;
     private StatsProcessedUIListener uiListener;
+    private boolean isNewDate = false;
     private boolean isProcessed;
     private final MainActivity.RequestPackageUsageStatsPermissionListener updateUseStatsRequestPackageUsageStatsPermissionListener;
 
     @Getter
     private DayProgress todayProgress = new DayProgress(0, 0);
     @Getter
-    private DayProgress yesterdayProgress = new DayProgress(0, 0);
+    private final DayProgress yesterdayProgress = new DayProgress(0, 0);
 
     /**
      * Constructor
@@ -59,6 +60,7 @@ public class StatsProcessor {
 
     private void updateUseStatsGrantedPermission() {
         isProcessed = false;
+        todayProgress = new DayProgress(0, 0);
         List<UserApp> trackedUserApps = getTrackedUserApps();
         if (trackedUserApps.isEmpty()) {
             notifyStatsProcessed();
@@ -71,6 +73,10 @@ public class StatsProcessor {
         int strikeChange = 0;
         Calendar nextDate = Calendar.getInstance();
         Date today = DateTimeUtils.getDateOfCurrentDayBegin();
+        if (appListParseResults.minDate.before(today)) {
+            isNewDate = true;
+        }
+
         for (Date curDate = appListParseResults.getMinDate(); curDate.before(today) || curDate.equals(today); ) {
             nextDate.setTime(curDate);
             nextDate.add(Calendar.DATE, 1);
@@ -87,7 +93,35 @@ public class StatsProcessor {
             e.printStackTrace();
         }
 
+        updateYesterdayParams();
+
         notifyStatsProcessed();
+    }
+
+    private void updateYesterdayParams() {
+        Property yesterdayTime = null;
+        Property yesterdayGoalsFailed = null;
+        try {
+            yesterdayTime = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.YESTERDAY_USED_TIME_FIELD_ID);
+            yesterdayGoalsFailed = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.YESTERDAY_FAILED_GOALS_NUMBER_FIELD_ID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (isNewDate) {
+            yesterdayProgress.setFailedGoalNumber(Math.toIntExact(yesterdayGoalsFailed.getValue()));
+            yesterdayProgress.setTimeUsed(yesterdayTime.getValue());
+        } else {
+            yesterdayTime.setValue(yesterdayProgress.getTimeUsed());
+            yesterdayGoalsFailed.setValue((long) yesterdayProgress.getFailedGoalNumber());
+
+            try {
+                DbHelperFactory.getHelper().getPropertyDAO().update(yesterdayTime);
+                DbHelperFactory.getHelper().getPropertyDAO().update(yesterdayGoalsFailed);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void notifyStatsProcessed() {
@@ -127,9 +161,6 @@ public class StatsProcessor {
         }
 
         processUnusedAppsForDate(userAppMap, curDate);
-        if (curDate.equals(DateTimeUtils.getDateOfCurrentDayBegin())) {
-            return 0;
-        }
 
         return processCategoriesDateStats(usedCategoriesStats, curDate);
     }
@@ -140,6 +171,10 @@ public class StatsProcessor {
             strikeChange += processCategoryDateState(entry.getKey(), entry.getValue(), date);
         }
 
+        if (date.equals(DateTimeUtils.getDateOfCurrentDayBegin())) {
+            return 0;
+        }
+
         return strikeChange;
     }
 
@@ -148,14 +183,14 @@ public class StatsProcessor {
 
         if (date.after(DateTimeUtils.getDateOtherDayBegin(-2))) {
             if (date.equals(DateTimeUtils.getDateOfCurrentDayBegin())) {
-                todayProgress.plusTimeUsed(usedTime);
+                todayProgress.increaseTimeUsed(usedTime);
                 if (!dayGoalCompleted) {
-                    todayProgress.plusFailedGoal(1);
+                    todayProgress.increaseFailedGoalNumber(1);
                 }
             } else {
-                yesterdayProgress.plusTimeUsed(usedTime);
+                yesterdayProgress.increaseTimeUsed(usedTime);
                 if (!dayGoalCompleted) {
-                    yesterdayProgress.plusFailedGoal(1);
+                    yesterdayProgress.increaseFailedGoalNumber(1);
                 }
             }
         }
@@ -209,7 +244,7 @@ public class StatsProcessor {
         try {
             userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
         } catch (SQLException e) {
-            //todo: корректно обработать ошибку
+            //TODO: корректно обработать ошибку
             e.printStackTrace();
         }
 

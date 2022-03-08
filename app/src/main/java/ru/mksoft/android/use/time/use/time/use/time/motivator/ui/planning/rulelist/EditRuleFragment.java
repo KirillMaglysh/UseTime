@@ -76,7 +76,7 @@ public class EditRuleFragment extends BottomSheetDialogFragment {
             try {
                 rule = DbHelperFactory.getHelper().getRuleDAO().queryForId(Long.valueOf(fragmentArgs.getRuleId()));
             } catch (SQLException e) {
-                //todo Обработать ошибки корректно
+                //TODO Обработать ошибки корректно
                 e.printStackTrace();
             }
         }

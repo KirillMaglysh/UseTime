@@ -21,6 +21,9 @@ import static ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ *
+ * @author Kirill
+ * @since 13.02.2022
  */
 public class CategoryListFragment extends Fragment {
     private FragmentCategoryListBinding binding;
@@ -33,16 +36,16 @@ public class CategoryListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         CategoryListRecyclerAdapter adapter = null;
         try {
-            adapter = new CategoryListRecyclerAdapter(this, binding, DbHelperFactory.getHelper().getCategoryDAO().getAllCategoriesWoDefault());
+            adapter = new CategoryListRecyclerAdapter(this, DbHelperFactory.getHelper().getCategoryDAO().getAllCategoriesWoDefault());
             recyclerView.setAdapter(adapter);
         } catch (SQLException e) {
-            //todo Обработать ошибки корректно
+            //TODO Обработать ошибки корректно
             e.printStackTrace();
         }
 
         CategoryListRecyclerAdapter finalAdapter = adapter;
         binding.newCategoryButton.setOnClickListener(v -> Navigation.findNavController(v)
-                .navigate(CategoryListFragmentDirections.actionNavCategoryListToNavEditCategory(finalAdapter.getCategoryNum(), "-1", CREATED_CATEGORY_DIALOG_RESULT_KEY)));
+                .navigate(CategoryListFragmentDirections.actionNavCategoryListToNavEditCategory(finalAdapter.getItemCount(), "-1", CREATED_CATEGORY_DIALOG_RESULT_KEY)));
 
         return binding.getRoot();
     }
