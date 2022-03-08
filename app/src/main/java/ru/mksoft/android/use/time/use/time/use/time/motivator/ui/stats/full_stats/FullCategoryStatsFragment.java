@@ -95,6 +95,8 @@ public class FullCategoryStatsFragment extends Fragment {
         for (int i = LABEL_NUM - 1; i >= 0; i--) {
             Integer timeLimit = rule.getTime(Rule.DayOfWeek.values()[DateTimeUtils.getDayOfWeek(calendar)]);
 
+            // todo попробовать упростить логику определения цвета
+            // todo подумать над количеством градаций уровня
             int factor = Math.min((int) (stats.get(i) / (timeLimit / 100f)), 255);
             if (timeLimit >= stats.get(i)) {
                 colorSet[i] = Color.rgb(factor, 255, 0);

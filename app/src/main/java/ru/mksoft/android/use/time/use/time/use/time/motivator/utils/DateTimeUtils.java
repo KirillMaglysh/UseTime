@@ -60,12 +60,13 @@ public class DateTimeUtils {
 
 
     public static String getFormattedDateWithDayOfWeek(Calendar calendar) {
+        // todo переделать на ресурсы с переводом
         return DAY_LABELS_RU[getDayOfWeek(calendar)] + " " + String.format(Locale.getDefault(), DATE_DAY_MONTH_FORMAT, calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH) + 1);
     }
 
     public static int getDayOfWeek(Calendar calendar) {
 //        return LocalDate.from(Instant.ofEpochMilli(calendar.getTimeInMillis())).get(ChronoField.DAY_OF_WEEK);
-        // todo() переделать на локализацию
+        // todo() переделать на локализацию, попробовать использовать enum из Rule
         return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 6 : calendar.get(Calendar.DAY_OF_WEEK) - 2;
     }
 
