@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Theme.MatchParent"
-    tools:context=".ui.stats.short_stats.ShortStatsListFragment">
+    tools:context=".ui.stats.short_stats.ShortUIStatsListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stats_list_recycler_view"

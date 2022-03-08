@@ -24,10 +24,10 @@ import java.util.Locale;
 public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TIME_PART_FORMAT = "%02d";
 
-    private List<ShortStatsListFragment.CategoryInShortSummary> categoriesInShortSummary;
+    private List<ShortUIStatsListFragment.CategoryInShortSummary> categoriesInShortSummary;
     private Context context;
 
-    public ShortStatsListRecyclerAdapter(Context context, List<ShortStatsListFragment.CategoryInShortSummary> categoriesInShortSummary) {
+    public ShortStatsListRecyclerAdapter(Context context, List<ShortUIStatsListFragment.CategoryInShortSummary> categoriesInShortSummary) {
         this.categoriesInShortSummary = categoriesInShortSummary;
         this.context = context;
     }
@@ -41,13 +41,13 @@ public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         CategoryIntShortStatsCardHolder cardHolder = (CategoryIntShortStatsCardHolder) holder;
-        ShortStatsListFragment.CategoryInShortSummary categoryStats = categoriesInShortSummary.get(position);
+        ShortUIStatsListFragment.CategoryInShortSummary categoryStats = categoriesInShortSummary.get(position);
         cardHolder.hourValInShortCategoryStats.setText(String.format(Locale.US, TIME_PART_FORMAT, categoryStats.getHours()));
         cardHolder.minValInShortCategoryStats.setText(String.format(Locale.US, TIME_PART_FORMAT, categoryStats.getMinutes()));
         cardHolder.categoryInShortStatsLabel.setText(categoryStats.getCategory().getName());
 
         ((CategoryIntShortStatsCardHolder) holder).moreButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
-                .navigate(ShortStatsListFragmentDirections.actionNavShortStatsListToNavFullStats(categoryStats.getCategory().getId().toString())));
+                .navigate(ShortUIStatsListFragmentDirections.actionNavShortStatsListToNavFullStats(categoryStats.getCategory().getId().toString())));
     }
 
     @Override

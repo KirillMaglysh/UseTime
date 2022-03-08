@@ -1,10 +1,8 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
@@ -18,12 +16,14 @@ import java.util.TreeMap;
  * @author Kirill
  * @since 07.01.2022
  */
+
+//TODO() переписать длинные лямбда на нормальные классы
 public class AppListBuilder {
     private static final String LOG_TAG = AppListBuilder.class.getSimpleName();
 
     private final PackageManager packageManager;
-    // TODO: Проверить необходимость хранинеия переменной
-    private final Context context;
+    private final StatsProcessor statsProcessor;
+    // TODO: Проверить необходимость хранения переменной
     private boolean isBuilt;
     private AppListBuiltListener uiListener;
     private Category defaultCategory;
@@ -31,11 +31,12 @@ public class AppListBuilder {
     /**
      * Constructor
      *
-     * @param context application context
+     * @param packageManager packageManager from activity
+     * @param statsProcessor statsProcessor, which must be notified
      */
-    public AppListBuilder(Context context) {
-        this.packageManager = context.getPackageManager();
-        this.context = context;
+    public AppListBuilder(PackageManager packageManager, StatsProcessor statsProcessor) {
+        this.packageManager = packageManager;
+        this.statsProcessor = statsProcessor;
     }
 
     /**
@@ -44,7 +45,7 @@ public class AppListBuilder {
     public synchronized void buildAppList() {
         new Thread(() -> {
             isBuilt = false;
-            ((MainActivity) context).getStatsProcessor().setProcessed(false);
+            statsProcessor.processAppListBuildingBegan();
             process();
         }).start();
     }
@@ -99,7 +100,7 @@ public class AppListBuilder {
         DbHelperFactory.getHelper().getUserAppDAO().create(newApp);
     }
 
-    private TreeMap<Integer, AppParams> createAppsMap(List<UserApp> userApps) {
+    private static TreeMap<Integer, AppParams> createAppsMap(List<UserApp> userApps) {
         TreeMap<Integer, AppParams> sortedTracked = new TreeMap<>();
         for (int i = 0; i < userApps.size(); i++) {
             sortedTracked.put(userApps.get(i).getSystemId(), new AppParams(i));
@@ -108,7 +109,7 @@ public class AppListBuilder {
         return sortedTracked;
     }
 
-    private void deleteNotFoundApps(List<UserApp> userApps, TreeMap<Integer, AppParams> sortedApps) {
+    private static void deleteNotFoundApps(List<UserApp> userApps, TreeMap<Integer, AppParams> sortedApps) {
         sortedApps.forEach((num, appParams) -> {
             if (!appParams.wasFound) {
                 try {
@@ -126,22 +127,41 @@ public class AppListBuilder {
             uiListener.processAppListBuilt();
         }
 
-        ((MainActivity) context).getStatsProcessor().updateUseStats();
+        statsProcessor.updateUseStats();
     }
 
+    /**
+     * Returns true if app list built and false otherwise
+     *
+     * @return is app list building finish
+     */
     public boolean isBuilt() {
         return isBuilt;
     }
 
+    /**
+     * Subscribe single UI listener, who needs to react on stats processing finish.
+     *
+     * @param listener single UI listener, who needs to react on stats processing finish
+     */
     public void subscribe(AppListBuiltListener listener) {
         uiListener = listener;
     }
 
+    /**
+     * Unsubscribe single UI listener, who needs to react on stats processing finish.
+     */
     public void unsubscribeUIListener() {
         uiListener = null;
     }
 
+    /**
+     * UI element, which need to react on app list built.
+     */
     public interface AppListBuiltListener {
+        /**
+         * Calls when statistics is processed.
+         */
         void processAppListBuilt();
     }
 

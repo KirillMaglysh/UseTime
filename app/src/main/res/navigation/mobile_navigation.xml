@@ -187,7 +187,7 @@
 
     <fragment
         android:id="@+id/nav_short_stats_list"
-        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats.ShortStatsListFragment"
+        android:name="ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.short_stats.ShortUIStatsListFragment"
         android:label="@string/menu_stats"
         tools:layout="@layout/fragment_short_stats_list">
         <action

@@ -21,7 +21,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.Activi
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
 
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
     private AppListBuilder appListBuilder;
     private StatsProcessor statsProcessor;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
@@ -48,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
                 this::processRequestUsageStatsPermissionResult
         );
 
-        appListBuilder = new AppListBuilder(this);
         statsProcessor = new StatsProcessor(this);
+        appListBuilder = new AppListBuilder(getPackageManager(), statsProcessor);
         appListBuilder.buildAppList();
 
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -108,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    /**
+     * Returns application list builder.
+     *
+     * @return application list builder
+     */
     public AppListBuilder getAppListBuilder() {
         return appListBuilder;
     }

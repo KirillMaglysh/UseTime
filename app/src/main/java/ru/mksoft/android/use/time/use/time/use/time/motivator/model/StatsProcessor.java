@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.Log;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
@@ -24,7 +23,7 @@ public class StatsProcessor {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private final MainActivity activity;
-    private StatsProcessedListener uiListener;
+    private StatsProcessedUIListener uiListener;
     private boolean isProcessed;
     private final MainActivity.RequestPackageUsageStatsPermissionListener updateUseStatsRequestPackageUsageStatsPermissionListener;
 
@@ -145,9 +144,9 @@ public class StatsProcessor {
         return dbUseStats;
     }
 
-    @Nullable
+    @NotNull
     private static List<UserApp> getTrackedUserApps() {
-        List<UserApp> userApps = null;
+        List<UserApp> userApps = new ArrayList<>();
         try {
             userApps = DbHelperFactory.getHelper().getUserAppDAO().getAllTrackedApps();
         } catch (SQLException e) {
@@ -224,7 +223,12 @@ public class StatsProcessor {
         }
     }
 
-    public void removeAppAllStats(UserApp userApp) {
+    /**
+     * Removes all usage statistics for the specific application
+     *
+     * @param userApp application for which you want to delete all usage statistics
+     */
+    public static void removeAllStatsForApp(UserApp userApp) {
         try {
             DbHelperFactory.getHelper().getAppUseStatsDao().removeAppAllStats(userApp);
         } catch (SQLException e) {
@@ -232,23 +236,45 @@ public class StatsProcessor {
         }
     }
 
+    /**
+     * Returns true if all stats is processed and false otherwise
+     *
+     * @return is stats processing finish
+     */
     public boolean isProcessed() {
         return isProcessed;
     }
 
-    public void setProcessed(boolean processed) {
-        isProcessed = processed;
+    /**
+     * If app list is building stats is not processed
+     */
+    public void processAppListBuildingBegan() {
+        isProcessed = false;
     }
 
-    public void subscribe(StatsProcessedListener listener) {
+    /**
+     * Subscribe single UI listener, who needs to react on stats processing finish.
+     *
+     * @param listener single UI listener, who needs to react on stats processing finish
+     */
+    public void subscribe(StatsProcessedUIListener listener) {
         uiListener = listener;
     }
 
+    /**
+     * Unsubscribe single UI listener, who needs to react on stats processing finish.
+     */
     public void unsubscribeUIListener() {
         uiListener = null;
     }
 
-    public interface StatsProcessedListener {
+    /**
+     * UI element, which need to react on stats processing finish.
+     */
+    public interface StatsProcessedUIListener {
+        /**
+         * Calls when statistics is processed.
+         */
         void processStatsProcessedBuilt();
     }
 

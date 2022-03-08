@@ -23,13 +23,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ShortStatsListFragment#} factory method to
+ * Use the {@link ShortUIStatsListFragment#} factory method to
  * create an instance of this fragment.
  *
  * @author Kirill
  * @since 20.02.2022
  */
-public class ShortStatsListFragment extends Fragment implements StatsProcessor.StatsProcessedListener {
+public class ShortUIStatsListFragment extends Fragment implements StatsProcessor.StatsProcessedUIListener {
     private FragmentShortStatsListBinding binding;
     private ConstraintLayout progressBar;
 

@@ -13,7 +13,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtil
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -177,15 +176,14 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * Clears application usage statistics.
      *
      * @param userApp application
-     * @return number of records deleted
      * @throws SQLException in case of incorrect work with database
      */
-    public int removeAppAllStats(UserApp userApp) throws SQLException {
+    public void removeAppAllStats(UserApp userApp) throws SQLException {
         DeleteBuilder<AppUseStats, Long> queryBuilder = deleteBuilder();
         deleteBuilder().where()
                 .eq(AppUseStats.FIELD_USER_APP, userApp);
 
         PreparedDelete<AppUseStats> preparedQuery = queryBuilder.prepare();
-        return delete(preparedQuery);
+        delete(preparedQuery);
     }
 }

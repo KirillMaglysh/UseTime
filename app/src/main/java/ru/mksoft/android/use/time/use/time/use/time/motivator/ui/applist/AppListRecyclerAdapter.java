@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentAppListBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
@@ -109,7 +110,7 @@ public class AppListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int newPosition = result.getInt(APP_HOLDER_POSITION_IN_ADAPTER_RESULT_KEY);
         int newArrayPosition = newPosition - 2 - untrackedApps.size();
         UserApp removingApp = trackedApps.get(newArrayPosition);
-        ((MainActivity) context).getStatsProcessor().removeAppAllStats(removingApp);
+        StatsProcessor.removeAllStatsForApp(removingApp);
 
         try {
             removingApp.setIsTracked(false);
