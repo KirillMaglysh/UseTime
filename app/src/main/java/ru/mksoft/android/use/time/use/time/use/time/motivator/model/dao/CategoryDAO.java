@@ -83,4 +83,8 @@ public class CategoryDAO extends BaseDaoImpl<Category, Long> {
     public Category getDefaultCategory() throws SQLException {
         return queryForId(PREDEFINED_ID);
     }
+
+    public long countOfUserCategories() throws SQLException {
+        return countOf() - 1;
+    }
 }

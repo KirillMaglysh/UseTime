@@ -1,9 +1,14 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 
+import androidx.annotation.Nullable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
+
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Class for database table "CATEGORIES" representation.
@@ -40,4 +45,22 @@ public class Category {
             index = true,
             canBeNull = false)
     private String name;
+
+    public boolean isDayGoalCompleted(Date date, Long usedTime) {
+        return rule.getTime(Rule.DayOfWeek.values()[(DateTimeUtils.getDayOfWeek(date))]) >= (usedTime / DateTimeUtils.MILLIS_IN_MINUTE);
+    }
+
+    @Override
+    public boolean equals(@Nullable @org.jetbrains.annotations.Nullable Object other) {
+        if (!(other instanceof Category)) {
+            return false;
+        }
+
+        return this.id.equals(((Category) other).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

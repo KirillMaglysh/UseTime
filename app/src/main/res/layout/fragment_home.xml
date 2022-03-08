@@ -19,7 +19,7 @@
             android:id="@+id/motivation_quote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="''Конфуций основал религию и помогал пандам, а что сделал ты?''"
+            android:text="''...'' \n— Kirill Maglysh"
             android:textStyle="italic"
             android:textSize="18dp"
             android:layout_marginStart="70dp"
@@ -35,24 +35,17 @@
     >
 
         <include
-                android:id="@+id/short_summary_1"
+                android:id="@+id/today_summary"
                 layout="@layout/short_summary_card"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
         />
 
         <include
+                android:id="@+id/yesterday_summary"
                 layout="@layout/short_summary_card"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
         />
     </LinearLayout>
-
-    <!--
-        <include
-                android:id="@+id/home_progress_window"
-                layout="@layout/progress_window"
-                android:visibility="invisible"
-        />
-    -->
 </LinearLayout>

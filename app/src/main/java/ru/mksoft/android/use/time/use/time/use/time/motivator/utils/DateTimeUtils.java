@@ -70,6 +70,12 @@ public class DateTimeUtils {
         return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 6 : calendar.get(Calendar.DAY_OF_WEEK) - 2;
     }
 
+    public static int getDayOfWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return getDayOfWeek(calendar);
+    }
+
     /**
      * Parse string time value (string in format "HH:mm").
      *

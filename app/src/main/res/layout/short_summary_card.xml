@@ -10,21 +10,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
-                android:id="@+id/description"
+                android:id="@+id/time_stats_description"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:gravity="center_vertical"
-                android:text="Сегодня вы провели в отслеживаемых приложениях "
         />
 
         <TextView
+                android:id="@+id/time_stats_value"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_margin="10dp"
-                android:text="25 Ч 13 М"
+                android:text="\?\? Ч \?\? М"
         />
     </LinearLayout>
 
@@ -32,20 +32,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
+                android:id="@+id/goal_stats_description"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:gravity="center_vertical"
-                android:text="Собюдение правил: "
+                android:text="@string/goal_completed_number_label"
         />
 
         <TextView
+                android:id="@+id/goal_stats_value"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_margin="10dp"
-                android:text="5 из 6"
+                android:text="\?\? из \?\?"
         />
     </LinearLayout>
 

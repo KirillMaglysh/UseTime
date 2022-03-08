@@ -35,6 +35,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     private RuleDAO ruleDAO = null;
     private UserAppDAO userAppDAO = null;
     private AppUseStatsDAO appUseStatsDao = null;
+    private PropertyDAO propertyDAO = null;
 
     /**
      * Constructor
@@ -61,6 +62,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Category.class);
             TableUtils.createTable(connectionSource, UserApp.class);
             TableUtils.createTable(connectionSource, AppUseStats.class);
+            TableUtils.createTable(connectionSource, Property.class);
 
             initializeDataBase();
         } catch (SQLException e) {
@@ -130,6 +132,20 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return appUseStatsDao;
     }
 
+    /**
+     * Return property data access object.
+     *
+     * @return property data access object
+     * @throws SQLException in case of incorrect work with database
+     */
+    public PropertyDAO getPropertyDAO() throws SQLException {
+        if (propertyDAO == null) {
+            propertyDAO = new PropertyDAO(getConnectionSource(), Property.class);
+        }
+
+        return propertyDAO;
+    }
+
     private static void initializeDataBase() throws SQLException {
         RuleDAO ruleDAO = DbHelperFactory.getHelper().getRuleDAO();
         Rule noLimitRule = ruleDAO.queryForId(PREDEFINED_ID);
@@ -149,5 +165,27 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
             noCategory.setRule(noLimitRule);
             categoryDAO.createOrUpdate(noCategory);
         }
+
+        initializeProperties();
+    }
+
+    private static void initializeProperties() throws SQLException {
+        PropertyDAO propertyDAO = DbHelperFactory.getHelper().getPropertyDAO();
+        Property strikeProperty = propertyDAO.queryForId(Property.STRIKE_FIELD_ID);
+        if (strikeProperty == null) {
+            strikeProperty = new Property();
+            strikeProperty.setId(Property.STRIKE_FIELD_ID);
+            strikeProperty.setValue(0);
+        }
+
+        Property userLevelProperty = propertyDAO.queryForId(Property.USER_LEVEL_FIELD_ID);
+        if (userLevelProperty == null) {
+            userLevelProperty = new Property();
+            userLevelProperty.setId(Property.USER_LEVEL_FIELD_ID);
+            userLevelProperty.setValue(0);
+        }
+
+        DbHelperFactory.getHelper().getPropertyDAO().create(strikeProperty);
+        DbHelperFactory.getHelper().getPropertyDAO().create(userLevelProperty);
     }
 }

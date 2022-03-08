@@ -27,6 +27,11 @@ public class StatsProcessor {
     private boolean isProcessed;
     private final MainActivity.RequestPackageUsageStatsPermissionListener updateUseStatsRequestPackageUsageStatsPermissionListener;
 
+    @Getter
+    private DayProgress todayProgress = new DayProgress(0, 0);
+    @Getter
+    private DayProgress yesterdayProgress = new DayProgress(0, 0);
+
     /**
      * Constructor
      *
@@ -63,18 +68,25 @@ public class StatsProcessor {
         AppListParseResults appListParseResults = parseAppList(trackedUserApps);
         TreeMap<String, UserApp> userAppMap = appListParseResults.getUserAppMap();
 
+        int strikeChange = 0;
         Calendar nextDate = Calendar.getInstance();
         Date today = DateTimeUtils.getDateOfCurrentDayBegin();
         for (Date curDate = appListParseResults.getMinDate(); curDate.before(today) || curDate.equals(today); ) {
             nextDate.setTime(curDate);
             nextDate.add(Calendar.DATE, 1);
 
-            processDateStats(userAppMap, nextDate, curDate);
+            strikeChange += processDateStats(userAppMap, nextDate, curDate);
 
             curDate.setTime(nextDate.getTimeInMillis());
         }
 
         setUserAppsLastUpdate(trackedUserApps, today);
+        try {
+            DbHelperFactory.getHelper().getPropertyDAO().updateStrike(strikeChange);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         notifyStatsProcessed();
     }
 
@@ -96,15 +108,62 @@ public class StatsProcessor {
         }
     }
 
-    private void processDateStats(TreeMap<String, UserApp> userAppMap, Calendar nextDate, Date curDate) {
+    private int processDateStats(TreeMap<String, UserApp> userAppMap, Calendar nextDate, Date curDate) {
+        HashMap<Category, Long> usedCategoriesStats = new HashMap<>();
+
         for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
             UserApp userApp = userAppMap.get(usageStat.getPackageName());
             if (userApp != null) {
-                updateAppUseStatsForDate(curDate, usageStat.getTotalTimeVisible(), userApp);
+                long usedTime = usageStat.getTotalTimeVisible();
+                if (usedCategoriesStats.containsKey(userApp.getCategory())) {
+                    usedCategoriesStats.replace(userApp.getCategory(), usedCategoriesStats.get(userApp.getCategory()) + usedTime);
+                } else {
+                    usedCategoriesStats.put(userApp.getCategory(), usedTime);
+                }
+
+                updateAppUseStatsForDate(curDate, usedTime, userApp);
                 userAppMap.remove(userApp.getPackageName());
             }
         }
 
+        processUnusedAppsForDate(userAppMap, curDate);
+        if (curDate.equals(DateTimeUtils.getDateOfCurrentDayBegin())) {
+            return 0;
+        }
+
+        return processCategoriesDateStats(usedCategoriesStats, curDate);
+    }
+
+    private int processCategoriesDateStats(HashMap<Category, Long> usedCategoriesStats, Date date) {
+        int strikeChange = 0;
+        for (Map.Entry<Category, Long> entry : usedCategoriesStats.entrySet()) {
+            strikeChange += processCategoryDateState(entry.getKey(), entry.getValue(), date);
+        }
+
+        return strikeChange;
+    }
+
+    private int processCategoryDateState(Category category, Long usedTime, Date date) {
+        boolean dayGoalCompleted = category.isDayGoalCompleted(date, usedTime);
+
+        if (date.after(DateTimeUtils.getDateOtherDayBegin(-2))) {
+            if (date.equals(DateTimeUtils.getDateOfCurrentDayBegin())) {
+                todayProgress.plusTimeUsed(usedTime);
+                if (!dayGoalCompleted) {
+                    todayProgress.plusFailedGoal(1);
+                }
+            } else {
+                yesterdayProgress.plusTimeUsed(usedTime);
+                if (!dayGoalCompleted) {
+                    yesterdayProgress.plusFailedGoal(1);
+                }
+            }
+        }
+
+        return dayGoalCompleted ? 1 : -1;
+    }
+
+    private static void processUnusedAppsForDate(TreeMap<String, UserApp> userAppMap, Date curDate) {
         for (Map.Entry<String, UserApp> entry : userAppMap.entrySet()) {
             updateAppUseStatsForDate(curDate, 0, entry.getValue());
         }

@@ -3,8 +3,6 @@
            android:layout_width="60dp"
            android:layout_height="20dp"
            android:layout_marginBottom="4dp"
-           android:src="@drawable/space_rect64_64"
-           android:foreground="@color/teal_200"
->
-
-</ImageView>
+           android:src="@drawable/white_rect64_64"
+           android:foreground="@color/white"
+/>

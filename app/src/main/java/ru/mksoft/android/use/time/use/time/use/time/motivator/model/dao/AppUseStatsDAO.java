@@ -27,6 +27,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         super(connectionSource, dataClass);
     }
 //TODO() переделать методы с циклами на конкретные запросы к базе
+
     /**
      * Returns list of all categories which exist in database.
      *
