@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quote1" translatable="true">Use Time Motivator</string>
+    <string name="quote2" translatable="true">Open navigation drawer</string>
+    <string name="quote3" translatable="true">Open navigation drawer</string>
+    <string name="quote4" translatable="true">Open navigation drawer</string>
+    <string name="quote5" translatable="true">Open navigation drawer</string>
+    <string name="quote6" translatable="true">Open navigation drawer</string>
+    <string name="quote7" translatable="true">Open navigation drawer</string>
+    <string name="quote8" translatable="true">Open navigation drawer</string>
+    <string name="quote9" translatable="true">Open navigation drawer</string>
+    <string name="quote10" translatable="true">Open navigation drawer</string>
+
+    <integer name="quotesNumber">10</integer>
+</resources>

@@ -27,7 +27,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     protected AppUseStatsDAO(ConnectionSource connectionSource, Class<AppUseStats> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }
-
+//TODO() переделать методы с циклами на конкретные запросы к базе
     /**
      * Returns list of all categories which exist in database.
      *
@@ -54,6 +54,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return query(preparedQuery);
     }
 
+/*
     public List<List<AppUseStats>> getCategoryAppsStatsForPeriod(Category category, Date start, Date end) throws SQLException {
         List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         List<List<AppUseStats>> timeByDays = new ArrayList<>();
@@ -64,6 +65,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
 
         return timeByDays;
     }
+*/
 
     public List<Long> getCategorySumSuffixTimeStats(Category category, int dayNum) throws SQLException {
         List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
@@ -71,6 +73,9 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         for (int i = 0; i < dayNum; i++) {
             timeByDays.add(0L);
         }
+
+        QueryBuilder<AppUseStats, Long> aaa;
+
 
         Date today = DateTimeUtils.getDateOfCurrentDayBegin();
         Date startDay = DateTimeUtils.getDateOtherDayBegin(-dayNum + 1);
@@ -84,6 +89,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return timeByDays;
     }
 
+/*
     public List<Long> getCategorySumTimeStats(Category category, Date start, Date end) throws SQLException {
         List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         List<Long> timeByDays = Arrays.asList(0L, 0L, 0L, 0L, 0L, 0L, 0L);
@@ -99,6 +105,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
 
         return timeByDays;
     }
+*/
 
     /**
      * Removes AppUseStats stats for userApp for date.
@@ -146,6 +153,17 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * @throws SQLException in case of incorrect work with database
      */
     public Long getCategoryTodaySumStats(Category category) throws SQLException {
+        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
+        long sumUseTime = 0;
+        for (UserApp userApp : userAppsForCategory) {
+            sumUseTime += getTodayAppStats(userApp).getUsageTime();
+        }
+
+        return sumUseTime;
+    }
+
+    public Long getCategoryDaySumStats(Category category, Date day) throws SQLException {
+//        this.executeRawNoArgs("SELECT SUM(time) FROM APP_USE_STATS WHERE DATE = ... AND " );
         List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         long sumUseTime = 0;
         for (UserApp userApp : userAppsForCategory) {
