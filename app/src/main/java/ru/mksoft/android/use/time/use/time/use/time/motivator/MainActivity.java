@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -19,9 +20,13 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Property;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
 
+import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -32,7 +37,9 @@ import java.util.Set;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String USER_LEVEL_LABEL_NAME_BEGIN = "user_level";
 
+    private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     private AppListBuilder appListBuilder;
     private StatsProcessor statsProcessor;
@@ -51,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         appListBuilder.buildAppList();
 
         super.onCreate(savedInstanceState);
-        ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        this.binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -84,6 +91,25 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_rule_list,
                 R.id.nav_short_stats_list
         ).setOpenableLayout(drawer).build();
+    }
+
+    /**
+     * Updates level label in header.
+     */
+    public void updateLevelLabel() {
+        long level = 0;
+        try {
+            level = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.USER_LEVEL_FIELD_ID).getValue();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        TextView headerUserLevel = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_main_title_tv);
+        if (level > Property.MAX_SPECIFIC_LEVEL) {
+            headerUserLevel.setText(String.format(Locale.getDefault(), "Легенда %d", (level - Property.MAX_SPECIFIC_LEVEL)));
+        } else {
+            headerUserLevel.setText(getResources().getIdentifier(USER_LEVEL_LABEL_NAME_BEGIN + level, "string", getPackageName()));
+        }
     }
 
     @Override

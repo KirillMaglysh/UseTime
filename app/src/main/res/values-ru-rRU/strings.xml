@@ -36,7 +36,8 @@
     <string name="edit_category_choose_rule_warning">Выберите правило</string>
     <string name="edit_category_name_empty_warning">Название не может быть пустым</string>
     <string name="edit_category_name_exists_warning">Название уже существует</string>
-    <string name="edit_category_unable_delete_used">Нельзя удалить категорию, используемую в каком-либо приложении</string>
+    <string name="edit_category_unable_delete_used">Нельзя удалить категорию, используемую в каком-либо приложении
+    </string>
     <string name="edit_rule_name_label">Название правила</string>
     <string name="edit_rule_name_hint">Введите название правила</string>
     <string name="edit_rule_time_limit_label">Ограничение времени по дням недели</string>
@@ -53,7 +54,9 @@
     <string name="track_new_app_label">Отслеживать приложение</string>
     <string name="track_new_app_category_label">Категория</string>
     <string name="track_new_app_choose_category_warning">Выберите категорию</string>
-    <string name="track_new_app_categories_not_found_warning">Перед подключением отслеживания времени использования необходимо создать хотя бы одну категорию</string>
+    <string name="track_new_app_categories_not_found_warning">Перед подключением отслеживания времени использования
+        необходимо создать хотя бы одну категорию
+    </string>
     <string name="untrack_app_label">Отключить отслеживание приложения</string>
     <string name="untracked_app">НЕОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>
     <string name="tracked_apps">ОТСЛЕЖИВАЕМЫЕ ПРИЛОЖЕНИЯ</string>
@@ -66,4 +69,13 @@
     <string name="goal_completed_number_label">Соблюдение правил:</string>
     <string name="today_home_time_stats_label">Сегодня вы провели в отслеживаемых приложениях</string>
     <string name="yesterday_home_time_stats_label">Вчера вы провели в отслеживаемых приложениях</string>
+    <string name="user_level0">Новичок</string>
+    <string name="user_level1">Новичок2</string>
+    <string name="user_level2">Продолжающий</string>
+    <string name="user_level3">Продолжающий2</string>
+    <string name="user_level4">Опытный</string>
+    <string name="user_level5">Ветеран</string>
+    <string name="user_level6">Мастер</string>
+    <string name="user_level7">Легенда</string>
+    <string name="loading">Загрузка…</string>
 </resources>

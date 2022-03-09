@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="nav_header_title" translatable="false">Kirill</string>
-<!--    <string name="nav_header_subtitle" translatable="false">Master</string>-->
+    <!--    <string name="nav_header_subtitle" translatable="false">Master</string>-->
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -79,4 +79,13 @@
     <string name="today_home_time_stats_label">Сегодня вы провели в отслеживаемых приложениях</string>
     <string name="yesterday_home_time_stats_label">Вчера вы провели в отслеживаемых приложениях</string>
     <string name="life_scale_item" translatable="false">life_scale_item</string>
+    <string name="user_level0">Новичок1</string>
+    <string name="user_level1">Новичок2</string>
+    <string name="user_level2">Продолжающий</string>
+    <string name="user_level3">Продолжающий2</string>
+    <string name="user_level4">Опытный</string>
+    <string name="user_level5">Ветеран</string>
+    <string name="user_level6">Мастер</string>
+    <string name="user_level7">Легенда</string>
+    <string name="loading">Loading…</string>
 </resources>

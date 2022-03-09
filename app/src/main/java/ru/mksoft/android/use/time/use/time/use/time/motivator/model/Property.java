@@ -38,10 +38,9 @@ public class Property {
      */
     public static final Integer MAX_STRIKE = 7;
     /**
-     * Maximum level, which user can achieve.
+     * Maximum specific level, which user can achieve.
      */
-    //TODO() определить максимальный уровень
-    public static final Integer MAX_LEVEL = 10;
+    public static final Integer MAX_SPECIFIC_LEVEL = 7;
 
     @SuppressWarnings("FieldNamingConvention")
     @DatabaseField(id = true)

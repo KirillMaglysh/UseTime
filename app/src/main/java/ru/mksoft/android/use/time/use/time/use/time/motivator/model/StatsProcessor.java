@@ -94,7 +94,7 @@ public class StatsProcessor {
         }
 
         updateYesterdayParams();
-
+        activity.updateLevelLabel();
         notifyStatsProcessed();
     }
 
