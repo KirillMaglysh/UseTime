@@ -27,6 +27,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -4,6 +4,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -126,7 +127,8 @@ public class DateTimeUtils {
      * @return current date begin
      */
     public static Date getDateOfCurrentDayBegin() {
-        return Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Instant instant = LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 
     /**

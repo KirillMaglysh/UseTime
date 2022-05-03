@@ -7,15 +7,18 @@ import com.j256.ormlite.stmt.PreparedDelete;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Application usage statistics data access object.
@@ -24,10 +27,12 @@ import java.util.List;
  * @since 23.02.2022
  */
 public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
+
+    private SimpleDateFormat dateRawFormat = new SimpleDateFormat(AppUseStats.DATE_FORMAT, Locale.getDefault());
+
     protected AppUseStatsDAO(ConnectionSource connectionSource, Class<AppUseStats> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }
-//TODO() переделать методы с циклами на конкретные запросы к базе
 
     /**
      * Returns list of all categories which exist in database.
@@ -55,31 +60,33 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return query(preparedQuery);
     }
 
-    /**
-     * Returns sum stats for every day for this category during the period (today - dayNum, today]
-     *
-     * @param category category stats for which you want to get
-     * @param dayNum   number of day for which you want to get stats
-     * @return sum stats for every day for this category during the period (today - dayNum, today]
-     * @throws SQLException in case of incorrect work with database
-     */
     public List<Long> getCategorySumSuffixTimeStats(Category category, int dayNum) throws SQLException {
-        List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
-        List<Long> timeByDays = new ArrayList<>(dayNum);
-        for (int i = 0; i < dayNum; i++) {
-            timeByDays.add(0L);
+        GenericRawResults<String[]> results = queryRaw(
+                "select sum(USAGE_TIME)\n" +
+                        "from APP_USE_STATS\n" +
+                        "where USER_APP in (\n" +
+                        "    select id\n" +
+                        "    from USER_APP\n" +
+                        "    where CATEGORY = " + category.getId() + "\n" +
+                        ")\n" +
+                        "and DATE between" +
+                        dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(dayNum - 1)) +
+                        " and " +
+                        dateRawFormat.format(DateTimeUtils.getDateOfCurrentDayBegin()) +
+                        "\n" +
+                        "GROUP BY DATE");
+
+        return convertStringArrayToLongArray(results);
+    }
+
+    @NotNull
+    private static List<Long> convertStringArrayToLongArray(GenericRawResults<String[]> results) throws SQLException {
+        List<Long> numberStats = new ArrayList<>(results.getResults().get(0).length);
+        for (int i = 0; i < results.getResults().get(0).length; i++) {
+            numberStats.add(Long.parseLong(results.getResults().get(0)[i]));
         }
 
-        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
-        Date startDay = DateTimeUtils.getDateOtherDayBegin(-dayNum + 1);
-        for (UserApp userApp : userApps) {
-            List<AppUseStats> statsForPeriod = getAppStatsForPeriod(userApp, startDay, today);
-            for (int i = 0; i < timeByDays.size(); i++) {
-                timeByDays.set(i, timeByDays.get(i) + statsForPeriod.get(i).getUsageTime());
-            }
-        }
-
-        return timeByDays;
+        return numberStats;
     }
 
     /**
@@ -109,47 +116,24 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * @throws SQLException in case of incorrect work with database
      */
     public Long getCategoryTodaySumStats(Category category) throws SQLException {
-        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
-        long sumUseTime = 0;
-        for (UserApp userApp : userAppsForCategory) {
-            sumUseTime += getTodayAppStats(userApp).getUsageTime();
-        }
-
-        return sumUseTime;
-
-/*
-        GenericRawResults<String[]> results = this.queryRaw("select sum(USAGE_TIME)" +
-                "from APP_USAGE_STATS" +
-                "where USER_APP in {" +
-                "select id" +
-                "from USER_APP" +
-                "where CATEGORY = ???" +
-                "}" +
-                "and DATE  = ???" +
-                "GROUP BY DATE");
-*/
+//        new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
+        Date dateOfCurrentDayBegin = DateTimeUtils.getDateOfCurrentDayBegin();
+        String format = dateRawFormat.format(dateOfCurrentDayBegin);
+        String query = "select sum(USAGE_TIME)\n" +
+                "from APP_USE_STATS\n" +
+                "where USER_APP in (\n" +
+                "    select id\n" +
+                "    from USER_APP\n" +
+                "    where CATEGORY = " + category.getId() + "\n" +
+                "\n" +
+                ")\n" +
+                "    and DATE = " +
+                format;
+        List<String[]> results = queryRaw(query)
+                .getResults();
+        String queryRaw = results.get(0)[0];
+        return Long.parseLong(queryRaw);
     }
-
-    /**
-     * Returns today AppUseStats of application.
-     *
-     * @param userApp application, for which you want to get stats
-     * @return Returns today AppUseStats of application
-     * @throws SQLException in case of incorrect work with database
-     */
-    public AppUseStats getTodayAppStats(UserApp userApp) throws SQLException {
-        QueryBuilder<AppUseStats, Long> queryBuilder = queryBuilder();
-
-        queryBuilder.where()
-                .eq(AppUseStats.FIELD_USER_APP, userApp)
-                .and()
-                .eq(AppUseStats.FIELD_DATE, DateTimeUtils.getDateOfCurrentDayBegin());
-        PreparedQuery<AppUseStats> preparedQuery = queryBuilder.prepare();
-
-        return queryForFirst(preparedQuery);
-    }
-
-
 
     /**
      * Clears application usage statistics.

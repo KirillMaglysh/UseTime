@@ -24,6 +24,7 @@ public class AppUseStats {
      * USER_APP field name
      */
     public static final String FIELD_USER_APP = "USER_APP";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     /**
      * DATE field name
@@ -44,7 +45,7 @@ public class AppUseStats {
     @SuppressWarnings("FieldNamingConvention")
     @DatabaseField(columnName = "DATE",
             dataType = DataType.DATE_STRING,
-            format = "yyyy-MM-dd",
+            format = DATE_FORMAT,
             canBeNull = false)
     private Date date;
 

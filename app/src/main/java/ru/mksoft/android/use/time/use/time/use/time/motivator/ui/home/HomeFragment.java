@@ -69,12 +69,6 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        printQuote();
-    }
-
-    @Override
     public void processStatsProcessedBuilt() {
         ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         ((MainActivity) getContext()).runOnUiThread(() -> {
@@ -134,7 +128,7 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
 
         @Override
         public void run() {
-            long needToPaint = Math.abs(strikeChange) + 1;
+            long needToPaint = Math.abs(strikeChange);
             for (int i = 0; i < needToPaint; i++) {
                 String name = SCALE_ITEM_LABEL_NAME_BEGIN + i;
                 int scaleItemID = getResources().getIdentifier(name,
@@ -145,7 +139,7 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
                     if (strikeChange < 0) {
                         scaleItem.setBackground(getResources().getDrawable(R.color.red));
                     } else {
-                        scaleItem.setBackground(getResources().getDrawable(R.color.red));
+                        scaleItem.setBackground(getResources().getDrawable(R.color.teal_200));
                     }
                 });
 
