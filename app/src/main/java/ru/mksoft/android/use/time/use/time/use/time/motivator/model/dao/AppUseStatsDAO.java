@@ -1,6 +1,7 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedDelete;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -54,28 +55,20 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return query(preparedQuery);
     }
 
-/*
-    public List<List<AppUseStats>> getCategoryAppsStatsForPeriod(Category category, Date start, Date end) throws SQLException {
-        List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
-        List<List<AppUseStats>> timeByDays = new ArrayList<>();
-
-        for (UserApp userApp : userApps) {
-            timeByDays.add(getAppStatsForPeriod(userApp, start, end));
-        }
-
-        return timeByDays;
-    }
-*/
-
+    /**
+     * Returns sum stats for every day for this category during the period (today - dayNum, today]
+     *
+     * @param category category stats for which you want to get
+     * @param dayNum   number of day for which you want to get stats
+     * @return sum stats for every day for this category during the period (today - dayNum, today]
+     * @throws SQLException in case of incorrect work with database
+     */
     public List<Long> getCategorySumSuffixTimeStats(Category category, int dayNum) throws SQLException {
         List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
         List<Long> timeByDays = new ArrayList<>(dayNum);
         for (int i = 0; i < dayNum; i++) {
             timeByDays.add(0L);
         }
-
-        QueryBuilder<AppUseStats, Long> aaa;
-
 
         Date today = DateTimeUtils.getDateOfCurrentDayBegin();
         Date startDay = DateTimeUtils.getDateOtherDayBegin(-dayNum + 1);
@@ -88,24 +81,6 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
 
         return timeByDays;
     }
-
-/*
-    public List<Long> getCategorySumTimeStats(Category category, Date start, Date end) throws SQLException {
-        List<UserApp> userApps = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
-        List<Long> timeByDays = Arrays.asList(0L, 0L, 0L, 0L, 0L, 0L, 0L);
-
-        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
-        Date sevenDayAgo = DateTimeUtils.getDateOtherDayBegin(6);
-        for (UserApp userApp : userApps) {
-            List<AppUseStats> statsForPeriod = getAppStatsForPeriod(userApp, sevenDayAgo, today);
-            for (int i = 0; i < timeByDays.size(); i++) {
-                timeByDays.set(i, timeByDays.get(i) + statsForPeriod.get(i).getUsageTime());
-            }
-        }
-
-        return timeByDays;
-    }
-*/
 
     /**
      * Removes AppUseStats stats for userApp for date.
@@ -127,6 +102,35 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     }
 
     /**
+     * Returns summary today time of using category's applications.
+     *
+     * @param category category, for which you want to get stats
+     * @return summary time today of using category's applications
+     * @throws SQLException in case of incorrect work with database
+     */
+    public Long getCategoryTodaySumStats(Category category) throws SQLException {
+        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
+        long sumUseTime = 0;
+        for (UserApp userApp : userAppsForCategory) {
+            sumUseTime += getTodayAppStats(userApp).getUsageTime();
+        }
+
+        return sumUseTime;
+
+/*
+        GenericRawResults<String[]> results = this.queryRaw("select sum(USAGE_TIME)" +
+                "from APP_USAGE_STATS" +
+                "where USER_APP in {" +
+                "select id" +
+                "from USER_APP" +
+                "where CATEGORY = ???" +
+                "}" +
+                "and DATE  = ???" +
+                "GROUP BY DATE");
+*/
+    }
+
+    /**
      * Returns today AppUseStats of application.
      *
      * @param userApp application, for which you want to get stats
@@ -145,33 +149,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return queryForFirst(preparedQuery);
     }
 
-    /**
-     * Returns summary today time of using category's applications.
-     *
-     * @param category category, for which you want to get stats
-     * @return summary time today of using category's applications
-     * @throws SQLException in case of incorrect work with database
-     */
-    public Long getCategoryTodaySumStats(Category category) throws SQLException {
-        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
-        long sumUseTime = 0;
-        for (UserApp userApp : userAppsForCategory) {
-            sumUseTime += getTodayAppStats(userApp).getUsageTime();
-        }
 
-        return sumUseTime;
-    }
-
-    public Long getCategoryDaySumStats(Category category, Date day) throws SQLException {
-//        this.executeRawNoArgs("SELECT SUM(time) FROM APP_USE_STATS WHERE DATE = ... AND " );
-        List<UserApp> userAppsForCategory = DbHelperFactory.getHelper().getUserAppDAO().getTrackedUserAppsForCategory(category);
-        long sumUseTime = 0;
-        for (UserApp userApp : userAppsForCategory) {
-            sumUseTime += getTodayAppStats(userApp).getUsageTime();
-        }
-
-        return sumUseTime;
-    }
 
     /**
      * Clears application usage statistics.
