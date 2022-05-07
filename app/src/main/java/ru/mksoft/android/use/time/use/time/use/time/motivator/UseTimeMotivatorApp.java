@@ -1,7 +1,8 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
 import android.app.Application;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.alarms.AlarmProcessor;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 
 /**
  * Place here class purpose.
@@ -15,6 +16,7 @@ public class UseTimeMotivatorApp extends Application {
 //        deleteDatabase("use_time_motivator.db");
         super.onCreate();
         DbHelperFactory.setHelper(getApplicationContext());
+        new AlarmProcessor(getApplicationContext()).updateAlarms();
     }
 
     @Override

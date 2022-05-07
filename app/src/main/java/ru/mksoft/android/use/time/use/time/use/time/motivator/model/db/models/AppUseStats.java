@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;

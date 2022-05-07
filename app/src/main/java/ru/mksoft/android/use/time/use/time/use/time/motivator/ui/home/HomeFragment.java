@@ -14,9 +14,10 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentHomeBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ShortSummaryCardBinding;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DayProgress;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Property;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessedListener;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Property;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ import java.util.Random;
  * @author Kirill
  * @since 06.03.2022
  */
-public class HomeFragment extends Fragment implements StatsProcessor.StatsProcessedUIListener {
+public class HomeFragment extends Fragment implements StatsProcessedListener {
     private FragmentHomeBinding binding;
     private static final String QUOTE_RESOURCE_NAME_BEGIN = "quote";
     private static final String SCALE_ITEM_LABEL_NAME_BEGIN = "scale_level";
@@ -44,9 +45,9 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
 
         StatsProcessor statsProcessor = ((MainActivity) getContext()).getStatsProcessor();
         if (statsProcessor.isProcessed()) {
-            processStatsProcessedBuilt();
+            processStatsUpdated();
         } else {
-            statsProcessor.subscribe(this);
+            statsProcessor.subscribeUIListener(this);
         }
 
         return binding.getRoot();
@@ -69,7 +70,7 @@ public class HomeFragment extends Fragment implements StatsProcessor.StatsProces
     }
 
     @Override
-    public void processStatsProcessedBuilt() {
+    public void processStatsUpdated() {
         ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         ((MainActivity) getContext()).runOnUiThread(() -> {
             StatsProcessor statsProcessor = ((MainActivity) getContext()).getStatsProcessor();

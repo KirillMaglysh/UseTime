@@ -22,12 +22,11 @@ import com.google.android.material.button.MaterialButton;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.UserApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -5,7 +5,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
 
 import static ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils.getFormattedLimitTime;
 

@@ -15,16 +15,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.DatabaseException;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.DatabaseException;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.messaging.MessageDialogType;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelper.PREDEFINED_ID;
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelper.PREDEFINED_ID;
 
 /**
  * Adapter for recycler view of rules in RuleFragment

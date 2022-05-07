@@ -6,9 +6,13 @@ import android.content.Context;
 import android.util.Log;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.AppUseStats;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Property;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.PermissionUtils;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -20,13 +24,13 @@ import java.util.*;
  * @since 24.02.2022
  */
 public class StatsProcessor {
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String LOG_TAG = StatsProcessor.class.getSimpleName();
 
-    private final MainActivity activity;
-    private StatsProcessedUIListener uiListener;
+    private final Context context;
+    private StatsProcessedListener uiListener;
+    private final List<StatsProcessedListener> updateStatisticResultsListeners;
     private boolean isNewDate = false;
     private boolean isProcessed;
-    private final MainActivity.RequestPackageUsageStatsPermissionListener updateUseStatsRequestPackageUsageStatsPermissionListener;
 
     @Getter
     private DayProgress todayProgress = new DayProgress(0, 0);
@@ -36,29 +40,27 @@ public class StatsProcessor {
     /**
      * Constructor
      *
-     * @param activity context of Activity
+     * @param context context of Activity
      */
-    public StatsProcessor(MainActivity activity) {
-        this.activity = activity;
+    public StatsProcessor(Context context) {
+        this.context = context;
+        updateStatisticResultsListeners = new ArrayList<>();
+    }
 
-        // Using a single listener to prevent duplicating permission requests at application startup
-        updateUseStatsRequestPackageUsageStatsPermissionListener = isGranted -> {
-            if (isGranted) {
-                updateUseStatsGrantedPermission();
-            } else {
-                Log.w(LOG_TAG, "Package usage stats permission denied");
-            }
-        };
+    protected Context getContext() {
+        return context;
     }
 
     /**
      * Updates stats of all app begin with its last update
      */
     public void updateUseStats() {
-        activity.requestPackageUsageStatsPermission(updateUseStatsRequestPackageUsageStatsPermissionListener);
+        if (PermissionUtils.isUsageStatsPermissionAllowed(context)) {
+            updateUseStatsGrantedPermission();
+        }
     }
 
-    private void updateUseStatsGrantedPermission() {
+    protected void updateUseStatsGrantedPermission() {
         isProcessed = false;
         todayProgress = new DayProgress(0, 0);
         List<UserApp> trackedUserApps = getTrackedUserApps();
@@ -94,11 +96,10 @@ public class StatsProcessor {
         }
 
         updateYesterdayParams();
-        activity.updateLevelLabel();
         notifyStatsProcessed();
     }
 
-    private void updateYesterdayParams() {
+    protected void updateYesterdayParams() {
         Property yesterdayTime = null;
         Property yesterdayGoalsFailed = null;
         try {
@@ -125,10 +126,10 @@ public class StatsProcessor {
     }
 
     private void notifyStatsProcessed() {
+        Log.d(LOG_TAG, "Stats Processed");
         isProcessed = true;
-        if (uiListener != null) {
-            uiListener.processStatsProcessedBuilt();
-        }
+        publishUIListener();
+        publishSystemListeners();
     }
 
     private static void setUserAppsLastUpdate(List<UserApp> trackedUserApps, Date today) {
@@ -223,7 +224,7 @@ public class StatsProcessor {
     }
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
-        return ((UsageStatsManager) activity.getSystemService(Context.USAGE_STATS_SERVICE))
+        return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
                 .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), nextDate.getTimeInMillis());
     }
 
@@ -270,34 +271,30 @@ public class StatsProcessor {
      * @param userApp application
      */
     public void addAppStats(UserApp userApp) {
-        activity.requestPackageUsageStatsPermission(isGranted -> {
-            if (isGranted) {
-                addAppStatsGrantedPermission(userApp);
-            } else {
-                Log.w(LOG_TAG, "Package usage stats permission denied");
-            }
-        });
+        if (PermissionUtils.isUsageStatsPermissionAllowed(context)) {
+            addAppStatsGrantedPermission(userApp);
+        }
     }
 
-    private void addAppStatsGrantedPermission(UserApp userApp) {
+    protected void addAppStatsGrantedPermission(UserApp userApp) {
         isProcessed = false;
-        new Thread(() -> {
-            Date curDate = DateTimeUtils.getDateOtherDayBegin(-Calendar.DAY_OF_WEEK);
-            Calendar nextDate = Calendar.getInstance();
-            Date today = DateTimeUtils.getDateOfCurrentDayBegin();
-            while (curDate.before(today) || curDate.equals(today)) {
-                nextDate.setTime(curDate);
-                nextDate.add(Calendar.DATE, 1);
-                addNewAppUsageStatsForDate(userApp, curDate, nextDate);
-                curDate.setTime(nextDate.getTimeInMillis());
-            }
-
-            userApp.setLastUpdateDate(today);
-            notifyStatsProcessed();
-        }).start();
+        new Thread(() -> runAppStatsSeparateThread(userApp)).start();
     }
 
-    private void addNewAppUsageStatsForDate(UserApp userApp, Date curDate, Calendar nextDate) {
+    private void runAppStatsSeparateThread(UserApp userApp) {
+        Date today = DateTimeUtils.getDateOfCurrentDayBegin();
+        Calendar nextDate = Calendar.getInstance();
+        nextDate.setTime(today);
+        nextDate.add(Calendar.DATE, 1);
+
+        long usedTime = addNewAppUsageStatsForDate(userApp, today, nextDate);
+        processCategoryDateState(userApp.getCategory(), usedTime, today);
+
+        userApp.setLastUpdateDate(today);
+        notifyStatsProcessed();
+    }
+
+    private long addNewAppUsageStatsForDate(UserApp userApp, Date curDate, Calendar nextDate) {
         for (UsageStats usageStat : queryUsageStats(curDate, nextDate)) {
             if (userApp.getPackageName().equals(usageStat.getPackageName())) {
                 try {
@@ -306,7 +303,7 @@ public class StatsProcessor {
                     e.printStackTrace();
                 }
 
-                return;
+                return usageStat.getTotalTimeVisible();
             }
         }
 
@@ -315,6 +312,8 @@ public class StatsProcessor {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     /**
@@ -351,8 +350,25 @@ public class StatsProcessor {
      *
      * @param listener single UI listener, who needs to react on stats processing finish
      */
-    public void subscribe(StatsProcessedUIListener listener) {
+    public void subscribeUIListener(StatsProcessedListener listener) {
         uiListener = listener;
+    }
+
+    public void subscribeSystemListener(StatsProcessedListener listener) {
+        updateStatisticResultsListeners.add(listener);
+    }
+
+    private void publishUIListener() {
+        if (uiListener != null) {
+            uiListener.processStatsUpdated();
+        }
+    }
+
+    private void publishSystemListeners() {
+        Log.d(LOG_TAG, String.format("Listeners.size = %d", updateStatisticResultsListeners.size()));
+        for (StatsProcessedListener listener : updateStatisticResultsListeners) {
+            listener.processStatsUpdated();
+        }
     }
 
     /**
@@ -360,16 +376,6 @@ public class StatsProcessor {
      */
     public void unsubscribeUIListener() {
         uiListener = null;
-    }
-
-    /**
-     * UI element, which need to react on stats processing finish.
-     */
-    public interface StatsProcessedUIListener {
-        /**
-         * Calls when statistics is processed.
-         */
-        void processStatsProcessedBuilt();
     }
 
     @Getter

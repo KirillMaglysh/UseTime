@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import lombok.Getter;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentShortStatsListBinding;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessedListener;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * @author Kirill
  * @since 20.02.2022
  */
-public class ShortStatsListFragment extends Fragment implements StatsProcessor.StatsProcessedUIListener {
+public class ShortStatsListFragment extends Fragment implements StatsProcessedListener {
     private FragmentShortStatsListBinding binding;
     private ConstraintLayout progressBar;
 
@@ -40,9 +41,9 @@ public class ShortStatsListFragment extends Fragment implements StatsProcessor.S
         StatsProcessor statsProcessor = ((MainActivity) getContext()).getStatsProcessor();
         progressBar = binding.shortStatsListProgressWindow.progressWindow;
         if (statsProcessor.isProcessed()) {
-            processStatsProcessedBuilt();
+            processStatsUpdated();
         } else {
-            statsProcessor.subscribe(this);
+            statsProcessor.subscribeUIListener(this);
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -72,7 +73,7 @@ public class ShortStatsListFragment extends Fragment implements StatsProcessor.S
     }
 
     @Override
-    public void processStatsProcessedBuilt() {
+    public void processStatsUpdated() {
         ((MainActivity) getContext()).getStatsProcessor().unsubscribeUIListener();
         ((MainActivity) getContext()).runOnUiThread(() -> {
             RecyclerView recyclerView = binding.statsListRecyclerView;

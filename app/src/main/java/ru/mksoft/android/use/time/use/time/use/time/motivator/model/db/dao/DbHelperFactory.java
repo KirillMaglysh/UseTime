@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao;
 
 import android.content.Context;
 import com.j256.ormlite.android.apptools.OpenHelperManager;

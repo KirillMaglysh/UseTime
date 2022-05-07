@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao;
 
 import java.util.Locale;
 

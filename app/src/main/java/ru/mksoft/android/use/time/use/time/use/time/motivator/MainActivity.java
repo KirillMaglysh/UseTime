@@ -1,7 +1,6 @@
 package ru.mksoft.android.use.time.use.time.use.time.motivator;
 
 import android.app.AppOpsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -18,16 +17,21 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
+import lombok.Getter;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.ActivityMainBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.ActivityStatsProcessor;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppListBuilder;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Property;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessedListener;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.StatsProcessor;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Property;
 
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+
+import static ru.mksoft.android.use.time.use.time.use.time.motivator.utils.PermissionUtils.checkUsageStatsPermission;
 
 /**
  * Main and single activity of the app
@@ -35,13 +39,15 @@ import java.util.Set;
  * @author Kirill
  * @since 18.11.21
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StatsProcessedListener {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String USER_LEVEL_LABEL_NAME_BEGIN = "user_level";
 
     private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
+    @Getter
     private AppListBuilder appListBuilder;
+    @Getter
     private StatsProcessor statsProcessor;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
     private final Set<RequestPackageUsageStatsPermissionListener> requestPackageUsageStatsPermissionListeners = new HashSet<>();
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 this::processRequestUsageStatsPermissionResult
         );
 
-        statsProcessor = new StatsProcessor(this);
+        statsProcessor = new ActivityStatsProcessor(this);
         appListBuilder = new AppListBuilder(getPackageManager(), statsProcessor);
         appListBuilder.buildAppList();
 
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processRequestUsageStatsPermissionResult(ActivityResult result) {
-        int mode = checkUsageStatsPermission();
+        int mode = checkUsageStatsPermission(this);
         Log.i(LOG_TAG, "PACKAGE_USAGE_STATS permission changed to " + mode);
 
         for (RequestPackageUsageStatsPermissionListener requestPackageUsageStatsPermissionListener : requestPackageUsageStatsPermissionListeners) {
@@ -91,25 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_rule_list,
                 R.id.nav_short_stats_list
         ).setOpenableLayout(drawer).build();
-    }
-
-    /**
-     * Updates level label in header.
-     */
-    public void updateLevelLabel() {
-        long level = 0;
-        try {
-            level = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.USER_LEVEL_FIELD_ID).getValue();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        TextView headerUserLevel = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_main_title_tv);
-        if (level > Property.MAX_SPECIFIC_LEVEL) {
-            headerUserLevel.setText(String.format(Locale.getDefault(), "Легенда %d", (level - Property.MAX_SPECIFIC_LEVEL)));
-        } else {
-            headerUserLevel.setText(getResources().getIdentifier(USER_LEVEL_LABEL_NAME_BEGIN + level, "string", getPackageName()));
-        }
     }
 
     @Override
@@ -133,30 +120,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns application list builder.
-     *
-     * @return application list builder
-     */
-    public AppListBuilder getAppListBuilder() {
-        return appListBuilder;
-    }
-
-    /**
-     * Return statistics processor.
-     *
-     * @return statistics processor
-     */
-    public StatsProcessor getStatsProcessor() {
-        return statsProcessor;
-    }
-
-    /**
      * Request PACKAGE_USAGE_STATS permission.
      *
      * @param listener request listener
      */
     public void requestPackageUsageStatsPermission(RequestPackageUsageStatsPermissionListener listener) {
-        int mode = checkUsageStatsPermission();
+        int mode = checkUsageStatsPermission(this);
 
         if (mode == AppOpsManager.MODE_ALLOWED) {
             listener.onPermissionGranted(true);
@@ -172,20 +141,20 @@ public class MainActivity extends AppCompatActivity {
         requestPackageUsageStatsPermissionListeners.add(listener);
     }
 
-    private int checkUsageStatsPermission() {
-        AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-        return appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
-    }
+    @Override
+    public void processStatsUpdated() {
+        long level = 0;
+        try {
+            level = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.USER_LEVEL_FIELD_ID).getValue();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-    /**
-     * Listener for request statistics processor result.
-     */
-    public interface RequestPackageUsageStatsPermissionListener {
-        /**
-         * Action when permission requested
-         *
-         * @param isGranted true, if granted
-         */
-        void onPermissionGranted(boolean isGranted);
+        TextView headerUserLevel = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_main_title_tv);
+        if (level > Property.MAX_SPECIFIC_LEVEL) {
+            headerUserLevel.setText(String.format(Locale.getDefault(), "Легенда %d", (level - Property.MAX_SPECIFIC_LEVEL)));
+        } else {
+            headerUserLevel.setText(getResources().getIdentifier(USER_LEVEL_LABEL_NAME_BEGIN + level, "string", getPackageName()));
+        }
     }
 }

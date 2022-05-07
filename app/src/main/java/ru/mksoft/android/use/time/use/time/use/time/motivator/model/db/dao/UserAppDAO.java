@@ -1,11 +1,11 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.UserApp;
 
 import java.sql.SQLException;
 import java.util.List;

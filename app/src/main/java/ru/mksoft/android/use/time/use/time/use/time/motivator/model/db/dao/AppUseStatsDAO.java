@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -8,17 +8,14 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppUseStats;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Category;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.UserApp;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.AppUseStats;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Application usage statistics data access object.
@@ -61,31 +58,38 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
     }
 
     public List<Long> getCategorySumSuffixTimeStats(Category category, int dayNum) throws SQLException {
-        GenericRawResults<String[]> results = queryRaw(
-                "select sum(USAGE_TIME)\n" +
-                        "from APP_USE_STATS\n" +
-                        "where USER_APP in (\n" +
-                        "    select id\n" +
-                        "    from USER_APP\n" +
-                        "    where CATEGORY = " + category.getId() + "\n" +
-                        ")\n" +
-                        "and DATE between" +
-                        dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(dayNum - 1)) +
-                        " and " +
-                        dateRawFormat.format(DateTimeUtils.getDateOfCurrentDayBegin()) +
-                        "\n" +
-                        "GROUP BY DATE");
+        String query = "select Date, sum(USAGE_TIME) as TIME \n" +
+                "from APP_USE_STATS \n" +
+                "where USER_APP in ( \n" +
+                "    select id \n" +
+                "    from USER_APP \n" +
+                "    where CATEGORY = " + category.getId() + " \n" +
+                ") \n" +
+                "and DATE between '" +
+                dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(-dayNum + 1)) +
+                "' and '" +
+                dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(0)) +
+                "' \n" +
+                "GROUP BY Date";
 
+        GenericRawResults<String[]> results = this.queryRaw(query);
         return convertStringArrayToLongArray(results);
     }
 
     @NotNull
     private static List<Long> convertStringArrayToLongArray(GenericRawResults<String[]> results) throws SQLException {
-        List<Long> numberStats = new ArrayList<>(results.getResults().get(0).length);
-        for (int i = 0; i < results.getResults().get(0).length; i++) {
-            numberStats.add(Long.parseLong(results.getResults().get(0)[i]));
+        List<Long> numberStats = new ArrayList<>();
+        for (String[] dateResult : results) {
+            numberStats.add(Long.parseLong(dateResult[1]));
         }
 
+        int duty = 7 - numberStats.size();
+        List<Long> zeros = new ArrayList<>();
+        for (int i = 0; i < duty; i++) {
+            zeros.add(0L);
+        }
+
+        numberStats.addAll(0, zeros);
         return numberStats;
     }
 
@@ -116,9 +120,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
      * @throws SQLException in case of incorrect work with database
      */
     public Long getCategoryTodaySumStats(Category category) throws SQLException {
-//        new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
         Date dateOfCurrentDayBegin = DateTimeUtils.getDateOfCurrentDayBegin();
-        String format = dateRawFormat.format(dateOfCurrentDayBegin);
         String query = "select sum(USAGE_TIME)\n" +
                 "from APP_USE_STATS\n" +
                 "where USER_APP in (\n" +
@@ -127,8 +129,8 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
                 "    where CATEGORY = " + category.getId() + "\n" +
                 "\n" +
                 ")\n" +
-                "    and DATE = " +
-                format;
+                "    and DATE = '" +
+                dateRawFormat.format(dateOfCurrentDayBegin) + "'";
         List<String[]> results = queryRaw(query)
                 .getResults();
         String queryRaw = results.get(0)[0];

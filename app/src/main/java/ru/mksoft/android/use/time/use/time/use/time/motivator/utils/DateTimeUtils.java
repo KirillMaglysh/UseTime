@@ -2,7 +2,7 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.utils;
 
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -143,5 +143,9 @@ public class DateTimeUtils {
         calendar.add(Calendar.DATE, diff);
 
         return calendar.getTime();
+    }
+
+    public static long getCurDayTimeInMillis(){
+        return Calendar.getInstance().getTimeInMillis() - DateTimeUtils.getDateOfCurrentDayBegin().getTime();
     }
 }

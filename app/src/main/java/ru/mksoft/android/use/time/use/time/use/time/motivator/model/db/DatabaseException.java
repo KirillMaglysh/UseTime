@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db;
 
 /**
  * Database error.

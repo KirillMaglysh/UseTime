@@ -3,7 +3,10 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.DatabaseException;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
 import java.sql.SQLException;
@@ -35,6 +38,7 @@ public class AppListBuilder {
      * @param statsProcessor statsProcessor, which must be notified
      */
     public AppListBuilder(PackageManager packageManager, StatsProcessor statsProcessor) {
+        Log.d(LOG_TAG, "Create AppListBuilder... packageManager " + packageManager);
         this.packageManager = packageManager;
         this.statsProcessor = statsProcessor;
     }
@@ -51,6 +55,7 @@ public class AppListBuilder {
     }
 
     private synchronized void process() {
+        Log.d(LOG_TAG, "Process built app list...");
         List<UserApp> untrackedApps;
         List<UserApp> trackedApps;
         try {
@@ -122,9 +127,13 @@ public class AppListBuilder {
     }
 
     private void notifyAppListBuilt() {
+        Log.d(LOG_TAG, "Notify app list built");
+
         isBuilt = true;
         if (uiListener != null) {
             uiListener.processAppListBuilt();
+        } else {
+            Log.d(LOG_TAG, "uiListener undefined");
         }
 
         statsProcessor.updateUseStats();

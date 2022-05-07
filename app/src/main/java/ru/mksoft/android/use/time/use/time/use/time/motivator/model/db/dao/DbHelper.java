@@ -1,4 +1,4 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +8,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.*;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.DatabaseException;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.*;
 
 import java.sql.SQLException;
 

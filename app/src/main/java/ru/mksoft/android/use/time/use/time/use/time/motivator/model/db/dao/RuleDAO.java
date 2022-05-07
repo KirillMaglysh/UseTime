@@ -1,8 +1,8 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
 
 import java.sql.SQLException;
 import java.util.List;

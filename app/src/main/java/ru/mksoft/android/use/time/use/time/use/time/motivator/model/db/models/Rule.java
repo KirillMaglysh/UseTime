@@ -1,12 +1,12 @@
-package ru.mksoft.android.use.time.use.time.use.time.motivator.model;
+package ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models;
 
 import androidx.annotation.NonNull;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.InvalidDayOfWeekException;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.model.dao.InvalidTimeLimitException;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.InvalidDayOfWeekException;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.InvalidTimeLimitException;
 
 import java.util.Map;
 
