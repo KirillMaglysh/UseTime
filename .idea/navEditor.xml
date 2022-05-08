@@ -124,13 +124,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nav_full_stats">
+                  <entry key="nav_full_day_stats">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="419" />
-                            <option name="y" value="-400" />
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_full_week_stats">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -191,8 +203,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="253" />
-                            <option name="y" value="-689" />
+                            <option name="x" value="272" />
+                            <option name="y" value="-752" />
                           </Point>
                         </option>
                         <option name="myPositions">
