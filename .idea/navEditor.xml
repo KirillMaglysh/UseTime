@@ -77,6 +77,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="nav_day_full_stats">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nav_edit_category">
                     <value>
                       <LayoutPositions>
@@ -120,30 +132,6 @@
                               </value>
                             </entry>
                           </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="nav_full_day_stats">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="12" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="nav_full_week_stats">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
-                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -209,7 +197,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_nav_short_stats_list_to_nav_full_stats">
+                            <entry key="action_nav_short_stats_list_to_nav_day_full_stats">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_short_stats_list_to_nav_week_full_stats">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -247,6 +240,18 @@
                           <Point>
                             <option name="x" value="-494" />
                             <option name="y" value="16" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_week_full_stats">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

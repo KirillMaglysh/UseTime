@@ -12,7 +12,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Us
  */
 @AllArgsConstructor
 @Getter
-public class AppWithStats {
-    private UserApp userApp;
+public class AppStatsBin {
+    private String packageName;
     private Long usedTime;
 }

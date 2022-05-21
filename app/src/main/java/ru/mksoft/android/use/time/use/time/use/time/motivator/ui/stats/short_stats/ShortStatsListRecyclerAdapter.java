@@ -9,9 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +29,11 @@ public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<Recycler
     private List<ShortStatsListFragment.CategoryInShortSummary> categoriesInShortSummary;
     private Context context;
 
+    @Setter
+    private int currentPeriodID = ShortStatsListFragment.WEEK_PERIOD_ID;
+    @Setter
+    private Date date;
+
     public ShortStatsListRecyclerAdapter(Context context, List<ShortStatsListFragment.CategoryInShortSummary> categoriesInShortSummary) {
         this.categoriesInShortSummary = categoriesInShortSummary;
         this.context = context;
@@ -35,19 +42,31 @@ public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<Recycler
     @NotNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return new CategoryIntShortStatsCardHolder(LayoutInflater.from(context).inflate(R.layout.category_short_stats_card, parent, false));
+        return new CategoryInShortStatsCardHolder(LayoutInflater.from(context).inflate(R.layout.category_short_stats_card, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-        CategoryIntShortStatsCardHolder cardHolder = (CategoryIntShortStatsCardHolder) holder;
+        CategoryInShortStatsCardHolder cardHolder = (CategoryInShortStatsCardHolder) holder;
         ShortStatsListFragment.CategoryInShortSummary categoryStats = categoriesInShortSummary.get(position);
         cardHolder.hourValInShortCategoryStats.setText(String.format(Locale.US, TIME_PART_FORMAT, categoryStats.getHours()));
-        cardHolder.minValInShortCategoryStats.setText(String.format(Locale.US, TIME_PART_FORMAT, categoryStats.getMinutes()));
+        cardHolder.minuteValInShortCategoryStats.setText(String.format(Locale.US, TIME_PART_FORMAT, categoryStats.getMinutes()));
         cardHolder.categoryInShortStatsLabel.setText(categoryStats.getCategory().getName());
 
-        ((CategoryIntShortStatsCardHolder) holder).moreButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
-                .navigate(ShortStatsListFragmentDirections.actionNavShortStatsListToNavFullStats(categoryStats.getCategory().getId().toString())));
+        if (currentPeriodID == ShortStatsListFragment.DAY_PERIOD_ID) {
+            ((CategoryInShortStatsCardHolder) holder).moreButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+                    .navigate(ShortStatsListFragmentDirections.actionNavShortStatsListToNavDayFullStats(
+                            categoryStats.getCategory().getId().toString(),
+                            date.toString()
+                    ))
+            );
+        } else {
+            ((CategoryInShortStatsCardHolder) holder).moreButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
+                    .navigate(ShortStatsListFragmentDirections.actionNavShortStatsListToNavWeekFullStats(
+                            categoryStats.getCategory().getId().toString()
+                    ))
+            );
+        }
     }
 
     @Override
@@ -55,16 +74,21 @@ public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<Recycler
         return categoriesInShortSummary.size();
     }
 
-    class CategoryIntShortStatsCardHolder extends RecyclerView.ViewHolder {
+    public void reloadStats(List<ShortStatsListFragment.CategoryInShortSummary> categoriesInShortSummary) {
+        this.categoriesInShortSummary = categoriesInShortSummary;
+        notifyDataSetChanged();
+    }
+
+    class CategoryInShortStatsCardHolder extends RecyclerView.ViewHolder {
         private final TextView hourValInShortCategoryStats;
-        private final TextView minValInShortCategoryStats;
+        private final TextView minuteValInShortCategoryStats;
         private final TextView categoryInShortStatsLabel;
         private final Button moreButton;
 
-        public CategoryIntShortStatsCardHolder(View itemView) {
+        public CategoryInShortStatsCardHolder(View itemView) {
             super(itemView);
-            hourValInShortCategoryStats = itemView.findViewById(R.id.hour_val_in_short_category_stats);
-            minValInShortCategoryStats = itemView.findViewById(R.id.minute_val_in_short_category_stats);
+            hourValInShortCategoryStats = itemView.findViewById(R.id.hour_val_in_results);
+            minuteValInShortCategoryStats = itemView.findViewById(R.id.minute_val_in_results);
             categoryInShortStatsLabel = itemView.findViewById(R.id.category_in_short_stats_label);
             moreButton = itemView.findViewById(R.id.more_button_in_short_category_stats);
         }

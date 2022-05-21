@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.recyclerview.widget.RecyclerView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -15,12 +16,14 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentWeekFullCategoryStatsBinding;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppStatsBin;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,8 +42,22 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
     private FragmentWeekFullCategoryStatsBinding binding;
 
     @Override
+    protected void drawOwnPart() {
+        visualizeCategoryAndRule();
+        editChart();
+        prepareChartDataSet();
+        drawChart();
+    }
+
+    @Override
     protected void initBinding(@NotNull LayoutInflater inflater, ViewGroup container) {
         binding = FragmentWeekFullCategoryStatsBinding.inflate(inflater, container, false);
+        File file;
+    }
+
+    @Override
+    protected void initAppPieChart() {
+        setAppPieChart(binding.categoryStatsDayAppPieChart);
     }
 
     @Override
@@ -48,11 +65,9 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
         return binding.getRoot();
     }
 
-    @Override
     protected void drawChart() {
         barChart.animateY(1000);
     }
-
 
     @Nullable
     protected Category queryCategory() {
@@ -67,8 +82,22 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
         return category;
     }
 
+    @Override
+    protected List<AppStatsBin> queryAppStats() {
+        try {
+            return DbHelperFactory.getHelper().getAppUseStatsDao().getStatsForAllCategoryAppsByLastWeek(getCategory());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected RecyclerView getRecyclerView() {
+        return binding.weekAppRecyclerLayoutWithUseStats.appListWithUsedStatsRecyclerView;
+    }
+
     protected void editChart() {
-        barChart = binding.categoryStats7DayBarChart;
+        barChart = binding.categoryStatsWeekBarChart;
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setEnabled(false);
         setXAxis();

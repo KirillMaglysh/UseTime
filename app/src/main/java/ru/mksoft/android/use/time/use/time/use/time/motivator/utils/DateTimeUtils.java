@@ -31,6 +31,7 @@ public class DateTimeUtils {
     public static final int MILLIS_IN_MINUTE = 60000;
     private static final String DAY_TIME_LIMIT_FORMAT = "%02d:%02d";
     private static final String DATE_DAY_MONTH_FORMAT = "%02d.%02d";
+    private static final String TIME_PART_FORMAT = "%02d";
 
     /**
      * Returns formatted time value in minutes
@@ -97,6 +98,10 @@ public class DateTimeUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return getDayOfWeek(calendar);
+    }
+
+    public static int getCurrentDayOFWeek() {
+        return getDayOfWeek(getDateOfCurrentDayBegin());
     }
 
     /**

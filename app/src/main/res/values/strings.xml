@@ -88,4 +88,9 @@
     <string name="user_level6">Мастер</string>
     <string name="user_level7">Легенда</string>
     <string name="loading">Loading…</string>
+
+    <string-array name="statsPeriods">
+        <item>Week</item>
+        <item>Day</item>
+    </string-array>
 </resources>
