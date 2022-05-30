@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -20,6 +21,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppStatsBin;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHelperFactory;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.UserApp;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 
@@ -52,7 +54,6 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
     @Override
     protected void initBinding(@NotNull LayoutInflater inflater, ViewGroup container) {
         binding = FragmentWeekFullCategoryStatsBinding.inflate(inflater, container, false);
-        File file;
     }
 
     @Override
@@ -92,6 +93,11 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
     }
 
     @Override
+    protected FrameLayout getFrameRecyclerLayout() {
+        return binding.appListInFullStatsLayout;
+    }
+
+    @Override
     protected RecyclerView getRecyclerView() {
         return binding.weekAppRecyclerLayoutWithUseStats.appListWithUsedStatsRecyclerView;
     }
@@ -104,7 +110,7 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
         setYAxis();
     }
 
-    protected void visualizeCategoryAndRule() {
+    private void visualizeCategoryAndRule() {
         new RuleViewHolder(binding.ruleBodyInFullStats.getRoot()).fillRuleData(getRule());
         binding.categoryInFullStatsLabel.setText(getCategory().getName());
     }
@@ -173,18 +179,18 @@ public class WeekFullCategoryStatsFragment extends FullCategoryStatsFragment {
     }
 
     protected static List<Integer> getStats(Category category) {
-        List<Integer> stats = new ArrayList<>();
+        List<Integer> statsInMinutes = new ArrayList<>();
 
         try {
             List<Long> longStats = DbHelperFactory.getHelper().getAppUseStatsDao().getCategorySumSuffixTimeStats(category, LABEL_NUM);
             for (Long longStat : longStats) {
-                stats.add((int) (longStat / DateTimeUtils.MILLIS_IN_MINUTE));
+                statsInMinutes.add((int) (longStat / DateTimeUtils.MILLIS_IN_MINUTE));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return stats;
+        return statsInMinutes;
     }
 
     private static class LeftAxisValueFormatter extends ValueFormatter {

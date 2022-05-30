@@ -19,11 +19,10 @@ public class DayResultsAlarmService implements AlarmService {
     private final Context context;
     private final AlarmManager alarmManager;
     // TODO: перенести в настройки
-    private static final long DAY_ALARM_TIME = (20 * 3600 + 00 * 60) * 1000;
+    private static final long DAY_ALARM_TIME = (21 * 3600 + 00 * 60) * 1000;
     private final long absoluteAlarmTime;
     private static final int DAY_RESULTS_ALARM_REQUEST_CODE = 798;
 
-    // TODO пофиксить: если время уже наступило
     public DayResultsAlarmService(Context context) {
         long curDayTime = DateTimeUtils.getCurDayTimeInMillis();
         if (curDayTime > DAY_ALARM_TIME) {

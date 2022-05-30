@@ -14,6 +14,7 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Us
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.PermissionUtils;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -110,9 +111,6 @@ public class StatsProcessor {
         }
 
         if (isNewDate) {
-            yesterdayProgress.setFailedGoalNumber(Math.toIntExact(yesterdayGoalsFailed.getValue()));
-            yesterdayProgress.setTimeUsed(yesterdayTime.getValue());
-        } else {
             yesterdayTime.setValue(yesterdayProgress.getTimeUsed());
             yesterdayGoalsFailed.setValue((long) yesterdayProgress.getFailedGoalNumber());
 
@@ -122,6 +120,9 @@ public class StatsProcessor {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else {
+            yesterdayProgress.setFailedGoalNumber(Math.toIntExact(yesterdayGoalsFailed.getValue()));
+            yesterdayProgress.setTimeUsed(yesterdayTime.getValue());
         }
     }
 
@@ -168,7 +169,9 @@ public class StatsProcessor {
 
     private int processCategoriesDateStats(HashMap<Category, Long> usedCategoriesStats, Date date) {
         int strikeChange = 0;
-        for (Map.Entry<Category, Long> entry : usedCategoriesStats.entrySet()) {
+
+        Set<Map.Entry<Category, Long>> entries = usedCategoriesStats.entrySet();
+        for (Map.Entry<Category, Long> entry : entries) {
             strikeChange += processCategoryDateState(entry.getKey(), entry.getValue(), date);
         }
 
@@ -225,6 +228,7 @@ public class StatsProcessor {
 
     private List<UsageStats> queryUsageStats(Date curDate, Calendar nextDate) {
         return ((UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE))
+//                .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, System.currentTimeMillis() - 30 * 1000, System.currentTimeMillis());
                 .queryUsageStats(UsageStatsManager.INTERVAL_BEST, curDate.getTime(), nextDate.getTimeInMillis());
     }
 

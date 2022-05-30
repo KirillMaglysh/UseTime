@@ -3,8 +3,8 @@ package ru.mksoft.android.use.time.use.time.use.time.motivator.ui.stats.full_sta
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.recyclerview.widget.RecyclerView;
-import com.github.mikephil.charting.charts.PieChart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.databinding.FragmentDayFullCategoryStatsBinding;
@@ -13,7 +13,6 @@ import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.dao.DbHel
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.AppUseStats;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
-import ru.mksoft.android.use.time.use.time.use.time.motivator.ui.planning.RuleViewHolder;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.DateTimeUtils;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.HourMinuteTime;
 
@@ -43,8 +42,13 @@ public class DayFullCategoryStatsFragment extends FullCategoryStatsFragment {
 
     @Override
     protected void drawOwnPart() {
+        drawCategory();
         drawDate();
         drawResults();
+    }
+
+    private void drawCategory() {
+        binding.categoryInFullStatsLabel.setText(getCategory().getName());
     }
 
     private void drawDate() {
@@ -63,7 +67,7 @@ public class DayFullCategoryStatsFragment extends FullCategoryStatsFragment {
         }
 
         binding.hourValInResults.setText(String.format(Locale.US, TIME_PART_FORMAT, resultHourMinuteTime.getHours()));
-        binding.minuteValInResults.setText(String.format(Locale.US, TIME_PART_FORMAT, resultHourMinuteTime.getHours()));
+        binding.minuteValInResults.setText(String.format(Locale.US, TIME_PART_FORMAT, resultHourMinuteTime.getMinutes()));
         binding.hourValInGoal.setText(String.format(
                 Locale.US,
                 TIME_PART_FORMAT,
@@ -102,10 +106,15 @@ public class DayFullCategoryStatsFragment extends FullCategoryStatsFragment {
     @Override
     protected List<AppStatsBin> queryAppStats() {
         try {
-            return DbHelperFactory.getHelper().getAppUseStatsDao().getFullStatsForUserAppsOfCategoryByDate(getCategory(), queryDate());
+            return DbHelperFactory.getHelper().getAppUseStatsDao().getStatsForAllCategoryAppsByDate(getCategory(), queryDate());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    protected FrameLayout getFrameRecyclerLayout() {
+        return binding.appListInFullStatsLayout;
     }
 
     private Date queryDate() {

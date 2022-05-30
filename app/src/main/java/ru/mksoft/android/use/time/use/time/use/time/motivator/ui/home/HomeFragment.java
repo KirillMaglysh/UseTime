@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment implements StatsProcessedListener {
             binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.angry_64x64));
         } else if (strikeChange > 5) {
             binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.laughtingoutloud_64x64));
-        } else if (strikeChange > 0) {
+        } else if (strikeChange >= 0) {
             binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.happy_64x64));
         } else {
             binding.heroStateLayout.catImage.setImageDrawable(getResources().getDrawable(R.drawable.angry_64x64));

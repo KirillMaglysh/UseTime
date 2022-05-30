@@ -138,7 +138,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
         return categoryStatsBins;
     }
 
-    public List<AppStatsBin> getFullStatsForUserAppsOfCategoryByDate(Category category, Date date) throws SQLException {
+    public List<AppStatsBin> getStatsForAllCategoryAppsByDate(Category category, Date date) throws SQLException {
         String query = "SELECT PACKAGE_NAME, Time FROM\n " +
                 "(select USER_APP as APP_ID, sum(USAGE_TIME) as Time\n" +
                 "from APP_USE_STATS\n" +
@@ -148,7 +148,8 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
                 "    where CATEGORY = " + category.getId() + "\n" +
                 ")\n" +
                 "    and DATE = '" +
-                dateRawFormat.format(date) + "') JOIN USER_APP ON APP_ID = ID";
+                dateRawFormat.format(date) + "' GROUP BY USER_APP) JOIN USER_APP ON APP_ID = ID" +
+                " ORDER BY Time DESC";
 
         return parseUserAppTimeQuery(this.queryRaw(query));
     }
@@ -200,7 +201,7 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
                 dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(0)) + "'";
 
         List<String[]> results = queryRaw(query).getResults();
-        return Long.parseLong(results.get(0)[0]);
+        return results.get(0)[0] == null ? 0L : Long.parseLong(results.get(0)[0]);
     }
 
     public List<AppStatsBin> getStatsForAllCategoryAppsByLastWeek(Category category) throws SQLException {
@@ -216,7 +217,9 @@ public class AppUseStatsDAO extends BaseDaoImpl<AppUseStats, Long> {
                 dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(-6)) +
                 "' and '" +
                 dateRawFormat.format(DateTimeUtils.getDateOtherDayBegin(0)) +
-                "') JOIN USER_APP ON APP_ID = ID";
+                "' GROUP BY USER_APP)" +
+                " JOIN USER_APP ON APP_ID = ID" +
+                " ORDER BY Time DESC";
 
         return parseUserAppTimeQuery(this.queryRaw(query));
     }

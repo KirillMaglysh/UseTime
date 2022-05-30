@@ -74,8 +74,8 @@ public class AppListStatsRecyclerAdapter extends RecyclerView.Adapter<AppListSta
 
         public AppShortStatsCardHolder(View itemView) {
             super(itemView);
-            hourValue = itemView.findViewById(R.id.hour_val_in_results);
-            minuteValue = itemView.findViewById(R.id.minute_val_in_results);
+            hourValue = itemView.findViewById(R.id.hour_val_in_app_stats);
+            minuteValue = itemView.findViewById(R.id.minute_val_in_app_stats);
             appLabel = itemView.findViewById(R.id.app_label_in_stats);
             appIcon = itemView.findViewById(R.id.app_icon_in_stats);
         }

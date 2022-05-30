@@ -40,5 +40,6 @@ public class PropertyDAO extends BaseDaoImpl<Property, Long> {
     private void updateLevel(Long levelChange) throws SQLException {
         Property level = queryForId(Property.USER_LEVEL_FIELD_ID);
         level.setValue(Math.max(level.getValue() + levelChange, 0));
+        update(level);
     }
 }

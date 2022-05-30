@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.R;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.AppUseStats;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +59,7 @@ public class ShortStatsListRecyclerAdapter extends RecyclerView.Adapter<Recycler
             ((CategoryInShortStatsCardHolder) holder).moreButton.setOnClickListener(view -> Navigation.findNavController(holder.itemView)
                     .navigate(ShortStatsListFragmentDirections.actionNavShortStatsListToNavDayFullStats(
                             categoryStats.getCategory().getId().toString(),
-                            date.toString()
+                            new SimpleDateFormat(AppUseStats.DATE_FORMAT, Locale.getDefault()).format(date)
                     ))
             );
         } else {

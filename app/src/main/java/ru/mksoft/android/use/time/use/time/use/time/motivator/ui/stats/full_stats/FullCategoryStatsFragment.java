@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +15,14 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.MainActivity;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.AppStatsBin;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Category;
 import ru.mksoft.android.use.time.use.time.use.time.motivator.model.db.models.Rule;
+import ru.mksoft.android.use.time.use.time.use.time.motivator.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,8 @@ import java.util.List;
  * @since 01.03.2022
  */
 public abstract class FullCategoryStatsFragment extends Fragment {
+    //TODO() change for DP
+    private static final int appStatCardHeightInPixels = 240;
     private Category category;
     private Rule rule;
     private PieChart pieChart;
@@ -70,6 +75,7 @@ public abstract class FullCategoryStatsFragment extends Fragment {
     private void fillAppChartDataSet() {
         PieDataSet dataset = new PieDataSet(createDataEntries(), "");
         dataset.setValueFormatter(new PieItemFormatter());
+        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
         pieChart.setData(new PieData(dataset));
     }
@@ -85,16 +91,21 @@ public abstract class FullCategoryStatsFragment extends Fragment {
                 throw new RuntimeException(e);
             }
 
-            entries.add(new PieEntry(appStatsBin.getUsedTime(), pm.getApplicationLabel(applicationInfo)));
+            PieEntry entry = new PieEntry(appStatsBin.getUsedTime());
+            String label = StringUtils.makeStringShort(String.valueOf(pm.getApplicationLabel(applicationInfo)), 12);
+
+            entry.setLabel(label);
+            entries.add(entry);
         }
 
         return entries;
     }
 
     private void editAppChart() {
-        pieChart.getLegend().setEnabled(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setCenterText("Apps");
+        pieChart.setEntryLabelTextSize(0.f);
+        pieChart.getLegend().setTextSize(12.f);
     }
 
     protected abstract void initBinding(@NotNull LayoutInflater inflater, ViewGroup container);
@@ -113,9 +124,13 @@ public abstract class FullCategoryStatsFragment extends Fragment {
 
     private void drawCategoryAppStatsList() {
         RecyclerView recyclerView = getRecyclerView();
+        FrameLayout frameRecyclerLayout = getFrameRecyclerLayout();
+        frameRecyclerLayout.setMinimumHeight(Math.min(8, appStatsBins.size()) * appStatCardHeightInPixels + 20);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new AppListStatsRecyclerAdapter(getContext(), appStatsBins));
     }
+
+    protected abstract FrameLayout getFrameRecyclerLayout();
 
     protected abstract RecyclerView getRecyclerView();
 

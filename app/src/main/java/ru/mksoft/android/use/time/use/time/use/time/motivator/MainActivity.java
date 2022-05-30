@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements StatsProcessedLis
         statsProcessor = new ActivityStatsProcessor(this);
         appListBuilder = new AppListBuilder(getPackageManager(), statsProcessor);
         appListBuilder.buildAppList();
+        statsProcessor.subscribeSystemListener(this);
 
         super.onCreate(savedInstanceState);
         this.binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -143,18 +146,36 @@ public class MainActivity extends AppCompatActivity implements StatsProcessedLis
 
     @Override
     public void processStatsUpdated() {
-        long level = 0;
-        try {
-            level = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.USER_LEVEL_FIELD_ID).getValue();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        runOnUiThread(() -> {
+            long level = 0;
+            try {
+                level = DbHelperFactory.getHelper().getPropertyDAO().queryForId(Property.USER_LEVEL_FIELD_ID).getValue();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
+            bindUserLevelTitle(level);
+            bindUserLevelImage(level);
+        });
+    }
+
+    private void bindUserLevelImage(long level) {
+        ImageView imageUserLevel = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_level_image);
+        level = Math.min(level, Property.MAX_SPECIFIC_LEVEL);
+
+        int levelImageResId = getResources().getIdentifier("user_level_image_" + (level + 1), "drawable", getPackageName());
+        imageUserLevel.setImageDrawable(
+                getDrawable(levelImageResId)
+        );
+    }
+
+    private void bindUserLevelTitle(long level) {
         TextView headerUserLevel = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_main_title_tv);
         if (level > Property.MAX_SPECIFIC_LEVEL) {
             headerUserLevel.setText(String.format(Locale.getDefault(), "Легенда %d", (level - Property.MAX_SPECIFIC_LEVEL)));
         } else {
-            headerUserLevel.setText(getResources().getIdentifier(USER_LEVEL_LABEL_NAME_BEGIN + level, "string", getPackageName()));
+            int levelLabelResId = getResources().getIdentifier(USER_LEVEL_LABEL_NAME_BEGIN + level, "string", getPackageName());
+            headerUserLevel.setText(levelLabelResId);
         }
     }
 }
